@@ -26,6 +26,22 @@ struct Object {
 
 final class DataController {
 
-    
+    var data: [Object] = []
+
+    var numberOfSections: Int {
+        return 1
+    }
+
+    var numberOfRows: Int {
+        return data.count
+    }
+
+    func object(for indexPath: IndexPath) -> Object? {
+        if indexPath.row < data.count {
+            return data[indexPath.row]
+        }
+
+        return nil
+    }
 
 }
