@@ -13,4 +13,12 @@ final class RocketChatViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var viewComposer: UIView!
 
+    let dataController = DataController()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        dataController.data = DataControllerPlaceholder.generateDumbData(elements: 5000)
+        
+    }
+
 }
