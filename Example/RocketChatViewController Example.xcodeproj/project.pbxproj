@@ -12,7 +12,8 @@
 		417670E5210FABAA0070CA5B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 417670E3210FABAA0070CA5B /* Main.storyboard */; };
 		417670E7210FABAD0070CA5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 417670E6210FABAD0070CA5B /* Assets.xcassets */; };
 		417670EA210FABAD0070CA5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 417670E8210FABAD0070CA5B /* LaunchScreen.storyboard */; };
-		417670F5210FAE0A0070CA5B /* RocketChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417670F4210FAE0A0070CA5B /* RocketChatViewController.swift */; };
+		41D7759E2110995200FABB49 /* RocketChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D7759D2110995200FABB49 /* RocketChatViewController.swift */; };
+		41D775A02110996C00FABB49 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D7759F2110996C00FABB49 /* DataController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,7 +24,8 @@
 		417670E6210FABAD0070CA5B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		417670E9210FABAD0070CA5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		417670EB210FABAD0070CA5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		417670F4210FAE0A0070CA5B /* RocketChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RocketChatViewController.swift; path = "RocketChatViewController Example/RocketChatViewController/RocketChatViewController.swift"; sourceTree = SOURCE_ROOT; };
+		41D7759D2110995200FABB49 /* RocketChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RocketChatViewController.swift; sourceTree = "<group>"; };
+		41D7759F2110996C00FABB49 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,8 +58,9 @@
 		417670DE210FABAA0070CA5B /* RocketChatViewController Example */ = {
 			isa = PBXGroup;
 			children = (
-				417670F3210FACEF0070CA5B /* RocketChatViewController */,
+				41D7759C2110995200FABB49 /* RocketChatViewController */,
 				417670DF210FABAA0070CA5B /* AppDelegate.swift */,
+				41D7759F2110996C00FABB49 /* DataController.swift */,
 				417670E1210FABAA0070CA5B /* ViewController.swift */,
 				417670E6210FABAD0070CA5B /* Assets.xcassets */,
 				417670E3210FABAA0070CA5B /* Main.storyboard */,
@@ -67,13 +70,12 @@
 			path = "RocketChatViewController Example";
 			sourceTree = "<group>";
 		};
-		417670F3210FACEF0070CA5B /* RocketChatViewController */ = {
+		41D7759C2110995200FABB49 /* RocketChatViewController */ = {
 			isa = PBXGroup;
 			children = (
-				417670F4210FAE0A0070CA5B /* RocketChatViewController.swift */,
+				41D7759D2110995200FABB49 /* RocketChatViewController.swift */,
 			);
-			name = RocketChatViewController;
-			path = "New Group";
+			path = RocketChatViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,7 +150,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				417670E2210FABAA0070CA5B /* ViewController.swift in Sources */,
-				417670F5210FAE0A0070CA5B /* RocketChatViewController.swift in Sources */,
+				41D775A02110996C00FABB49 /* DataController.swift in Sources */,
+				41D7759E2110995200FABB49 /* RocketChatViewController.swift in Sources */,
 				417670E0210FABAA0070CA5B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
