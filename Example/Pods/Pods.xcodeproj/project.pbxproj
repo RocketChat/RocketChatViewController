@@ -1,0 +1,683 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		062EB69EDCDFAC9EE1F0D87924E2338A /* IGListKit-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 278F4F8F17C9E47C3EDA5FC42F810F9E /* IGListKit-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		15030AC9CB0AAF6C4E6B85B1E8AD7733 /* IGListDiffKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 7CD0F04256EA87495748FA4A1B59D4BA /* IGListDiffKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		19A2DFF65582716567746EA6DFA627B3 /* IGListMoveIndexPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEAA96184FA5CD6E7448955040D5B91 /* IGListMoveIndexPath.m */; };
+		1E8B1B48D69F4B71EEAB7BE0CD035CDD /* IGListIndexPathResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B31E81FA409571783EBA623F0201E2B /* IGListIndexPathResult.m */; };
+		206B2804BDB11A176EBE13C59C607CCF /* IGListIndexPathResultInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = C00BA337A3DFAE6BFCF781B32097B743 /* IGListIndexPathResultInternal.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		39488D151E2E68088526F5EECF89A794 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D88AAE1F92055A60CC2FC970D7D34634 /* Foundation.framework */; };
+		3B2A2F916F3DB8609D2EC145D9303C2F /* NSNumber+IGListDiffable.h in Headers */ = {isa = PBXBuildFile; fileRef = A1D3C8F2F0A7D028234B8905697225BD /* NSNumber+IGListDiffable.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		414FF9CB89ACA3250F6BB2DE91B3056F /* IGListKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1117B3664A94E87F92C656639FB2C7DD /* IGListKit-dummy.m */; };
+		46715890A7C3AE159A07C48002852297 /* IGListAssert.h in Headers */ = {isa = PBXBuildFile; fileRef = BCB586F40F71E7A259892A1C60D61DD1 /* IGListAssert.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		47691399684388C717776AAFFF04E78A /* IGListCompatibility.h in Headers */ = {isa = PBXBuildFile; fileRef = A36987BD6C9EDB6BCAD2BA04F61E311E /* IGListCompatibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		48153509044B821F5AEAD445A868DB69 /* NSNumber+IGListDiffable.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9B21A2DA2DF5DF6FDDD6909248B5FC /* NSNumber+IGListDiffable.m */; };
+		4EC774F84045368DC5B0874458538B8F /* IGListBatchUpdateData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 235B87C1354503E1B130C7999C6FC18F /* IGListBatchUpdateData.mm */; };
+		514DBCA133E33ECFE56BDB56AC1C18CE /* IGListDiffable.h in Headers */ = {isa = PBXBuildFile; fileRef = 32A560D9EE39F671D7AF8FF6BAB372C9 /* IGListDiffable.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		621E9C2AA9B8653DF662728550BB1987 /* IGListExperiments.h in Headers */ = {isa = PBXBuildFile; fileRef = 34960547E829084ABDFBB15C1824A602 /* IGListExperiments.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6B87660BFD209A34798931137EC9F625 /* NSString+IGListDiffable.h in Headers */ = {isa = PBXBuildFile; fileRef = ED4847457D729F9959A27EB016FF69DE /* NSString+IGListDiffable.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		722146787ED4FA4E31E83AC576712996 /* Pods-RocketChatViewController Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6413B6E42095419768D0555A2DB2F80C /* Pods-RocketChatViewController Example-dummy.m */; };
+		7DC92EB6C78EB013109F69480FEFE34C /* NSString+IGListDiffable.m in Sources */ = {isa = PBXBuildFile; fileRef = E492FED2898D3AAF33E8DC44FD5E877D /* NSString+IGListDiffable.m */; };
+		84AA37DCFE4E307D03A15913CA0312D9 /* IGListBatchUpdateData.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CA52158F80B4CF0AE58264229DE1946 /* IGListBatchUpdateData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9DA91FCE6F8C7E9E4290333AF42AF582 /* IGListMoveIndexPath.h in Headers */ = {isa = PBXBuildFile; fileRef = C74A0F88E3278B2DF4C9F0FDA73451E7 /* IGListMoveIndexPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9DCB06AF017D0DBE77C63090B47616B3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B63C6A64CF66340668996F78DA6BB482 /* UIKit.framework */; };
+		AE91EA85968DD7B0273C4C75F2419F9C /* IGListArrayUtilsInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FC5B8D1F0A252A7907DE0B6BCF54D82 /* IGListArrayUtilsInternal.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		B26E3FD406FBB083A58EFBE9E1A01811 /* IGListMoveIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 26358F9FB6BE0400D5FD0BFC18D867B3 /* IGListMoveIndex.m */; };
+		B7222ECC41299A1E04EFE80057C8EF48 /* IGListDiff.mm in Sources */ = {isa = PBXBuildFile; fileRef = ED453FA8F3626FD47949E211105FBEA1 /* IGListDiff.mm */; };
+		BE284E31B182032638D4D729146F8EE7 /* IGListIndexSetResult.m in Sources */ = {isa = PBXBuildFile; fileRef = EAAAFDC08378777FDC44E74396D25768 /* IGListIndexSetResult.m */; };
+		BFA5DB3EB692369F260787791F382F8B /* IGListIndexPathResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 64BA07512616B90C7A8054497759A00F /* IGListIndexPathResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C0CD881E874DB326215A1A468CC89E93 /* IGListMoveIndexInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 83B4E6D10E4DE293101B4F33F3CD398B /* IGListMoveIndexInternal.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C249E4B035957D59D887FC1DA87EAA2E /* IGListIndexSetResultInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A50F3B497CE30EFF968B10209C57790 /* IGListIndexSetResultInternal.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C496CFB52674F33E69F71A6F286C1FAB /* IGListMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = B39D33CA76205E82CA85A4678A73B6BC /* IGListMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C8D357B59C6812F5F9B1F161059F7943 /* IGListMoveIndexPathInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 1203689FB5E34198860352435B7380A7 /* IGListMoveIndexPathInternal.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		CD99BD3472F3243500078096736B3A79 /* IGListDiff.h in Headers */ = {isa = PBXBuildFile; fileRef = 67759A57CB9504FA628D095F4C30A9C2 /* IGListDiff.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CDCB1C196BC297325F2C9C7233D8F702 /* Pods-RocketChatViewController Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3ABBCD0AC3FCCD77F34E4F33FCE5CE52 /* Pods-RocketChatViewController Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D89DD9E00EAFFE643E20207A621150F2 /* IGListIndexSetResult.h in Headers */ = {isa = PBXBuildFile; fileRef = B078B20BE2EC293117C63C03E2F78D69 /* IGListIndexSetResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F6491436D1704D44E625A433A489D9AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D88AAE1F92055A60CC2FC970D7D34634 /* Foundation.framework */; };
+		FC8A4E9E9549CE38B50777B1E32E951F /* IGListMoveIndex.h in Headers */ = {isa = PBXBuildFile; fileRef = CA5B1E9A01072DE0A75A57F2DA3E900A /* IGListMoveIndex.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9BB8A2DDDB0F43A74DF2017AB8866B90 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A081324E0FC9BA17B5DFCFC2A8B1F34D;
+			remoteInfo = IGListKit;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0E9B21A2DA2DF5DF6FDDD6909248B5FC /* NSNumber+IGListDiffable.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSNumber+IGListDiffable.m"; path = "Source/Common/NSNumber+IGListDiffable.m"; sourceTree = "<group>"; };
+		1117B3664A94E87F92C656639FB2C7DD /* IGListKit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "IGListKit-dummy.m"; sourceTree = "<group>"; };
+		1203689FB5E34198860352435B7380A7 /* IGListMoveIndexPathInternal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IGListMoveIndexPathInternal.h; path = Source/Common/Internal/IGListMoveIndexPathInternal.h; sourceTree = "<group>"; };
+		1A50F3B497CE30EFF968B10209C57790 /* IGListIndexSetResultInternal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IGListIndexSetResultInternal.h; path = Source/Common/Internal/IGListIndexSetResultInternal.h; sourceTree = "<group>"; };
+		1FC5B8D1F0A252A7907DE0B6BCF54D82 /* IGListArrayUtilsInternal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IGListArrayUtilsInternal.h; path = Source/Common/Internal/IGListArrayUtilsInternal.h; sourceTree = "<group>"; };
+		235B87C1354503E1B130C7999C6FC18F /* IGListBatchUpdateData.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = IGListBatchUpdateData.mm; path = Source/Common/IGListBatchUpdateData.mm; sourceTree = "<group>"; };
+		26358F9FB6BE0400D5FD0BFC18D867B3 /* IGListMoveIndex.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = IGListMoveIndex.m; path = Source/Common/IGListMoveIndex.m; sourceTree = "<group>"; };
+		278F4F8F17C9E47C3EDA5FC42F810F9E /* IGListKit-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "IGListKit-umbrella.h"; sourceTree = "<group>"; };
+		2B31E81FA409571783EBA623F0201E2B /* IGListIndexPathResult.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = IGListIndexPathResult.m; path = Source/Common/IGListIndexPathResult.m; sourceTree = "<group>"; };
+		2EFE929D446BE3836ECDA333FB1EF0B7 /* IGListKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = IGListKit.framework; path = IGListKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		32A560D9EE39F671D7AF8FF6BAB372C9 /* IGListDiffable.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IGListDiffable.h; path = Source/Common/IGListDiffable.h; sourceTree = "<group>"; };
+		34960547E829084ABDFBB15C1824A602 /* IGListExperiments.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IGListExperiments.h; path = Source/Common/IGListExperiments.h; sourceTree = "<group>"; };
+		35543316846F497DFE27CA37EDDEB192 /* Pods-RocketChatViewController Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-RocketChatViewController Example.modulemap"; sourceTree = "<group>"; };
+		37F62F91D3D5FDFACF573DDB27801AEA /* Pods-RocketChatViewController Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-RocketChatViewController Example-frameworks.sh"; sourceTree = "<group>"; };
+		3ABBCD0AC3FCCD77F34E4F33FCE5CE52 /* Pods-RocketChatViewController Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-RocketChatViewController Example-umbrella.h"; sourceTree = "<group>"; };
+		3CA4295948B8384D21426C6F9D417707 /* Pods-RocketChatViewController Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-RocketChatViewController Example-acknowledgements.plist"; sourceTree = "<group>"; };
+		440AE2D4D7E73ECCE898387D1ABCB82B /* Pods_RocketChatViewController_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_RocketChatViewController_Example.framework; path = "Pods-RocketChatViewController Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		498426A6A258031D305DC8EB77822912 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4BDFBB85C6F3F6DCBA72FA962CB92E0C /* IGListKit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = IGListKit.xcconfig; sourceTree = "<group>"; };
+		6413B6E42095419768D0555A2DB2F80C /* Pods-RocketChatViewController Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-RocketChatViewController Example-dummy.m"; sourceTree = "<group>"; };
+		64BA07512616B90C7A8054497759A00F /* IGListIndexPathResult.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IGListIndexPathResult.h; path = Source/Common/IGListIndexPathResult.h; sourceTree = "<group>"; };
+		67759A57CB9504FA628D095F4C30A9C2 /* IGListDiff.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IGListDiff.h; path = Source/Common/IGListDiff.h; sourceTree = "<group>"; };
+		7888DD3E7C5DD3BA1A8FDE61B7B5D90A /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7CD0F04256EA87495748FA4A1B59D4BA /* IGListDiffKit.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IGListDiffKit.h; path = Source/Common/IGListDiffKit.h; sourceTree = "<group>"; };
+		83B4E6D10E4DE293101B4F33F3CD398B /* IGListMoveIndexInternal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IGListMoveIndexInternal.h; path = Source/Common/Internal/IGListMoveIndexInternal.h; sourceTree = "<group>"; };
+		8CA52158F80B4CF0AE58264229DE1946 /* IGListBatchUpdateData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IGListBatchUpdateData.h; path = Source/Common/IGListBatchUpdateData.h; sourceTree = "<group>"; };
+		9202566DD1172FDA51E6B64F17CB1A62 /* IGListKit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = IGListKit.modulemap; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A1D3C8F2F0A7D028234B8905697225BD /* NSNumber+IGListDiffable.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSNumber+IGListDiffable.h"; path = "Source/Common/NSNumber+IGListDiffable.h"; sourceTree = "<group>"; };
+		A36987BD6C9EDB6BCAD2BA04F61E311E /* IGListCompatibility.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IGListCompatibility.h; path = Source/Common/IGListCompatibility.h; sourceTree = "<group>"; };
+		AC585A0183D946CCEA0BE6AFCF76B9C3 /* Pods-RocketChatViewController Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-RocketChatViewController Example.debug.xcconfig"; sourceTree = "<group>"; };
+		AFD14A5148579F4411B4CF26DE870990 /* Pods-RocketChatViewController Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-RocketChatViewController Example-acknowledgements.markdown"; sourceTree = "<group>"; };
+		B078B20BE2EC293117C63C03E2F78D69 /* IGListIndexSetResult.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IGListIndexSetResult.h; path = Source/Common/IGListIndexSetResult.h; sourceTree = "<group>"; };
+		B39D33CA76205E82CA85A4678A73B6BC /* IGListMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IGListMacros.h; path = Source/Common/IGListMacros.h; sourceTree = "<group>"; };
+		B517078186B4161D3B5461A0930FDF7C /* IGListKit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "IGListKit-prefix.pch"; sourceTree = "<group>"; };
+		B63C6A64CF66340668996F78DA6BB482 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		BCB586F40F71E7A259892A1C60D61DD1 /* IGListAssert.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IGListAssert.h; path = Source/Common/IGListAssert.h; sourceTree = "<group>"; };
+		C00BA337A3DFAE6BFCF781B32097B743 /* IGListIndexPathResultInternal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IGListIndexPathResultInternal.h; path = Source/Common/Internal/IGListIndexPathResultInternal.h; sourceTree = "<group>"; };
+		C74A0F88E3278B2DF4C9F0FDA73451E7 /* IGListMoveIndexPath.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IGListMoveIndexPath.h; path = Source/Common/IGListMoveIndexPath.h; sourceTree = "<group>"; };
+		CA5B1E9A01072DE0A75A57F2DA3E900A /* IGListMoveIndex.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IGListMoveIndex.h; path = Source/Common/IGListMoveIndex.h; sourceTree = "<group>"; };
+		CFED4D75AD64B98CB2E6CC02405FA314 /* Pods-RocketChatViewController Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-RocketChatViewController Example-resources.sh"; sourceTree = "<group>"; };
+		D88AAE1F92055A60CC2FC970D7D34634 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		E492FED2898D3AAF33E8DC44FD5E877D /* NSString+IGListDiffable.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSString+IGListDiffable.m"; path = "Source/Common/NSString+IGListDiffable.m"; sourceTree = "<group>"; };
+		EAAAFDC08378777FDC44E74396D25768 /* IGListIndexSetResult.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = IGListIndexSetResult.m; path = Source/Common/IGListIndexSetResult.m; sourceTree = "<group>"; };
+		ED453FA8F3626FD47949E211105FBEA1 /* IGListDiff.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = IGListDiff.mm; path = Source/Common/IGListDiff.mm; sourceTree = "<group>"; };
+		ED4847457D729F9959A27EB016FF69DE /* NSString+IGListDiffable.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSString+IGListDiffable.h"; path = "Source/Common/NSString+IGListDiffable.h"; sourceTree = "<group>"; };
+		FBEAA96184FA5CD6E7448955040D5B91 /* IGListMoveIndexPath.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = IGListMoveIndexPath.m; path = Source/Common/IGListMoveIndexPath.m; sourceTree = "<group>"; };
+		FCBA8452AEAF7D2725CBF138000EC4F8 /* Pods-RocketChatViewController Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-RocketChatViewController Example.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		64598EEF1C9014E353EAF4B94C4DAE3F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				39488D151E2E68088526F5EECF89A794 /* Foundation.framework in Frameworks */,
+				9DCB06AF017D0DBE77C63090B47616B3 /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		652CB69CB7160D32CBA4532A2C7C8A9B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F6491436D1704D44E625A433A489D9AA /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		07650A5A6953220BAA52CA131BDB0403 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FB317D6998BE76E3D55EC8D680F1A801 /* IGListKit */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		433CD3331B6C3787F473C941B61FC68F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				438B396F6B4147076630CAEFE34282C1 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		438B396F6B4147076630CAEFE34282C1 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				D88AAE1F92055A60CC2FC970D7D34634 /* Foundation.framework */,
+				B63C6A64CF66340668996F78DA6BB482 /* UIKit.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		49D5931368EB25098383FD46A6C33026 /* Pods-RocketChatViewController Example */ = {
+			isa = PBXGroup;
+			children = (
+				7888DD3E7C5DD3BA1A8FDE61B7B5D90A /* Info.plist */,
+				35543316846F497DFE27CA37EDDEB192 /* Pods-RocketChatViewController Example.modulemap */,
+				AFD14A5148579F4411B4CF26DE870990 /* Pods-RocketChatViewController Example-acknowledgements.markdown */,
+				3CA4295948B8384D21426C6F9D417707 /* Pods-RocketChatViewController Example-acknowledgements.plist */,
+				6413B6E42095419768D0555A2DB2F80C /* Pods-RocketChatViewController Example-dummy.m */,
+				37F62F91D3D5FDFACF573DDB27801AEA /* Pods-RocketChatViewController Example-frameworks.sh */,
+				CFED4D75AD64B98CB2E6CC02405FA314 /* Pods-RocketChatViewController Example-resources.sh */,
+				3ABBCD0AC3FCCD77F34E4F33FCE5CE52 /* Pods-RocketChatViewController Example-umbrella.h */,
+				AC585A0183D946CCEA0BE6AFCF76B9C3 /* Pods-RocketChatViewController Example.debug.xcconfig */,
+				FCBA8452AEAF7D2725CBF138000EC4F8 /* Pods-RocketChatViewController Example.release.xcconfig */,
+			);
+			name = "Pods-RocketChatViewController Example";
+			path = "Target Support Files/Pods-RocketChatViewController Example";
+			sourceTree = "<group>";
+		};
+		504354B395C0F219A2B736FAD1433904 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				9202566DD1172FDA51E6B64F17CB1A62 /* IGListKit.modulemap */,
+				4BDFBB85C6F3F6DCBA72FA962CB92E0C /* IGListKit.xcconfig */,
+				1117B3664A94E87F92C656639FB2C7DD /* IGListKit-dummy.m */,
+				B517078186B4161D3B5461A0930FDF7C /* IGListKit-prefix.pch */,
+				278F4F8F17C9E47C3EDA5FC42F810F9E /* IGListKit-umbrella.h */,
+				498426A6A258031D305DC8EB77822912 /* Info.plist */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/IGListKit";
+			sourceTree = "<group>";
+		};
+		581D52ED34DD5B483C452EE3DCA3EDB0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2EFE929D446BE3836ECDA333FB1EF0B7 /* IGListKit.framework */,
+				440AE2D4D7E73ECCE898387D1ABCB82B /* Pods_RocketChatViewController_Example.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6F57F0DEA853E1C396848E5BB84AA728 /* Diffing */ = {
+			isa = PBXGroup;
+			children = (
+				1FC5B8D1F0A252A7907DE0B6BCF54D82 /* IGListArrayUtilsInternal.h */,
+				BCB586F40F71E7A259892A1C60D61DD1 /* IGListAssert.h */,
+				8CA52158F80B4CF0AE58264229DE1946 /* IGListBatchUpdateData.h */,
+				235B87C1354503E1B130C7999C6FC18F /* IGListBatchUpdateData.mm */,
+				A36987BD6C9EDB6BCAD2BA04F61E311E /* IGListCompatibility.h */,
+				67759A57CB9504FA628D095F4C30A9C2 /* IGListDiff.h */,
+				ED453FA8F3626FD47949E211105FBEA1 /* IGListDiff.mm */,
+				32A560D9EE39F671D7AF8FF6BAB372C9 /* IGListDiffable.h */,
+				7CD0F04256EA87495748FA4A1B59D4BA /* IGListDiffKit.h */,
+				34960547E829084ABDFBB15C1824A602 /* IGListExperiments.h */,
+				64BA07512616B90C7A8054497759A00F /* IGListIndexPathResult.h */,
+				2B31E81FA409571783EBA623F0201E2B /* IGListIndexPathResult.m */,
+				C00BA337A3DFAE6BFCF781B32097B743 /* IGListIndexPathResultInternal.h */,
+				B078B20BE2EC293117C63C03E2F78D69 /* IGListIndexSetResult.h */,
+				EAAAFDC08378777FDC44E74396D25768 /* IGListIndexSetResult.m */,
+				1A50F3B497CE30EFF968B10209C57790 /* IGListIndexSetResultInternal.h */,
+				B39D33CA76205E82CA85A4678A73B6BC /* IGListMacros.h */,
+				CA5B1E9A01072DE0A75A57F2DA3E900A /* IGListMoveIndex.h */,
+				26358F9FB6BE0400D5FD0BFC18D867B3 /* IGListMoveIndex.m */,
+				83B4E6D10E4DE293101B4F33F3CD398B /* IGListMoveIndexInternal.h */,
+				C74A0F88E3278B2DF4C9F0FDA73451E7 /* IGListMoveIndexPath.h */,
+				FBEAA96184FA5CD6E7448955040D5B91 /* IGListMoveIndexPath.m */,
+				1203689FB5E34198860352435B7380A7 /* IGListMoveIndexPathInternal.h */,
+				A1D3C8F2F0A7D028234B8905697225BD /* NSNumber+IGListDiffable.h */,
+				0E9B21A2DA2DF5DF6FDDD6909248B5FC /* NSNumber+IGListDiffable.m */,
+				ED4847457D729F9959A27EB016FF69DE /* NSString+IGListDiffable.h */,
+				E492FED2898D3AAF33E8DC44FD5E877D /* NSString+IGListDiffable.m */,
+			);
+			name = Diffing;
+			sourceTree = "<group>";
+		};
+		7DB346D0F39D3F0E887471402A8071AB = {
+			isa = PBXGroup;
+			children = (
+				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
+				433CD3331B6C3787F473C941B61FC68F /* Frameworks */,
+				07650A5A6953220BAA52CA131BDB0403 /* Pods */,
+				581D52ED34DD5B483C452EE3DCA3EDB0 /* Products */,
+				B03ED596DF9A67DA5FE34064DF58A7F3 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		B03ED596DF9A67DA5FE34064DF58A7F3 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				49D5931368EB25098383FD46A6C33026 /* Pods-RocketChatViewController Example */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		FB317D6998BE76E3D55EC8D680F1A801 /* IGListKit */ = {
+			isa = PBXGroup;
+			children = (
+				6F57F0DEA853E1C396848E5BB84AA728 /* Diffing */,
+				504354B395C0F219A2B736FAD1433904 /* Support Files */,
+			);
+			name = IGListKit;
+			path = IGListKit;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		98D2B39961A54D363890F076647E8F40 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE91EA85968DD7B0273C4C75F2419F9C /* IGListArrayUtilsInternal.h in Headers */,
+				46715890A7C3AE159A07C48002852297 /* IGListAssert.h in Headers */,
+				84AA37DCFE4E307D03A15913CA0312D9 /* IGListBatchUpdateData.h in Headers */,
+				47691399684388C717776AAFFF04E78A /* IGListCompatibility.h in Headers */,
+				CD99BD3472F3243500078096736B3A79 /* IGListDiff.h in Headers */,
+				514DBCA133E33ECFE56BDB56AC1C18CE /* IGListDiffable.h in Headers */,
+				15030AC9CB0AAF6C4E6B85B1E8AD7733 /* IGListDiffKit.h in Headers */,
+				621E9C2AA9B8653DF662728550BB1987 /* IGListExperiments.h in Headers */,
+				BFA5DB3EB692369F260787791F382F8B /* IGListIndexPathResult.h in Headers */,
+				206B2804BDB11A176EBE13C59C607CCF /* IGListIndexPathResultInternal.h in Headers */,
+				D89DD9E00EAFFE643E20207A621150F2 /* IGListIndexSetResult.h in Headers */,
+				C249E4B035957D59D887FC1DA87EAA2E /* IGListIndexSetResultInternal.h in Headers */,
+				062EB69EDCDFAC9EE1F0D87924E2338A /* IGListKit-umbrella.h in Headers */,
+				C496CFB52674F33E69F71A6F286C1FAB /* IGListMacros.h in Headers */,
+				FC8A4E9E9549CE38B50777B1E32E951F /* IGListMoveIndex.h in Headers */,
+				C0CD881E874DB326215A1A468CC89E93 /* IGListMoveIndexInternal.h in Headers */,
+				9DA91FCE6F8C7E9E4290333AF42AF582 /* IGListMoveIndexPath.h in Headers */,
+				C8D357B59C6812F5F9B1F161059F7943 /* IGListMoveIndexPathInternal.h in Headers */,
+				3B2A2F916F3DB8609D2EC145D9303C2F /* NSNumber+IGListDiffable.h in Headers */,
+				6B87660BFD209A34798931137EC9F625 /* NSString+IGListDiffable.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E5A305EB0F3C2A79EEE2B178A20D6660 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDCB1C196BC297325F2C9C7233D8F702 /* Pods-RocketChatViewController Example-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		A081324E0FC9BA17B5DFCFC2A8B1F34D /* IGListKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D5C681ED7741E3964E1A9AEC5B1AA646 /* Build configuration list for PBXNativeTarget "IGListKit" */;
+			buildPhases = (
+				2B3E4D707676072261655BD7E4380CF2 /* Sources */,
+				64598EEF1C9014E353EAF4B94C4DAE3F /* Frameworks */,
+				98D2B39961A54D363890F076647E8F40 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IGListKit;
+			productName = IGListKit;
+			productReference = 2EFE929D446BE3836ECDA333FB1EF0B7 /* IGListKit.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		A092F4F348DD3D7513A821A6D6E6ABFD /* Pods-RocketChatViewController Example */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5524A195B380C40B2C0ACD881AD71DC3 /* Build configuration list for PBXNativeTarget "Pods-RocketChatViewController Example" */;
+			buildPhases = (
+				380C94A5C0C87887A750A59FAB4CBAC0 /* Sources */,
+				652CB69CB7160D32CBA4532A2C7C8A9B /* Frameworks */,
+				E5A305EB0F3C2A79EEE2B178A20D6660 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F83297768CFFBA9F5ED781CFD03965F8 /* PBXTargetDependency */,
+			);
+			name = "Pods-RocketChatViewController Example";
+			productName = "Pods-RocketChatViewController Example";
+			productReference = 440AE2D4D7E73ECCE898387D1ABCB82B /* Pods_RocketChatViewController_Example.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0930;
+				LastUpgradeCheck = 0930;
+			};
+			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
+			productRefGroup = 581D52ED34DD5B483C452EE3DCA3EDB0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A081324E0FC9BA17B5DFCFC2A8B1F34D /* IGListKit */,
+				A092F4F348DD3D7513A821A6D6E6ABFD /* Pods-RocketChatViewController Example */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2B3E4D707676072261655BD7E4380CF2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4EC774F84045368DC5B0874458538B8F /* IGListBatchUpdateData.mm in Sources */,
+				B7222ECC41299A1E04EFE80057C8EF48 /* IGListDiff.mm in Sources */,
+				1E8B1B48D69F4B71EEAB7BE0CD035CDD /* IGListIndexPathResult.m in Sources */,
+				BE284E31B182032638D4D729146F8EE7 /* IGListIndexSetResult.m in Sources */,
+				414FF9CB89ACA3250F6BB2DE91B3056F /* IGListKit-dummy.m in Sources */,
+				B26E3FD406FBB083A58EFBE9E1A01811 /* IGListMoveIndex.m in Sources */,
+				19A2DFF65582716567746EA6DFA627B3 /* IGListMoveIndexPath.m in Sources */,
+				48153509044B821F5AEAD445A868DB69 /* NSNumber+IGListDiffable.m in Sources */,
+				7DC92EB6C78EB013109F69480FEFE34C /* NSString+IGListDiffable.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		380C94A5C0C87887A750A59FAB4CBAC0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				722146787ED4FA4E31E83AC576712996 /* Pods-RocketChatViewController Example-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F83297768CFFBA9F5ED781CFD03965F8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = IGListKit;
+			target = A081324E0FC9BA17B5DFCFC2A8B1F34D /* IGListKit */;
+			targetProxy = 9BB8A2DDDB0F43A74DF2017AB8866B90 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1FC0E1235A17689AA456B242A79467D5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4BDFBB85C6F3F6DCBA72FA962CB92E0C /* IGListKit.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/IGListKit/IGListKit-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/IGListKit/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/IGListKit/IGListKit.modulemap";
+				PRODUCT_MODULE_NAME = IGListKit;
+				PRODUCT_NAME = IGListKit;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		39D947DD2ACE69298E9259B26CBD5D7D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AC585A0183D946CCEA0BE6AFCF76B9C3 /* Pods-RocketChatViewController Example.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-RocketChatViewController Example/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-RocketChatViewController Example/Pods-RocketChatViewController Example.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		4C8059C54F1BF9B87B164AADDF80EA9D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4BDFBB85C6F3F6DCBA72FA962CB92E0C /* IGListKit.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/IGListKit/IGListKit-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/IGListKit/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/IGListKit/IGListKit.modulemap";
+				PRODUCT_MODULE_NAME = IGListKit;
+				PRODUCT_NAME = IGListKit;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		5DC0083F57E9AB706B46C5B5D73B38D8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		8134730701EBAEB66451A29C16D247C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FCBA8452AEAF7D2725CBF138000EC4F8 /* Pods-RocketChatViewController Example.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-RocketChatViewController Example/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-RocketChatViewController Example/Pods-RocketChatViewController Example.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		AEEA80476F98EB645C4DD53EB2BB6D88 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5DC0083F57E9AB706B46C5B5D73B38D8 /* Debug */,
+				AEEA80476F98EB645C4DD53EB2BB6D88 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5524A195B380C40B2C0ACD881AD71DC3 /* Build configuration list for PBXNativeTarget "Pods-RocketChatViewController Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				39D947DD2ACE69298E9259B26CBD5D7D /* Debug */,
+				8134730701EBAEB66451A29C16D247C3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D5C681ED7741E3964E1A9AEC5B1AA646 /* Build configuration list for PBXNativeTarget "IGListKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4C8059C54F1BF9B87B164AADDF80EA9D /* Debug */,
+				1FC0E1235A17689AA456B242A79467D5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+}
