@@ -66,6 +66,10 @@
                                         </view>
                                     </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="nlN-mh-c9I" id="Dre-8m-uzj"/>
+                                    <outlet property="delegate" destination="nlN-mh-c9I" id="RHz-2x-XpG"/>
+                                </connections>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WYW-Qc-gEl">
                                 <rect key="frame" x="0.0" y="617" width="375" height="50"/>

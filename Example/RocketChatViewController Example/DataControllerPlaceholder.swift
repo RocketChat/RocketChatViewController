@@ -33,7 +33,7 @@ struct DataControllerPlaceholder {
         )
     }
 
-    static private func generateObject() -> Object {
+    static private func generateObject() -> MessageSectionModel {
         var attachments: [Attachment] = []
 
         if let attachment = generateAttachment() {
@@ -47,14 +47,15 @@ struct DataControllerPlaceholder {
             attachments: attachments
         )
 
-        return Object(identifier: identifier, message: message)
+        return MessageSectionModel(identifier: identifier, message: message)
     }
 
-    static func generateDumbData(elements: Int = 5000) -> [Object] {
-        var data: [Object] = []
+    static func generateDumbData(elements: Int = 5000) -> [ChatData] {
+        var data: [ChatData] = []
 
         for _ in 1...elements {
-            data.append(generateObject())
+            let object = generateObject()
+            data.append((object, MessageSectionController(object: object)))
         }
 
         return data
