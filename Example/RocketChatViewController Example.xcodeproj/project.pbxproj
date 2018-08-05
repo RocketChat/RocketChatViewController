@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1BE913D5694FEE67D1A2992A /* Pods_RocketChatViewController_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91BDF435ACF397E2211DE8C9 /* Pods_RocketChatViewController_Example.framework */; };
 		417670E0210FABAA0070CA5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417670DF210FABAA0070CA5B /* AppDelegate.swift */; };
 		417670E2210FABAA0070CA5B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417670E1210FABAA0070CA5B /* ViewController.swift */; };
 		417670E5210FABAA0070CA5B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 417670E3210FABAA0070CA5B /* Main.storyboard */; };
@@ -35,17 +36,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BE913D5694FEE67D1A2992A /* Pods_RocketChatViewController_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1658F163EF86A1EE58DD6349 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				51F5BB0A3783F263AF67E692 /* Pods-RocketChatViewController Example.debug.xcconfig */,
+				A049354474F5A39422010A76 /* Pods-RocketChatViewController Example.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		417670D3210FABAA0070CA5B = {
 			isa = PBXGroup;
 			children = (
 				417670DE210FABAA0070CA5B /* RocketChatViewController Example */,
 				417670DD210FABAA0070CA5B /* Products */,
+				1658F163EF86A1EE58DD6349 /* Pods */,
+				ADE8C51B831214CE4CCC9462 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,6 +73,9 @@
 		417670DE210FABAA0070CA5B /* RocketChatViewController Example */ = {
 			isa = PBXGroup;
 			children = (
+				9966041E2117A4D700E4B082 /* View */,
+				996604192117A18600E4B082 /* Controller */,
+				996604122117A0E800E4B082 /* Model */,
 				41D7759C2110995200FABB49 /* RocketChatViewController */,
 				417670DF210FABAA0070CA5B /* AppDelegate.swift */,
 				41D7759F2110996C00FABB49 /* DataController.swift */,
@@ -88,9 +104,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 417670EE210FABAD0070CA5B /* Build configuration list for PBXNativeTarget "RocketChatViewController Example" */;
 			buildPhases = (
+				8B9944679484906D163D3401 /* [CP] Check Pods Manifest.lock */,
 				417670D8210FABAA0070CA5B /* Sources */,
 				417670D9210FABAA0070CA5B /* Frameworks */,
 				417670DA210FABAA0070CA5B /* Resources */,
+				32FC88E31DE2CF27A5476EAB /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -298,17 +316,20 @@
 		};
 		417670EF210FABAD0070CA5B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 51F5BB0A3783F263AF67E692 /* Pods-RocketChatViewController Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S6UPZG7ZR3;
 				INFOPLIST_FILE = "RocketChatViewController Example/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "chat.rocket.rocketchatviewcontroller.example.RocketChatViewController-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -316,17 +337,20 @@
 		};
 		417670F0210FABAD0070CA5B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A049354474F5A39422010A76 /* Pods-RocketChatViewController Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S6UPZG7ZR3;
 				INFOPLIST_FILE = "RocketChatViewController Example/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "chat.rocket.rocketchatviewcontroller.example.RocketChatViewController-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
