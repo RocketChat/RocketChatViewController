@@ -7,6 +7,17 @@
 //
 
 import UIKit
+import IGListKit
+
+protocol SectionController {
+    var object: ListDiffable? { get }
+
+    func viewModels() -> [Any]
+    func cell(for viewModel: Any, on collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell
+    func height(for viewModel: Any) -> CGFloat?
+}
+
+typealias ChatData = (object: ListDiffable, sectionController: SectionController)
 
 final class RocketChatViewController: UIViewController {
 
