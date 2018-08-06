@@ -7,8 +7,19 @@
 //
 
 import Foundation
+import DifferenceKit
 
-struct BasicMessageViewModel {
+struct BasicMessageViewModel: Differentiable {
     var username: String
     var text: String
+
+    // MARK: Differentiable
+
+    var differenceIdentifier: String {
+        return username + text
+    }
+
+    func isUpdated(from source: BasicMessageViewModel) -> Bool {
+        return text != source.text
+    }
 }

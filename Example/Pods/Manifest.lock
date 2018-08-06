@@ -1,16 +1,16 @@
 PODS:
-  - IGListKit/Diffing (3.4.0)
+  - DifferenceKit/Core (0.2.0)
 
 DEPENDENCIES:
-  - IGListKit/Diffing (~> 3.0)
+  - DifferenceKit/Core
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - IGListKit
+    - DifferenceKit
 
 SPEC CHECKSUMS:
-  IGListKit: 7a5d788e9fb746bcd402baa8e8b24bc3bd2a5a07
+  DifferenceKit: 63f2ff888628f4dea29385b89dc9359451ff70f1
 
-PODFILE CHECKSUM: 1f481c3859bc63bb3c3d45f7556480a4dbee85c2
+PODFILE CHECKSUM: 56faf1afd8d763ff4ea221848bdca20d022251d1
 
 COCOAPODS: 1.5.3

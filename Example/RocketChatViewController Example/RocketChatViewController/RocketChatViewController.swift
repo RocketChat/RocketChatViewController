@@ -7,17 +7,15 @@
 //
 
 import UIKit
-import IGListKit
+import DifferenceKit
 
 protocol SectionController {
-    var object: ListDiffable? { get }
-
-    func viewModels() -> [Any]
+    static func viewModels(for object: Any) -> [AnyDifferentiable]
     func cell(for viewModel: Any, on collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell
     func height(for viewModel: Any) -> CGFloat?
 }
 
-typealias ChatData = (object: ListDiffable, sectionController: SectionController)
+typealias ChatData = (object: AnyDifferentiable, sectionController: AnyDifferentiable)
 
 final class RocketChatViewController: UIViewController {
 
@@ -25,7 +23,7 @@ final class RocketChatViewController: UIViewController {
     @IBOutlet weak var viewComposer: UIView!
 
     let dataController = DataController()
-    var data: [ChatData] = []
+    var data: [MessageSection] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,21 +46,20 @@ extension RocketChatViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return data[section].sectionController.viewModels().count
+        return data[section].elements.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let sectionController = data[indexPath.section].sectionController
-        let viewModel = sectionController.viewModels()[indexPath.row]
-
+        let sectionController = data[indexPath.section]
+        let viewModel = sectionController.elements[indexPath.row].base
         return sectionController.cell(for: viewModel, on: collectionView, at: indexPath)
     }
 }
 
 extension RocketChatViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let sectionController = data[indexPath.section].sectionController
-        let viewModel = sectionController.viewModels()[indexPath.row]
+        let sectionController = data[indexPath.section]
+        let viewModel = sectionController.elements[indexPath.row].base
 
         guard let height = sectionController.height(for: viewModel) else {
             return CGSize.zero

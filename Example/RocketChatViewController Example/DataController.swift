@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import IGListKit
 
 final class DataController {
 

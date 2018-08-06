@@ -7,9 +7,9 @@
 //
 
 import Foundation
-import IGListKit
+import DifferenceKit
 
-final class MessageSectionModel: ListDiffable {
+struct MessageSectionModel: Differentiable {
     let identifier: String
     let message: Message
 
@@ -18,15 +18,13 @@ final class MessageSectionModel: ListDiffable {
         self.message = message
     }
 
-    // MARK: ListDiffable
+    // MARK: Differentiable
 
-    func diffIdentifier() -> NSObjectProtocol {
-        return identifier as NSObjectProtocol
+    var differenceIdentifier: String {
+        return identifier
     }
 
-    func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
-        guard let object = object as? MessageSectionModel else  { return false }
-        return object.identifier == identifier
-            && object.message.text == message.text
+    func isUpdated(from source: MessageSectionModel) -> Bool {
+        return message.text != source.message.text
     }
 }

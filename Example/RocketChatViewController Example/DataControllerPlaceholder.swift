@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import DifferenceKit
 
 struct DataControllerPlaceholder {
 
@@ -50,12 +51,12 @@ struct DataControllerPlaceholder {
         return MessageSectionModel(identifier: identifier, message: message)
     }
 
-    static func generateDumbData(elements: Int = 5000) -> [ChatData] {
-        var data: [ChatData] = []
+    static func generateDumbData(elements: Int = 5000) -> [MessageSection] {
+        var data: [MessageSection] = []
 
         for _ in 1...elements {
             let object = generateObject()
-            data.append((object, MessageSectionController(object: object)))
+            data.append(MessageSection(model: object, elements: MessageSection.viewModels(for: object)))
         }
 
         return data

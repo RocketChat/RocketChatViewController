@@ -7,19 +7,25 @@
 //
 
 import Foundation
-import IGListKit
+import DifferenceKit
 
-struct MessageSectionController: SectionController {
-    let object: ListDiffable?
+struct MessageSection: SectionController, DifferentiableSection {
+    init<C>(model: MessageSectionModel, elements: C) where C : Collection, C.Element == AnyDifferentiable {
+        self.model = model
+        self.elements = elements as? [AnyDifferentiable] ?? []
+    }
 
-    func viewModels() -> [Any] {
+    let model: MessageSectionModel
+    var elements: [AnyDifferentiable]
+
+    static func viewModels(for object: Any) -> [AnyDifferentiable] {
         guard let object = object as? MessageSectionModel else {
             return []
         }
 
         let basicMessageViewModel = BasicMessageViewModel(username: "test", text: object.message.text)
 
-        return [basicMessageViewModel]
+        return [AnyDifferentiable(basicMessageViewModel)]
     }
 
     func cell(for viewModel: Any, on collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
