@@ -14,12 +14,19 @@ struct MessageSectionController: SectionController, Differentiable {
 
     // MARK: Differentiable
 
-    var differenceIdentifier: String {
-        return (model.base as? MessageSectionModel)?.identifier ?? ""
+    var differenceIdentifier: AnyHashable {
+        return AnyHashable(model.differenceIdentifier)
     }
 
     func isUpdated(from source: MessageSectionController) -> Bool {
-        return (model.base as? MessageSectionModel)?.message.text != (source.model.base as? MessageSectionModel)?.message.text
+        guard
+            let model = model.base as? MessageSectionModel,
+            let sourceModel = source.model.base as? MessageSectionModel
+        else {
+            return false
+        }
+
+        return model.isUpdated(from: sourceModel)
     }
 
     // MARK: Section Controller
