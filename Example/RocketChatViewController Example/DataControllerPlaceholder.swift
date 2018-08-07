@@ -51,12 +51,16 @@ struct DataControllerPlaceholder {
         return MessageSectionModel(identifier: identifier, message: message)
     }
 
-    static func generateDumbData(elements: Int = 5000) -> [MessageSection] {
-        var data: [MessageSection] = []
+    static func generateDumbData(elements: Int = 5000) -> [Section<AnySectionController, AnyChatViewModel>] {
+        var data: [Section<AnySectionController, AnyChatViewModel>] = []
 
         for _ in 1...elements {
             let object = generateObject()
-            data.append(MessageSection(model: object, elements: MessageSection.viewModels(for: object)))
+            let sectionController = AnySectionController(MessageSectionController(model: AnyDifferentiable(object)))
+            let viewModels = sectionController.viewModels().map({ AnyChatViewModel($0) })
+            let section = Section(model: AnySectionController(sectionController), elements: viewModels)
+
+            data.append(section)
         }
 
         return data

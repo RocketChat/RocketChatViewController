@@ -9,44 +9,38 @@
 import Foundation
 import DifferenceKit
 
-struct MessageSection: SectionController, DifferentiableSection {
-    init<C>(model: MessageSectionModel, elements: C) where C : Collection, C.Element == AnyDifferentiable {
-        self.model = model
-        self.elements = elements as? [AnyDifferentiable] ?? []
+struct MessageSectionController: SectionController, Differentiable {
+    var model: AnyDifferentiable
+
+    // MARK: Differentiable
+
+    var differenceIdentifier: String {
+        return (model.base as? MessageSectionModel)?.identifier ?? ""
     }
 
-    let model: MessageSectionModel
-    var elements: [AnyDifferentiable]
+    func isUpdated(from source: MessageSectionController) -> Bool {
+        return (model.base as? MessageSectionModel)?.message.text != (source.model.base as? MessageSectionModel)?.message.text
+    }
 
-    static func viewModels(for object: Any) -> [AnyDifferentiable] {
-        guard let object = object as? MessageSectionModel else {
+    // MARK: Section Controller
+
+    func viewModels() -> [AnyChatViewModel] {
+        guard let model = model.base as? MessageSectionModel else {
             return []
         }
 
-        let basicMessageViewModel = BasicMessageViewModel(username: "test", text: object.message.text)
-
-        return [AnyDifferentiable(basicMessageViewModel)]
+        let basicMessageViewModel = BasicMessageViewModel(username: "test", text: model.message.text)
+        return [basicMessageViewModel].map { AnyChatViewModel($0) }
     }
 
-    func cell(for viewModel: Any, on collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
-        switch viewModel {
-        case is BasicMessageViewModel:
-            let basicMessageCell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: BasicMessageCollectionViewCell.identifier,
-                for: indexPath
-            )
-
-            basicMessageCell.bind(viewModel: viewModel)
-            return basicMessageCell
-        default:
-            break
-        }
-
-        return UICollectionViewCell()
+    func cell(for viewModel: AnyChatViewModel, on collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: viewModel.relatedReuseIdentifier, for: indexPath)
+        cell.bind(viewModel: viewModel.base)
+        return cell
     }
 
-    func height(for viewModel: Any) -> CGFloat? {
-        switch viewModel {
+    func height(for viewModel: AnyChatViewModel) -> CGFloat? {
+        switch viewModel.base {
         case is BasicMessageViewModel:
             return 60
         default:

@@ -9,7 +9,11 @@
 import Foundation
 import DifferenceKit
 
-struct BasicMessageViewModel: Differentiable {
+struct BasicMessageViewModel: ChatViewModel, Differentiable {
+    var relatedReuseIdentifier: String {
+        return BasicMessageCollectionViewCell.identifier
+    }
+
     var username: String
     var text: String
 

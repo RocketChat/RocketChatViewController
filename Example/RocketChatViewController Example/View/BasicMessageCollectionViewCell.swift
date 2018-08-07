@@ -7,15 +7,7 @@
 //
 
 import UIKit
-
-protocol BindableCell {
-    func bind(viewModel: Any)
-}
-
-extension UICollectionViewCell: BindableCell {
-    @objc func bind(viewModel: Any) {}
-}
-
+ 
 class BasicMessageCollectionViewCell: UICollectionViewCell {
 
     static let identifier = String(describing: BasicMessageCollectionViewCell.self)

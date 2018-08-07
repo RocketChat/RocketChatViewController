@@ -9,13 +9,86 @@
 import UIKit
 import DifferenceKit
 
-protocol SectionController {
-    static func viewModels(for object: Any) -> [AnyDifferentiable]
-    func cell(for viewModel: Any, on collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell
-    func height(for viewModel: Any) -> CGFloat?
+struct AnyChatViewModel: ChatViewModel, Differentiable {
+    var relatedReuseIdentifier: String {
+        return base.relatedReuseIdentifier
+    }
+
+    let base: ChatViewModel
+    let differenceIdentifier: AnyHashable
+
+    let isUpdatedFrom: (AnyChatViewModel) -> Bool
+
+    public init<D: Differentiable & ChatViewModel>(_ base: D) {
+        self.base = base
+        self.differenceIdentifier = AnyHashable(base.differenceIdentifier)
+
+        self.isUpdatedFrom = { source in
+            guard let sourceBase = source.base as? D else { return false }
+            return base.isUpdated(from: sourceBase)
+        }
+    }
+
+    func isUpdated(from source: AnyChatViewModel) -> Bool {
+        return isUpdated(from: source)
+    }
 }
 
-typealias ChatData = (object: AnyDifferentiable, sectionController: AnyDifferentiable)
+struct AnySectionController: SectionController, Differentiable {
+    var model: AnyDifferentiable {
+        return base.model
+    }
+
+    let base: SectionController
+    let differenceIdentifier: AnyHashable
+
+    let isUpdatedFrom: (AnySectionController) -> Bool
+
+    public init<D: Differentiable & SectionController>(_ base: D) {
+        self.base = base
+        self.differenceIdentifier = AnyHashable(base.differenceIdentifier)
+
+        self.isUpdatedFrom = { source in
+            guard let sourceBase = source.base as? D else { return false }
+            return base.isUpdated(from: sourceBase)
+        }
+    }
+
+    func isUpdated(from source: AnySectionController) -> Bool {
+        return isUpdatedFrom(source)
+    }
+
+    func viewModels() -> [AnyChatViewModel] {
+        return base.viewModels()
+    }
+
+    func cell(for viewModel: AnyChatViewModel, on collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
+        return base.cell(for: viewModel, on: collectionView, at: indexPath)
+    }
+
+    func height(for viewModel: AnyChatViewModel) -> CGFloat? {
+        return base.height(for: viewModel)
+    }
+}
+
+protocol SectionController {
+    var model: AnyDifferentiable { get }
+    func viewModels() -> [AnyChatViewModel]
+    func cell(for viewModel: AnyChatViewModel, on collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell
+    func height(for viewModel: AnyChatViewModel) -> CGFloat?
+}
+
+protocol ChatViewModel {
+    var relatedReuseIdentifier: String { get }
+}
+
+protocol BindableCell {
+    func bind(viewModel: Any)
+}
+
+extension UICollectionViewCell: BindableCell {
+    @objc func bind(viewModel: Any) {}
+}
 
 final class RocketChatViewController: UIViewController {
 
@@ -23,7 +96,7 @@ final class RocketChatViewController: UIViewController {
     @IBOutlet weak var viewComposer: UIView!
 
     let dataController = DataController()
-    var data: [MessageSection] = []
+    var data: [Section<AnySectionController, AnyChatViewModel>] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,16 +123,16 @@ extension RocketChatViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let sectionController = data[indexPath.section]
-        let viewModel = sectionController.elements[indexPath.row].base
+        let sectionController = data[indexPath.section].model.base
+        let viewModel = sectionController.viewModels()[indexPath.row]
         return sectionController.cell(for: viewModel, on: collectionView, at: indexPath)
     }
 }
 
 extension RocketChatViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let sectionController = data[indexPath.section]
-        let viewModel = sectionController.elements[indexPath.row].base
+        let sectionController = data[indexPath.section].model.base
+        let viewModel = sectionController.viewModels()[indexPath.row]
 
         guard let height = sectionController.height(for: viewModel) else {
             return CGSize.zero
