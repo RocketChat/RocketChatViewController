@@ -36,8 +36,9 @@ struct MessageSectionController: SectionController, Differentiable {
             return []
         }
 
-        let basicMessageViewModel = BasicMessageViewModel(username: "test", text: model.message.text)
-        return [basicMessageViewModel].map { AnyChatViewModel($0) }
+        let basicMessageViewModel = BasicMessageViewModel(username: "test", text: model.message.text).anyChatViewModel
+
+        return [basicMessageViewModel]
     }
 
     func cell(for viewModel: AnyChatViewModel, on collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {

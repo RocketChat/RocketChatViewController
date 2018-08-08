@@ -82,6 +82,12 @@ protocol ChatViewModel {
     var relatedReuseIdentifier: String { get }
 }
 
+extension ChatViewModel where Self: Differentiable {
+    var anyChatViewModel: AnyChatViewModel {
+        return AnyChatViewModel(self)
+    }
+}
+
 protocol BindableCell {
     func bind(viewModel: Any)
 }
