@@ -23,7 +23,7 @@ struct BasicMessageViewModel: ChatViewModel, Differentiable {
         return username + text
     }
 
-    func isUpdated(from source: BasicMessageViewModel) -> Bool {
+    func isContentEqual(to source: BasicMessageViewModel) -> Bool {
         return text != source.text
     }
 }

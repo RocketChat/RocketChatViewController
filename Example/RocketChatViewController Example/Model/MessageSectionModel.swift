@@ -24,7 +24,7 @@ struct MessageSectionModel: Differentiable {
         return identifier
     }
 
-    func isUpdated(from source: MessageSectionModel) -> Bool {
+    func isContentEqual(to source: MessageSectionModel) -> Bool {
         return message.text != source.message.text
     }
 }

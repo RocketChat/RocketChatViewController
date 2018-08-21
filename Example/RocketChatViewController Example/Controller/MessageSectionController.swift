@@ -18,7 +18,7 @@ struct MessageSectionController: SectionController, Differentiable {
         return AnyHashable(model.differenceIdentifier)
     }
 
-    func isUpdated(from source: MessageSectionController) -> Bool {
+    func isContentEqual(to source: MessageSectionController) -> Bool {
         guard
             let model = model.base as? MessageSectionModel,
             let sourceModel = source.model.base as? MessageSectionModel
@@ -26,7 +26,7 @@ struct MessageSectionController: SectionController, Differentiable {
             return false
         }
 
-        return model.isUpdated(from: sourceModel)
+        return model.isContentEqual(to: sourceModel)
     }
 
     // MARK: Section Controller

@@ -25,12 +25,12 @@ struct AnyChatViewModel: ChatViewModel, Differentiable {
 
         self.isUpdatedFrom = { source in
             guard let sourceBase = source.base as? D else { return false }
-            return base.isUpdated(from: sourceBase)
+            return base.isContentEqual(to: sourceBase)
         }
     }
 
-    func isUpdated(from source: AnyChatViewModel) -> Bool {
-        return isUpdated(from: source)
+    func isContentEqual(to source: AnyChatViewModel) -> Bool {
+        return isContentEqual(to: source)
     }
 }
 
@@ -50,11 +50,11 @@ struct AnySectionController: SectionController, Differentiable {
 
         self.isUpdatedFrom = { source in
             guard let sourceBase = source.base as? D else { return false }
-            return base.isUpdated(from: sourceBase)
+            return base.isContentEqual(to: sourceBase)
         }
     }
 
-    func isUpdated(from source: AnySectionController) -> Bool {
+    func isContentEqual(to source: AnySectionController) -> Bool {
         return isUpdatedFrom(source)
     }
 
@@ -102,7 +102,7 @@ final class RocketChatViewController: UIViewController {
     @IBOutlet weak var viewComposer: UIView!
 
     let dataController = DataController()
-    var data: [Section<AnySectionController, AnyChatViewModel>] = []
+    var data: [ArraySection<AnySectionController, AnyChatViewModel>] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
