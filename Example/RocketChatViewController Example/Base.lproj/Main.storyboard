@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -42,7 +41,7 @@
         <!--RocketChatViewController-->
         <scene sceneID="rv1-Bc-Sh3">
             <objects>
-                <viewController id="nlN-mh-c9I" customClass="RocketChatViewController" customModule="RocketChatViewController_Example" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="nlN-mh-c9I" customClass="ChatViewController" customModule="RocketChatViewController_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qNN-wB-0te">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -66,10 +65,6 @@
                                         </view>
                                     </collectionViewCell>
                                 </cells>
-                                <connections>
-                                    <outlet property="dataSource" destination="nlN-mh-c9I" id="Dre-8m-uzj"/>
-                                    <outlet property="delegate" destination="nlN-mh-c9I" id="RHz-2x-XpG"/>
-                                </connections>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WYW-Qc-gEl">
                                 <rect key="frame" x="0.0" y="617" width="375" height="50"/>
@@ -92,10 +87,6 @@
                         <viewLayoutGuide key="safeArea" id="MuN-R0-sWt"/>
                     </view>
                     <navigationItem key="navigationItem" title="RocketChatViewController" id="Ueg-ZU-I9e"/>
-                    <connections>
-                        <outlet property="collectionView" destination="ih8-8m-GR0" id="ixT-2V-gqA"/>
-                        <outlet property="viewComposer" destination="WYW-Qc-gEl" id="c1f-a8-4wh"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1kg-vY-p52" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -23,7 +23,10 @@ final class ChatViewController: RocketChatViewController {
         )
 
         data = DataControllerPlaceholder.generateDumbData(elements: 2)
+        updateData()
         data = []
+        updateData()
         data = DataControllerPlaceholder.generateDumbData(elements: 5000)
+        updateData()
     }
 }

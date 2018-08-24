@@ -99,8 +99,8 @@ extension UICollectionViewCell: BindableCell {
 }
 
 class RocketChatViewController: UIViewController {
-    @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var viewComposer: UIView!
+    var collectionView: UICollectionView! = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    var viewComposer: UIView! = UIView()
 
     var data: [Section] = []
     private var internalData: [Section] = []
@@ -108,12 +108,30 @@ class RocketChatViewController: UIViewController {
     private let updateDataQueue: OperationQueue = {
         let operationQueue = OperationQueue()
         operationQueue.maxConcurrentOperationCount = 1
+        operationQueue.qualityOfService = .userInteractive
 
         return operationQueue
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupChatViews()
+    }
+
+    func setupChatViews() {
+        view.addSubview(viewComposer)
+        view.addSubview(collectionView)
+
+        viewComposer.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        viewComposer.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        viewComposer.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+
+        collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: viewComposer.topAnchor).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+
         collectionView.dataSource = self
         collectionView.delegate = self
     }
@@ -123,7 +141,7 @@ class RocketChatViewController: UIViewController {
             guard let strongSelf = self else { return }
 
             let changeset = StagedChangeset(source: strongSelf.internalData, target: strongSelf.data)
-            self?.collectionView.reload(using: changeset, setData: { newData in
+            strongSelf.collectionView.reload(using: changeset, setData: { newData in
                 strongSelf.internalData = newData
                 strongSelf.data = newData
             })
