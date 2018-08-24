@@ -9,6 +9,8 @@
 import UIKit
 import DifferenceKit
 
+typealias Section = ArraySection<AnySectionController, AnyChatViewModel>
+
 struct AnyChatViewModel: ChatViewModel, Differentiable {
     var relatedReuseIdentifier: String {
         return base.relatedReuseIdentifier
@@ -96,25 +98,36 @@ extension UICollectionViewCell: BindableCell {
     @objc func bind(viewModel: Any) {}
 }
 
-final class RocketChatViewController: UIViewController {
-
+class RocketChatViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var viewComposer: UIView!
 
-    let dataController = DataController()
-    var data: [ArraySection<AnySectionController, AnyChatViewModel>] = []
-    
+    var data: [Section] = []
+    private var internalData: [Section] = []
+
+    private let updateDataQueue: OperationQueue = {
+        let operationQueue = OperationQueue()
+        operationQueue.maxConcurrentOperationCount = 1
+
+        return operationQueue
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView.dataSource = self
+        collectionView.delegate = self
+    }
 
-        collectionView.register(
-            UINib(
-                nibName: BasicMessageCollectionViewCell.identifier, bundle: nil
-            ),
-            forCellWithReuseIdentifier: BasicMessageCollectionViewCell.identifier
-        )
+    func updateData() {
+        updateDataQueue.addOperation { [weak self] in
+            guard let strongSelf = self else { return }
 
-        data = DataControllerPlaceholder.generateDumbData(elements: 5000)
+            let changeset = StagedChangeset(source: strongSelf.internalData, target: strongSelf.data)
+            self?.collectionView.reload(using: changeset, setData: { newData in
+                strongSelf.internalData = newData
+                strongSelf.data = newData
+            })
+        }
     }
 
 }
