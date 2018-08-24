@@ -24,7 +24,6 @@
 		9966041D2117A1F600E4B082 /* BasicMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9966041C2117A1F600E4B082 /* BasicMessageViewModel.swift */; };
 		996604202117A4EF00E4B082 /* BasicMessageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9966041F2117A4EF00E4B082 /* BasicMessageCollectionViewCell.swift */; };
 		996604222117A50100E4B082 /* BasicMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 996604212117A50100E4B082 /* BasicMessageCollectionViewCell.xib */; };
-		996604242118782A00E4B082 /* MessageSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996604232118782A00E4B082 /* MessageSection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,7 +47,6 @@
 		9966041C2117A1F600E4B082 /* BasicMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicMessageViewModel.swift; sourceTree = "<group>"; };
 		9966041F2117A4EF00E4B082 /* BasicMessageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicMessageCollectionViewCell.swift; sourceTree = "<group>"; };
 		996604212117A50100E4B082 /* BasicMessageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BasicMessageCollectionViewCell.xib; sourceTree = "<group>"; };
-		996604232118782A00E4B082 /* MessageSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSection.swift; sourceTree = "<group>"; };
 		A049354474F5A39422010A76 /* Pods-RocketChatViewController Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RocketChatViewController Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-RocketChatViewController Example/Pods-RocketChatViewController Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -125,7 +123,6 @@
 				996604152117A16A00E4B082 /* Attachment.swift */,
 				996604172117A17D00E4B082 /* MessageSectionModel.swift */,
 				9966041C2117A1F600E4B082 /* BasicMessageViewModel.swift */,
-				996604232118782A00E4B082 /* MessageSection.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -279,7 +276,6 @@
 				41D775A221109AAF00FABB49 /* DataControllerPlaceholder.swift in Sources */,
 				9966041D2117A1F600E4B082 /* BasicMessageViewModel.swift in Sources */,
 				99405001212DDE3000CFF865 /* ChatViewController.swift in Sources */,
-				996604242118782A00E4B082 /* MessageSection.swift in Sources */,
 				417670E0210FABAA0070CA5B /* AppDelegate.swift in Sources */,
 				996604182117A17D00E4B082 /* MessageSectionModel.swift in Sources */,
 			);
