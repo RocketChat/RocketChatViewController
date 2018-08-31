@@ -154,11 +154,12 @@ class RocketChatViewController: UIViewController {
         updateDataQueue.addOperation { [weak self] in
             guard let strongSelf = self else { return }
 
-            let changeset = StagedChangeset(source: strongSelf.internalData, target: strongSelf.data)
-            strongSelf.collectionView.reload(using: changeset, setData: { newData in
-                strongSelf.internalData = newData
-                strongSelf.data = newData
-            })
+            DispatchQueue.main.async {
+                let changeset = StagedChangeset(source: strongSelf.internalData, target: strongSelf.data)
+                strongSelf.collectionView.reload(using: changeset, interrupt: { $0.changeCount > 100 }) { newData in
+                    strongSelf.internalData = newData
+                }
+            }
         }
     }
 
@@ -166,15 +167,15 @@ class RocketChatViewController: UIViewController {
 
 extension RocketChatViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return data.count
+        return internalData.count
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return data[section].elements.count
+        return internalData[section].elements.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let sectionController = data[indexPath.section].model.base
+        let sectionController = internalData[indexPath.section].model.base
         let viewModel = sectionController.viewModels()[indexPath.row]
         return sectionController.cell(for: viewModel, on: collectionView, at: indexPath)
     }
@@ -182,7 +183,7 @@ extension RocketChatViewController: UICollectionViewDataSource {
 
 extension RocketChatViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let sectionController = data[indexPath.section].model.base
+        let sectionController = internalData[indexPath.section].model.base
         let viewModel = sectionController.viewModels()[indexPath.row]
 
         guard let height = sectionController.height(for: viewModel) else {
