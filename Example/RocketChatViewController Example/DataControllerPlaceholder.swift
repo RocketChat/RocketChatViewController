@@ -56,9 +56,16 @@ struct DataControllerPlaceholder {
 
         for _ in 1...elements {
             let object = generateObject()
-            let sectionController = AnySectionController(MessageSectionController(model: AnyDifferentiable(object)))
-            let viewModels = sectionController.viewModels().map({ AnyChatViewModel($0) })
-            let section = ArraySection(model: AnySectionController(sectionController), elements: viewModels)
+            let sectionController = AnySectionController(
+                MessageSectionController(
+                    model: AnyDifferentiable(
+                        object
+                    )
+                )
+            )
+
+            let viewModels = sectionController.viewModels().map({ $0.wrapped })
+            let section = ArraySection(model: sectionController, elements: viewModels)
 
             data.append(section)
         }

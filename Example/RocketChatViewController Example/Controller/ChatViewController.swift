@@ -10,8 +10,6 @@ import UIKit
 import DifferenceKit
 
 final class ChatViewController: RocketChatViewController {
-    let dataController = DataController()
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -22,11 +20,11 @@ final class ChatViewController: RocketChatViewController {
             forCellWithReuseIdentifier: BasicMessageCollectionViewCell.identifier
         )
 
-        data = DataControllerPlaceholder.generateDumbData(elements: 2)
+        data = DataControllerPlaceholder.generateDumbData(elements: 10)
         updateData()
         data = []
         updateData()
-        data = DataControllerPlaceholder.generateDumbData(elements: 5000)
+        data = DataControllerPlaceholder.generateDumbData(elements: 60)
         updateData()
     }
 }

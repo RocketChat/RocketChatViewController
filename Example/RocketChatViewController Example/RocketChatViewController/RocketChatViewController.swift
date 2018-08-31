@@ -85,7 +85,7 @@ protocol ChatViewModel {
 }
 
 extension ChatViewModel where Self: Differentiable {
-    var anyChatViewModel: AnyChatViewModel {
+    var wrapped: AnyChatViewModel {
         return AnyChatViewModel(self)
     }
 }

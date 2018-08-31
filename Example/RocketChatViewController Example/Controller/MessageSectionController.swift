@@ -36,7 +36,7 @@ struct MessageSectionController: SectionController, Differentiable {
             return []
         }
 
-        let basicMessageViewModel = BasicMessageViewModel(username: "test", text: model.message.text).anyChatViewModel
+        let basicMessageViewModel = BasicMessageViewModel(username: "test", text: model.message.text).wrapped
 
         return [basicMessageViewModel]
     }
