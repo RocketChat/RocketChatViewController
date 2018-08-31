@@ -99,7 +99,15 @@ extension UICollectionViewCell: BindableCell {
 }
 
 class RocketChatViewController: UIViewController {
-    var collectionView: UICollectionView! = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    var collectionView: UICollectionView =  {
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: UICollectionViewFlowLayout()
+        )
+
+        collectionView.backgroundColor = .white
+        return collectionView
+    }()
     var viewComposer: UIView! = UIView()
 
     var data: [Section] = []
@@ -122,12 +130,18 @@ class RocketChatViewController: UIViewController {
         view.addSubview(viewComposer)
         view.addSubview(collectionView)
 
-        viewComposer.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        viewComposer.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        viewComposer.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        viewComposer.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
 
-        collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        let topMargin = view.safeAreaLayoutGuide.topAnchor
+        let bottomMargin = view.safeAreaLayoutGuide.bottomAnchor
+
+        viewComposer.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        viewComposer.bottomAnchor.constraint(equalTo: bottomMargin).isActive = true
+        viewComposer.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        viewComposer.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+
+        collectionView.topAnchor.constraint(equalTo: topMargin).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: viewComposer.topAnchor).isActive = true
         collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
