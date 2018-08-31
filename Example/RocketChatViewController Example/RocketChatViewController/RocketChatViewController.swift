@@ -32,7 +32,7 @@ struct AnyChatViewModel: ChatViewModel, Differentiable {
     }
 
     func isContentEqual(to source: AnyChatViewModel) -> Bool {
-        return isContentEqual(to: source)
+        return isUpdatedFrom(source)
     }
 }
 
