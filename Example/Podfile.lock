@@ -1,21 +1,27 @@
 PODS:
-  - DifferenceKit (0.5.0):
-    - DifferenceKit/Core (= 0.5.0)
-    - DifferenceKit/UIExtensions (= 0.5.0)
-  - DifferenceKit/Core (0.5.0)
-  - DifferenceKit/UIExtensions (0.5.0):
+  - DifferenceKit (0.5.3):
+    - DifferenceKit/Core (= 0.5.3)
+    - DifferenceKit/UIExtensions (= 0.5.3)
+  - DifferenceKit/Core (0.5.3)
+  - DifferenceKit/UIExtensions (0.5.3):
     - DifferenceKit/Core
 
 DEPENDENCIES:
-  - DifferenceKit (~> 0.5.0)
+  - DifferenceKit (from `https://github.com/ra1028/DifferenceKit.git`, branch `v0.5.3`)
 
-SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
-    - DifferenceKit
+EXTERNAL SOURCES:
+  DifferenceKit:
+    :branch: v0.5.3
+    :git: https://github.com/ra1028/DifferenceKit.git
+
+CHECKOUT OPTIONS:
+  DifferenceKit:
+    :commit: 2d8a6766f2fefaabc5f6e63267c395fb6ffba292
+    :git: https://github.com/ra1028/DifferenceKit.git
 
 SPEC CHECKSUMS:
-  DifferenceKit: 6fb7e9f433f548fd43f3fcbaad3d258f3a2282f7
+  DifferenceKit: 2037137305c55a39ff729baa72697efa30b1052d
 
-PODFILE CHECKSUM: ed60e8e0af855894907d8479cf7ea2805747638b
+PODFILE CHECKSUM: f1e1c6790a64afba7cb7f532f5fcfdd9f2fc70aa
 
 COCOAPODS: 1.5.3
