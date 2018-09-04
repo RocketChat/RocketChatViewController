@@ -212,6 +212,8 @@ class RocketChatViewController: UIViewController {
         collectionView.backgroundColor = .white
         return collectionView
     }()
+
+    var composerHeightConstraint: NSLayoutConstraint!
     var viewComposer: UIView! = UIView()
 
     var data: [Section] = []
@@ -240,7 +242,9 @@ class RocketChatViewController: UIViewController {
         let topMargin = view.safeAreaLayoutGuide.topAnchor
         let bottomMargin = view.safeAreaLayoutGuide.bottomAnchor
 
-        viewComposer.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        composerHeightConstraint = viewComposer.heightAnchor.constraint(equalToConstant: 50)
+        composerHeightConstraint.isActive = true
+
         viewComposer.bottomAnchor.constraint(equalTo: bottomMargin).isActive = true
         viewComposer.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         viewComposer.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
