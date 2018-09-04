@@ -9,13 +9,17 @@
 import Foundation
 import DifferenceKit
 
-struct BasicMessageViewModel: ChatViewModel, Differentiable {
+struct BasicMessageViewModel: ChatCellViewModel, Differentiable {
     var relatedReuseIdentifier: String {
         return BasicMessageCollectionViewCell.identifier
     }
 
     var username: String
     var text: String
+
+    func heightForCurrentState() -> CGFloat? {
+        return 60
+    }
 
     // MARK: Differentiable
 

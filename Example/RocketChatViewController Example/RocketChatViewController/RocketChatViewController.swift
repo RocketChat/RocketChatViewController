@@ -9,19 +9,19 @@
 import UIKit
 import DifferenceKit
 
-typealias Section = ArraySection<AnySectionController, AnyChatViewModel>
+typealias Section = AnySectionController
 
-struct AnyChatViewModel: ChatViewModel, Differentiable {
+struct AnyChatCellViewModel: ChatCellViewModel, Differentiable {
     var relatedReuseIdentifier: String {
         return base.relatedReuseIdentifier
     }
 
-    let base: ChatViewModel
+    let base: ChatCellViewModel
     let differenceIdentifier: AnyHashable
 
-    let isUpdatedFrom: (AnyChatViewModel) -> Bool
+    let isUpdatedFrom: (AnyChatCellViewModel) -> Bool
 
-    public init<D: Differentiable & ChatViewModel>(_ base: D) {
+    public init<D: Differentiable & ChatCellViewModel>(_ base: D) {
         self.base = base
         self.differenceIdentifier = AnyHashable(base.differenceIdentifier)
 
@@ -31,62 +31,74 @@ struct AnyChatViewModel: ChatViewModel, Differentiable {
         }
     }
 
-    func isContentEqual(to source: AnyChatViewModel) -> Bool {
+    func isContentEqual(to source: AnyChatCellViewModel) -> Bool {
         return isUpdatedFrom(source)
+    }
+
+    func heightForCurrentState() -> CGFloat? {
+        return base.heightForCurrentState()
     }
 }
 
-struct AnySectionController: SectionController, Differentiable {
-    var model: AnyDifferentiable {
-        return base.model
+struct AnySectionController: SectionController {
+    var object: AnyDifferentiable {
+        return base.object
     }
 
     let base: SectionController
-    let differenceIdentifier: AnyHashable
 
-    let isUpdatedFrom: (AnySectionController) -> Bool
-
-    public init<D: Differentiable & SectionController>(_ base: D) {
+    public init<D: SectionController>(_ base: D) {
         self.base = base
-        self.differenceIdentifier = AnyHashable(base.differenceIdentifier)
-
-        self.isUpdatedFrom = { source in
-            guard let sourceBase = source.base as? D else { return false }
-            return base.isContentEqual(to: sourceBase)
-        }
     }
 
-    func isContentEqual(to source: AnySectionController) -> Bool {
-        return isUpdatedFrom(source)
-    }
-
-    func viewModels() -> [AnyChatViewModel] {
+    func viewModels() -> [AnyChatCellViewModel] {
         return base.viewModels()
     }
 
-    func cell(for viewModel: AnyChatViewModel, on collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
+    func cell(for viewModel: AnyChatCellViewModel, on collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
         return base.cell(for: viewModel, on: collectionView, at: indexPath)
     }
 
-    func height(for viewModel: AnyChatViewModel) -> CGFloat? {
+    func height(for viewModel: AnyChatCellViewModel) -> CGFloat? {
         return base.height(for: viewModel)
     }
 }
 
+extension AnySectionController: Differentiable {
+    var differenceIdentifier: AnyHashable {
+        return AnyHashable(base.object.differenceIdentifier)
+    }
+
+    func isContentEqual(to source: AnySectionController) -> Bool {
+        return base.object.isContentEqual(to: source.object)
+    }
+}
+
+fileprivate extension AnySectionController {
+    var toArraySection: ArraySection<AnySectionController, AnyChatCellViewModel> {
+        return ArraySection(model: self, elements: viewModels())
+    }
+}
+
 protocol SectionController {
-    var model: AnyDifferentiable { get }
-    func viewModels() -> [AnyChatViewModel]
-    func cell(for viewModel: AnyChatViewModel, on collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell
-    func height(for viewModel: AnyChatViewModel) -> CGFloat?
+    var object: AnyDifferentiable { get }
+    func viewModels() -> [AnyChatCellViewModel]
+    func cell(for viewModel: AnyChatCellViewModel, on collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell
+    func height(for viewModel: AnyChatCellViewModel) -> CGFloat?
 }
 
-protocol ChatViewModel {
+protocol ChatCellViewModel {
     var relatedReuseIdentifier: String { get }
+    func heightForCurrentState() -> CGFloat?
 }
 
-extension ChatViewModel where Self: Differentiable {
-    var wrapped: AnyChatViewModel {
-        return AnyChatViewModel(self)
+extension ChatCellViewModel {
+    func heightForCurrentState() -> CGFloat? { return nil }
+}
+
+extension ChatCellViewModel where Self: Differentiable {
+    var wrapped: AnyChatCellViewModel {
+        return AnyChatCellViewModel(self)
     }
 }
 
