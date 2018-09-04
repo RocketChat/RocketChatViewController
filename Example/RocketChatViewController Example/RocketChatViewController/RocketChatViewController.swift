@@ -11,6 +11,14 @@ import DifferenceKit
 
 typealias Section = AnySectionController
 
+/**
+    A type-erased ChatCellViewModel that must conform to the Differentiable protocol.
+
+    The `AnyChatCellViewModel` type forwards equality comparisons and utilities operations or properties
+    such as relatedReuseIdentifier and heightForCurrentState() to an underlying differentiable value,
+    hiding its specific underlying type.
+ */
+
 struct AnyChatCellViewModel: ChatCellViewModel, Differentiable {
     var relatedReuseIdentifier: String {
         return base.relatedReuseIdentifier
@@ -39,6 +47,13 @@ struct AnyChatCellViewModel: ChatCellViewModel, Differentiable {
         return base.heightForCurrentState()
     }
 }
+
+/**
+    A type-erased SectionController.
+
+    The `AnySectionController` type forwards equality comparisons and servers as a data source
+    for RocketChatViewController to build one section, hiding its specific underlying type.
+ */
 
 struct AnySectionController: SectionController {
     var object: AnyDifferentiable {
@@ -80,6 +95,16 @@ fileprivate extension AnySectionController {
     }
 }
 
+/**
+    The responsible for implementing the data source of a single section
+    which represents an object splitted into differentiable view models
+    each one being binded on a reusable UICollectionViewCell that get updated when there's
+    something to update on its content.
+
+    A SectionController is also responsible for handling the actions
+    and interactions with the object related to it.
+ */
+
 protocol SectionController {
     var object: AnyDifferentiable { get }
     func viewModels() -> [AnyChatCellViewModel]
@@ -87,20 +112,41 @@ protocol SectionController {
     func height(for viewModel: AnyChatCellViewModel) -> CGFloat?
 }
 
+/**
+    A single split of an object that binds an UICollectionViewCell and can be differentiated.
+
+    A ChatCellViewModel also holds the related UICollectionViewCell's reuseIdentifier
+    and is reponsible for calculating its height based on its state when not using
+    self-sizing cells.
+ */
+
 protocol ChatCellViewModel {
     var relatedReuseIdentifier: String { get }
     func heightForCurrentState() -> CGFloat?
 }
 
 extension ChatCellViewModel {
+    // The heightForCurrentState is set to nil by default, we must override in order to
+    // manually calculate a ChatCellViewModel height.
     func heightForCurrentState() -> CGFloat? { return nil }
 }
 
 extension ChatCellViewModel where Self: Differentiable {
+    // In order to use a ChatCellViewModel along with a SectionController
+    // we must use it as a type-erased ChatCellViewModel, which in this case also means
+    // that it must conform to the Differentiable protocol.
     var wrapped: AnyChatCellViewModel {
         return AnyChatCellViewModel(self)
     }
 }
+
+/**
+    A helper protocol that makes all UICollectionViewCells to have a `bind(viewModel: Any)`
+    method meant to be overwritten.
+
+    With the help of this protocol we doesn't need to always cast an UICollectionViewCell to
+    a dynamic type just to bind a view model on it.
+ */
 
 protocol BindableCell {
     func bind(viewModel: Any)
