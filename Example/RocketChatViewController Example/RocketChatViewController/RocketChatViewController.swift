@@ -103,6 +103,8 @@ fileprivate extension AnySectionController {
 
     A SectionController is also responsible for handling the actions
     and interactions with the object related to it.
+
+    A SectionController's object is meant to be immutable.
  */
 
 protocol SectionController {
@@ -155,6 +157,50 @@ protocol BindableCell {
 extension UICollectionViewCell: BindableCell {
     @objc func bind(viewModel: Any) {}
 }
+
+/**
+    RocketChatViewController is basically a UIViewController that holds
+    two key components: a list and a message composer.
+
+    The whole idea is to keep the list as close as possible to a regular UICollectionView,
+    but with some features and add-ons to make it more "chat friendly" in the point of view of
+    performance, modularity and flexibility.
+
+    To solve modularity (and help with performance) we've created a set of protocols
+    and wrappers that ensure that we treat each object as a section of our list
+    then break it down as much as possible into subobjects that can be differentiated.
+
+    Bringing it to the chat concept, each message is a section, each section can have one
+    or more items, it will depend on the complexity of each message. For example, if it's a simple
+    text-only message we can represent it using a single reusable cell for this message's section,
+    on the other hand if the message has attachments or multimedia content, it's better to
+    split the most basic components of a message (avatar, username and text) into a reusable cell
+    and the multimedia content (video, image, link preview, etc) into other reusable cells. This
+    way we will wind up with simpler cells that cost less to reuse.
+
+    To solve performance our main efforts are concentrated on updating the views the least
+    possible. In order to do that we rely on a third-party (awesome) diffing library
+    called DifferenceKit. Based on the benchmarks provided on its GitHub page it is the most
+    performatic diffing library available for iOS development now. DifferenceKit also provides a
+    UICollectionView extension that performs batch updates based on a changeset making sure that
+    only the items that changed are going to be refreshed. On top of DifferenceKit's reloading
+    we've implemented a simple operation queue to guarantee that no more than one reload will run
+    at once.
+
+    To solve flexibility we thought a lot on how to do the things above but yet keep it a regular
+    UICollectionView for those who just want to implement their own list, and we decided that we would
+    manage the UICollectionViewDataSource through a public `data` property that reflects on a private `internalData`
+    property. This way on a subclass of RocketChatViewController we just need to process the data and set to the `data`
+    property that the superclass implementation will handle the data source and will be able to apply the custom reload
+    method managed by our operation queue. On the other hand, if anyone wants to implement their message list without
+    having to conform to DifferenceKit and our protocols, he just need to override the UICollectionViewDataSource methods
+    and provide a custom implementation.
+
+    Minor features:
+    - Inverted mode
+    - Self-sizing cells support
+
+ */
 
 class RocketChatViewController: UIViewController {
     var collectionView: UICollectionView =  {
