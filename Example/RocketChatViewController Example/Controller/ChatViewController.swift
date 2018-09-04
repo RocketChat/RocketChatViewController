@@ -20,11 +20,32 @@ final class ChatViewController: RocketChatViewController {
             forCellWithReuseIdentifier: BasicMessageCollectionViewCell.identifier
         )
 
+        collectionView.register(
+            UINib(
+                nibName: ImageAttachmentCollectionViewCell.identifier, bundle: nil
+            ),
+            forCellWithReuseIdentifier: ImageAttachmentCollectionViewCell.identifier
+        )
+
+        collectionView.register(
+            UINib(
+                nibName: VideoAttachmentCollectionViewCell.identifier, bundle: nil
+            ),
+            forCellWithReuseIdentifier: VideoAttachmentCollectionViewCell.identifier
+        )
+
+        collectionView.register(
+            UINib(
+                nibName: AudioAttachmentCollectionViewCell.identifier, bundle: nil
+            ),
+            forCellWithReuseIdentifier: AudioAttachmentCollectionViewCell.identifier
+        )
+
         data = DataControllerPlaceholder.generateDumbData(elements: 10)
         updateData()
         data = []
         updateData()
-        data = DataControllerPlaceholder.generateDumbData(elements: 60)
+        data = DataControllerPlaceholder.generateDumbData(elements: 220)
         updateData()
     }
 }

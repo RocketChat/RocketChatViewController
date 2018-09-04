@@ -15,13 +15,36 @@ struct MessageSectionController: SectionController {
     // MARK: Section Controller
 
     func viewModels() -> [AnyChatCellViewModel] {
-        guard let model = object.base as? MessageSectionModel else {
+        guard let object = object.base as? MessageSectionModel else {
             return []
         }
 
-        let basicMessageViewModel = BasicMessageViewModel(username: "test", text: model.message.text).wrapped
+        var viewModels: [AnyChatCellViewModel] = []
 
-        return [basicMessageViewModel]
+        let basicMessageViewModel = BasicMessageViewModel(
+            username: "test",
+            text: object.message.text
+        ).wrapped
+
+        viewModels.append(basicMessageViewModel)
+
+        for attachment in object.message.attachments {
+            switch attachment.type {
+            case 0:
+                let imageAttachment = ImageAttachmentViewModel(url: attachment.url)
+                viewModels.append(imageAttachment.wrapped)
+            case 1:
+                let videoAttachment = VideoAttachmentViewModel(url: attachment.url)
+                viewModels.append(videoAttachment.wrapped)
+            case 2:
+                let audioAttachment = AudioAttachmentViewModel(url: attachment.url)
+                viewModels.append(audioAttachment.wrapped)
+            default:
+                break
+            }
+        }
+
+        return viewModels
     }
 
     func cell(for viewModel: AnyChatCellViewModel, on collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {

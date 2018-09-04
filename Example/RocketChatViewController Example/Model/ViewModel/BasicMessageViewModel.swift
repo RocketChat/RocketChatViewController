@@ -28,6 +28,6 @@ struct BasicMessageViewModel: ChatCellViewModel, Differentiable {
     }
 
     func isContentEqual(to source: BasicMessageViewModel) -> Bool {
-        return text != source.text
+        return text == source.text
     }
 }
