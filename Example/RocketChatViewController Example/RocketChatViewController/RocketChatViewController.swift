@@ -227,6 +227,9 @@ class RocketChatViewController: UIViewController {
         return operationQueue
     }()
 
+    var isInverted = true
+    private let invertedTransform = CGAffineTransform(scaleX: 1, y: -1)
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupChatViews()
@@ -235,6 +238,8 @@ class RocketChatViewController: UIViewController {
     func setupChatViews() {
         view.addSubview(viewComposer)
         view.addSubview(collectionView)
+
+        collectionView.transform = isInverted ? invertedTransform : collectionView.transform
 
         viewComposer.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -287,6 +292,10 @@ extension RocketChatViewController: UICollectionViewDataSource {
         let sectionController = internalData[indexPath.section].model
         let viewModel = sectionController.viewModels()[indexPath.row]
         return sectionController.cell(for: viewModel, on: collectionView, at: indexPath)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        cell.contentView.transform = isInverted ? invertedTransform : cell.contentView.transform
     }
 }
 
