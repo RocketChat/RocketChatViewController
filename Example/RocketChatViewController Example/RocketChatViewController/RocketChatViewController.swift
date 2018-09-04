@@ -123,7 +123,7 @@ class RocketChatViewController: UIViewController {
     var viewComposer: UIView! = UIView()
 
     var data: [Section] = []
-    private var internalData: [Section] = []
+    private var internalData: [ArraySection<AnySectionController, AnyChatCellViewModel>] = []
 
     private let updateDataQueue: OperationQueue = {
         let operationQueue = OperationQueue()
@@ -167,9 +167,10 @@ class RocketChatViewController: UIViewController {
             guard let strongSelf = self else { return }
 
             DispatchQueue.main.async {
-                let changeset = StagedChangeset(source: strongSelf.internalData, target: strongSelf.data)
+                let changeset = StagedChangeset(source: strongSelf.internalData, target: strongSelf.data.map({ $0.toArraySection }))
                 strongSelf.collectionView.reload(using: changeset, interrupt: { $0.changeCount > 100 }) { newData in
                     strongSelf.internalData = newData
+                    strongSelf.data = newData.map { $0.model }
                 }
             }
         }
@@ -187,7 +188,7 @@ extension RocketChatViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let sectionController = internalData[indexPath.section].model.base
+        let sectionController = internalData[indexPath.section].model
         let viewModel = sectionController.viewModels()[indexPath.row]
         return sectionController.cell(for: viewModel, on: collectionView, at: indexPath)
     }
@@ -195,7 +196,7 @@ extension RocketChatViewController: UICollectionViewDataSource {
 
 extension RocketChatViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let sectionController = internalData[indexPath.section].model.base
+        let sectionController = internalData[indexPath.section].model
         let viewModel = sectionController.viewModels()[indexPath.row]
 
         guard let height = sectionController.height(for: viewModel) else {
