@@ -11,6 +11,10 @@ import DifferenceKit
 
 typealias Section = AnySectionController
 
+fileprivate extension NSNotification.Name {
+    static let triggerDataUpdate = NSNotification.Name("TRIGGER_DATA_UPDATE")
+}
+
 /**
     A type-erased ChatCellViewModel that must conform to the Differentiable protocol.
 
@@ -112,6 +116,15 @@ protocol SectionController {
     func viewModels() -> [AnyChatCellViewModel]
     func cell(for viewModel: AnyChatCellViewModel, on collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell
     func height(for viewModel: AnyChatCellViewModel) -> CGFloat?
+}
+
+extension SectionController {
+    func update() {
+        NotificationCenter.default.post(
+            name: .triggerDataUpdate,
+            object: nil
+        )
+    }
 }
 
 /**
@@ -233,6 +246,20 @@ class RocketChatViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupChatViews()
+        registerObservers()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    func registerObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateData),
+            name: .triggerDataUpdate,
+            object: nil
+        )
     }
 
     func setupChatViews() {
@@ -263,7 +290,7 @@ class RocketChatViewController: UIViewController {
         collectionView.delegate = self
     }
 
-    func updateData() {
+    @objc func updateData() {
         updateDataQueue.addOperation { [weak self] in
             guard let strongSelf = self else { return }
 
