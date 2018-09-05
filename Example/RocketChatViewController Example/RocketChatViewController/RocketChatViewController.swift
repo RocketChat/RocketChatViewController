@@ -227,7 +227,7 @@ class RocketChatViewController: UIViewController {
     }()
 
     var composerHeightConstraint: NSLayoutConstraint!
-    var viewComposer: UIView! = UIView()
+    var viewComposer: UIView! = RCComposerView(frame: .zero)
 
     var data: [Section] = []
     private var internalData: [ArraySection<AnySectionController, AnyChatCellViewModel>] = []
@@ -273,9 +273,6 @@ class RocketChatViewController: UIViewController {
 
         let topMargin = view.safeAreaLayoutGuide.topAnchor
         let bottomMargin = view.safeAreaLayoutGuide.bottomAnchor
-
-        composerHeightConstraint = viewComposer.heightAnchor.constraint(equalToConstant: 50)
-        composerHeightConstraint.isActive = true
 
         viewComposer.bottomAnchor.constraint(equalTo: bottomMargin).isActive = true
         viewComposer.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
