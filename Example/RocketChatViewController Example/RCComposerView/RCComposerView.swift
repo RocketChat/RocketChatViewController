@@ -28,7 +28,7 @@ enum RCComposerButtonState {
 /**
  A helper function that returns the object with a transformation applied.
  */
-private func tap<Object>(_ object: Object, transform: (inout Object) throws -> Void) rethrows -> Object {
+@discardableResult private func tap<Object>(_ object: Object, transform: (inout Object) throws -> Void) rethrows -> Object {
     var object = object
     try transform(&object)
     return object
@@ -97,7 +97,7 @@ extension RCComposerDelegate {
     }
 
     func composerViewMaximumHeight(_ composerView: RCComposerView) -> CGFloat {
-        return UIScreen.main.bounds.height/4.0
+        return UIScreen.main.bounds.height/3.0
     }
 
     func composer(_ composerView: RCComposerView, didTapButtonInSlot slot: RCComposerButtonSlot) { }
@@ -169,9 +169,22 @@ class RCComposerView: UIView {
      The text view used to compose the message.
      */
     let textView: UITextView = tap(RCComposerTextView()) {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+
         $0.placeholderLabel.text = "Type a message"
         $0.font = UIFont.systemFont(ofSize: Sizes.fontSize)
+    }
+
+    /**
+
+     */
+    let topSeparatorView: UIView = tap(UIView()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.backgroundColor = #colorLiteral(red: 0.8823529412, green: 0.8980392157, blue: 0.9098039216, alpha: 1)
+
+        NSLayoutConstraint.activate([
+            $0.heightAnchor.constraint(equalToConstant: 1)
+        ])
     }
 
     override func willMove(toSuperview newSuperview: UIView?) {
@@ -204,6 +217,7 @@ class RCComposerView: UIView {
      Adds buttons and other UI elements as subviews.
      */
     private func addSubviews() {
+        self.addSubview(topSeparatorView)
         self.addSubview(leftButton)
         self.addSubview(rightButton)
         self.addSubview(textView)
@@ -217,6 +231,10 @@ class RCComposerView: UIView {
 
         NSLayoutConstraint.activate([
             heightConstraint,
+
+            // topSeparatorView constraints
+            topSeparatorView.topAnchor.constraint(equalTo: topAnchor),
+            topSeparatorView.widthAnchor.constraint(equalTo: widthAnchor),
 
             // leftButton constraints
 
