@@ -183,7 +183,7 @@ class RCComposerView: UIView {
         $0.backgroundColor = #colorLiteral(red: 0.8823529412, green: 0.8980392157, blue: 0.9098039216, alpha: 1)
 
         NSLayoutConstraint.activate([
-            $0.heightAnchor.constraint(equalToConstant: 1)
+            $0.heightAnchor.constraint(equalToConstant: 0.5)
         ])
     }
 
