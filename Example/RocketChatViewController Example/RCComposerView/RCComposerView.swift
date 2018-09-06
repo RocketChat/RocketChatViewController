@@ -81,6 +81,16 @@ protocol RCComposerDelegate: class {
     func composerViewMaximumHeight(_ composerView: RCComposerView) -> CGFloat
 
     /**
+     Asks the delegate which height should the addon view have.
+     */
+    func composerHeightForAddonView(_ composerView: RCComposerView) -> CGFloat
+
+    /**
+     Asks the delegate for a view to place in the addon view slot.
+     */
+    func composerViewForAddonView(_ composerView: RCComposerView) -> UIView?
+
+    /**
      Tells the delegate the button in the slot has been tapped.
      */
     func composer(_ composerView: RCComposerView, didTapButtonInSlot slot: RCComposerButtonSlot)
@@ -98,6 +108,14 @@ extension RCComposerDelegate {
 
     func composerViewMaximumHeight(_ composerView: RCComposerView) -> CGFloat {
         return UIScreen.main.bounds.height/3.0
+    }
+
+    func composerHeightForAddonView(_ composerView: RCComposerView) -> CGFloat {
+        return 50.0
+    }
+
+    func composerViewForAddonView(_ composerView: RCComposerView) -> UIView? {
+        return nil
     }
 
     func composer(_ composerView: RCComposerView, didTapButtonInSlot slot: RCComposerButtonSlot) { }
@@ -140,7 +158,7 @@ class RCComposerView: UIView {
     /**
      The button that stays in the left side of the composer.
      */
-    let leftButton: UIButton = tap(UIButton()) {
+    let leftButton = tap(UIButton()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -154,7 +172,7 @@ class RCComposerView: UIView {
     /**
      The button that stays in the right side of the composer.
      */
-    let rightButton: UIButton = tap(UIButton()) {
+    let rightButton = tap(UIButton()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -168,7 +186,7 @@ class RCComposerView: UIView {
     /**
      The text view used to compose the message.
      */
-    let textView: UITextView = tap(RCComposerTextView()) {
+    let textView = tap(RCComposerTextView()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
         $0.placeholderLabel.text = "Type a message"
@@ -178,19 +196,64 @@ class RCComposerView: UIView {
     /**
      The separator line on top of the composer
      */
-    let topSeparatorView: UIView = tap(UIView()) {
+    let topSeparatorView = tap(UIView()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = #colorLiteral(red: 0.8823529412, green: 0.8980392157, blue: 0.9098039216, alpha: 1)
 
         NSLayoutConstraint.activate([
-            $0.heightAnchor.constraint(equalToConstant: 0.5)
+            $0.heightAnchor.constraint(equalToConstant: Sizes.topSeparatorViewHeight)
         ])
     }
 
-    override func willMove(toSuperview newSuperview: UIView?) {
-        super.willMove(toSuperview: newSuperview)
-        leftButton.setBackgroundImage(currentDelegate.composerView(self, buttonForSlot: .leftSlot)?.image.raw, for: .normal)
-        rightButton.setBackgroundImage(currentDelegate.composerView(self, buttonForSlot: .rightSlot)?.image.raw, for: .normal)
+    // MARK: Addons
+
+    /**
+     The view that contains additional content on top of the composer
+     */
+    let addonContainerView = tap(UIView()) {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    /**
+     The addon container view height constraint.
+     */
+    lazy var addonContainerHeightConstraint: NSLayoutConstraint = {
+        let constraint = addonContainerView.heightAnchor.constraint(equalToConstant: 0)
+        return constraint
+    }()
+
+    /**
+     The cache for registered addon classes and instances
+     */
+    private var registeredAddons = [String: (addonClass: UIView.Type, instance: UIView?)]()
+
+    /**
+     Registers a class for use in creating new addon views
+     */
+    func register(_ addonClass: UIView.Type?, forAddonReuseIdentifier identifier: String) {
+        guard let addonClass = addonClass else {
+            registeredAddons.removeValue(forKey: identifier)
+            return
+        }
+
+        registeredAddons.updateValue((addonClass, nil), forKey: identifier)
+    }
+
+    /**
+     Returns a resusable addon view located by its identifier
+     */
+    func dequeueReusableAddonView(withIdentifier identifier: String) -> UIView? {
+        guard let addon = registeredAddons[identifier] else {
+            return nil
+        }
+
+        guard let instance = addon.instance else {
+            let instance = addon.addonClass.init()
+            registeredAddons.updateValue(tap(addon) { $0.instance = instance }, forKey: identifier)
+            return instance
+        }
+
+        return instance
     }
 
     override init(frame: CGRect) {
@@ -217,10 +280,11 @@ class RCComposerView: UIView {
      Adds buttons and other UI elements as subviews.
      */
     private func addSubviews() {
-        self.addSubview(topSeparatorView)
-        self.addSubview(leftButton)
-        self.addSubview(rightButton)
-        self.addSubview(textView)
+        addSubview(addonContainerView)
+        addSubview(topSeparatorView)
+        addSubview(leftButton)
+        addSubview(rightButton)
+        addSubview(textView)
     }
 
     /**
@@ -235,6 +299,11 @@ class RCComposerView: UIView {
             // topSeparatorView constraints
             topSeparatorView.topAnchor.constraint(equalTo: topAnchor),
             topSeparatorView.widthAnchor.constraint(equalTo: widthAnchor),
+
+            // addonContainerView constraints
+            addonContainerHeightConstraint,
+            addonContainerView.widthAnchor.constraint(equalTo: widthAnchor),
+            addonContainerView.topAnchor.constraint(equalTo: topSeparatorView.bottomAnchor),
 
             // leftButton constraints
 
@@ -253,7 +322,7 @@ class RCComposerView: UIView {
             tap(textView.trailingAnchor.constraint(equalTo: rightButton.leadingAnchor)) {
                 $0.constant = -Sizes.textViewTrailing
             },
-            tap(textView.topAnchor.constraint(equalTo: topAnchor)) {
+            tap(textView.topAnchor.constraint(equalTo: addonContainerView.bottomAnchor)) {
                 $0.constant = Sizes.textViewTop
             },
             tap(textView.bottomAnchor.constraint(equalTo: bottomAnchor)) {
@@ -270,6 +339,44 @@ class RCComposerView: UIView {
             }
         ])
     }
+
+    /**
+     Update composer height
+     */
+    func updateHeight() {
+        let newHeight = textView.contentSize.height + Sizes.textViewTop + Sizes.textViewBottom
+        UIView.animate(withDuration: 0.2, animations: {
+            let addonContainerHeight = self.currentDelegate.composerHeightForAddonView(self)
+            self.heightConstraint.constant = min(newHeight, self.currentDelegate.composerViewMaximumHeight(self)) + addonContainerHeight
+            self.addonContainerHeightConstraint.constant = addonContainerHeight
+        }, completion: { _ in
+            self.textView.setContentOffset(.zero, animated: true)
+        })
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        updateHeight()
+    }
+
+    override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
+
+        leftButton.setBackgroundImage(currentDelegate.composerView(self, buttonForSlot: .leftSlot)?.image.raw, for: .normal)
+        rightButton.setBackgroundImage(currentDelegate.composerView(self, buttonForSlot: .rightSlot)?.image.raw, for: .normal)
+
+        if let addonView = currentDelegate.composerViewForAddonView(self) {
+            addonView.frame = addonContainerView.frame
+            addonContainerView.addSubview(addonView)
+
+            NSLayoutConstraint.activate([
+                addonView.centerXAnchor.constraint(equalTo: addonContainerView.centerXAnchor),
+                addonView.centerYAnchor.constraint(equalTo: addonContainerView.centerYAnchor),
+                addonView.widthAnchor.constraint(equalTo: addonContainerView.widthAnchor),
+                addonView.heightAnchor.constraint(equalTo: addonContainerView.heightAnchor)
+            ])
+        }
+    }
 }
 
 // MARK: Observers & Actions
@@ -280,12 +387,7 @@ extension RCComposerView {
      */
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if object as AnyObject? === textView && keyPath == "contentSize" {
-            let newHeight = textView.contentSize.height + Sizes.textViewTop + Sizes.textViewBottom
-            UIView.animate(withDuration: 0.2, animations: {
-                self.heightConstraint.constant = min(newHeight, self.currentDelegate.composerViewMaximumHeight(self))
-            }, completion: { _ in
-                self.textView.setContentOffset(.zero, animated: true)
-            })
+            updateHeight()
         }
     }
 
@@ -313,6 +415,8 @@ private extension RCComposerView {
     private struct Sizes {
         static var composerHeight: CGFloat = 54
         static var fontSize: CGFloat = 17
+
+        static var topSeparatorViewHeight: CGFloat = 0.5
 
         static var leftButtonWidth: CGFloat = 24
         static var leftButtonHeight: CGFloat = 24
