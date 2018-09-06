@@ -176,7 +176,7 @@ class RCComposerView: UIView {
     }
 
     /**
-
+     The separator line on top of the composer
      */
     let topSeparatorView: UIView = tap(UIView()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
