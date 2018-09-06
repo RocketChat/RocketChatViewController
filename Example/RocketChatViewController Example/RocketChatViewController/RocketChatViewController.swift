@@ -227,7 +227,11 @@ class RocketChatViewController: UIViewController {
     }()
 
     var composerHeightConstraint: NSLayoutConstraint!
-    var viewComposer: UIView! = RCComposerView(frame: .zero)
+    lazy var composerView: RCComposerView = {
+        let composer = RCComposerView(frame: .zero)
+        composer.delegate = self
+        return composer
+    }()
 
     var data: [Section] = []
     private var internalData: [ArraySection<AnySectionController, AnyChatCellViewModel>] = []
@@ -263,23 +267,23 @@ class RocketChatViewController: UIViewController {
     }
 
     func setupChatViews() {
-        view.addSubview(viewComposer)
+        view.addSubview(composerView)
         view.addSubview(collectionView)
 
         collectionView.transform = isInverted ? invertedTransform : collectionView.transform
 
-        viewComposer.translatesAutoresizingMaskIntoConstraints = false
+        composerView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
 
         let topMargin = view.safeAreaLayoutGuide.topAnchor
         let bottomMargin = view.safeAreaLayoutGuide.bottomAnchor
 
-        viewComposer.bottomAnchor.constraint(equalTo: bottomMargin).isActive = true
-        viewComposer.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        viewComposer.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        composerView.bottomAnchor.constraint(equalTo: bottomMargin).isActive = true
+        composerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        composerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
 
         collectionView.topAnchor.constraint(equalTo: topMargin).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: viewComposer.topAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: composerView.topAnchor).isActive = true
         collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
 
@@ -333,5 +337,18 @@ extension RocketChatViewController: UICollectionViewDelegateFlowLayout {
         }
 
         return CGSize(width: UIScreen.main.bounds.width, height: height)
+    }
+}
+
+// MARK: Composer Delegate
+
+extension RocketChatViewController: RCComposerDelegate {
+    func composer(_ composerView: RCComposerView, didTapButtonInSlot slot: RCComposerButtonSlot) {
+        switch slot {
+        case .rightSlot:
+            composerView.textView.text = ""
+        case .leftSlot:
+            break
+        }
     }
 }

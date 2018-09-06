@@ -9,7 +9,7 @@
 import UIKit
 
 /**
- An enum that represents a place in the composer view where a button is placed
+ An enum that represents a place in the composer view where a button is placed.
  */
 enum RCComposerButtonSlot {
     case leftSlot
@@ -17,7 +17,7 @@ enum RCComposerButtonSlot {
 }
 
 /**
- An enum that represents the state of a button in the composer
+ An enum that represents the state of a button in the composer.
  */
 enum RCComposerButtonState {
     case normal
@@ -26,7 +26,7 @@ enum RCComposerButtonState {
 }
 
 /**
- A helper function that returns the object with a transformation applied
+ A helper function that returns the object with a transformation applied.
  */
 private func tap<Object>(_ object: Object, transform: (inout Object) throws -> Void) rethrows -> Object {
     var object = object
@@ -35,7 +35,7 @@ private func tap<Object>(_ object: Object, transform: (inout Object) throws -> V
 }
 
 /**
- A struct that represents a button in the composer
+ A struct that represents a button in the composer.
  */
 struct RCComposerButton {
     var state: RCComposerButtonState
@@ -48,21 +48,21 @@ struct RCComposerButton {
 
 extension RCComposerButton {
     /**
-     Default add sign button
+     Default add sign button.
      */
     static var addButton: RCComposerButton {
         return RCComposerButton(state: .normal, image: .addButton)
     }
 
     /**
-     Default microphone button
+     Default microphone button.
      */
     static var micButton: RCComposerButton {
         return RCComposerButton(state: .normal, image: .micButton)
     }
 
     /**
-     Default send button
+     Default send button.
      */
     static var sendButton: RCComposerButton {
         return RCComposerButton(state: .normal, image: .sendButton)
@@ -71,14 +71,19 @@ extension RCComposerButton {
 
 protocol RCComposerDelegate: class {
     /**
-     Asks the delegate for the button to place in the slot
+     Asks the delegate for the button to place in the slot.
      */
     func composerView(_ composerView: RCComposerView, buttonForSlot slot: RCComposerButtonSlot) -> RCComposerButton?
 
     /**
-     Asks the delegate which height should be the maximum for the composer
+     Asks the delegate which height should be the maximum for the composer.
      */
     func composerViewMaximumHeight(_ composerView: RCComposerView) -> CGFloat
+
+    /**
+     Tells the delegate the button in the slot has been tapped.
+     */
+    func composer(_ composerView: RCComposerView, didTapButtonInSlot slot: RCComposerButtonSlot)
 }
 
 extension RCComposerDelegate {
@@ -94,46 +99,46 @@ extension RCComposerDelegate {
     func composerViewMaximumHeight(_ composerView: RCComposerView) -> CGFloat {
         return UIScreen.main.bounds.height/4.0
     }
+
+    func composer(_ composerView: RCComposerView, didTapButtonInSlot slot: RCComposerButtonSlot) { }
 }
 
 /*
- A default RCComposerDelegate delegate with default behaviors
+ A default RCComposerDelegate delegate with default behaviors.
  */
-
-private class RCDefaultComposerDelegate: RCComposerDelegate {
-
-}
+private class RCDefaultComposerDelegate: RCComposerDelegate { }
 
 // MARK: Initializers
 
 class RCComposerView: UIView {
-
     /**
-     The object that acts as the delegate of the composer
+     The object that acts as the delegate of the composer.
      */
     weak var delegate: RCComposerDelegate?
 
     /**
-     A default delegate for when delegate is nil
+     A default delegate for when delegate is nil.
      */
     private var defaultDelegate = RCDefaultComposerDelegate()
 
     /**
-     Returns the delegate if set, if not, returns the default delegate
+     Returns the delegate if set, if not, returns the default delegate.
+
+     Delegate should only be accessed inside this class via this computed property.
      */
     private var currentDelegate: RCComposerDelegate {
         return delegate ?? defaultDelegate
     }
 
     /**
-     The composer's height constraint
+     The composer's height constraint.
      */
     lazy var heightConstraint: NSLayoutConstraint = {
         return heightAnchor.constraint(equalToConstant: Sizes.composerHeight)
     }()
 
     /**
-     The button that stays in the left side of the composer
+     The button that stays in the left side of the composer.
      */
     let leftButton: UIButton = tap(UIButton()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -142,10 +147,12 @@ class RCComposerView: UIView {
             $0.widthAnchor.constraint(equalToConstant: Sizes.leftButtonWidth),
             $0.heightAnchor.constraint(equalToConstant: Sizes.leftButtonHeight)
         ])
+
+        $0.addTarget(self, action: #selector(touchUpInside(button:)), for: .touchUpInside)
     }
 
     /**
-     The button that stays in the right side of the composer
+     The button that stays in the right side of the composer.
      */
     let rightButton: UIButton = tap(UIButton()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -154,10 +161,12 @@ class RCComposerView: UIView {
             $0.widthAnchor.constraint(equalToConstant: Sizes.rightButtonWidth),
             $0.heightAnchor.constraint(equalToConstant: Sizes.rightButtonHeight)
         ])
+
+        $0.addTarget(self, action: #selector(touchUpInside(button:)), for: .touchUpInside)
     }
 
     /**
-     The text view used to compose the message
+     The text view used to compose the message.
      */
     let textView: UITextView = tap(RCComposerTextView()) {
         $0.placeholderLabel.text = "Type a message"
@@ -182,7 +191,7 @@ class RCComposerView: UIView {
     }
 
     /**
-     Shared initialization procedures
+     Shared initialization procedures.
      */
     func commonInit() {
         textView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
@@ -192,7 +201,7 @@ class RCComposerView: UIView {
     }
 
     /**
-     Adds buttons and other UI elements as subviews
+     Adds buttons and other UI elements as subviews.
      */
     private func addSubviews() {
         self.addSubview(leftButton)
@@ -201,7 +210,7 @@ class RCComposerView: UIView {
     }
 
     /**
-     Sets up constraints between the UI elements in the composer
+     Sets up constraints between the UI elements in the composer.
      */
     private func setupConstraints() {
         self.translatesAutoresizingMaskIntoConstraints = false
@@ -245,11 +254,11 @@ class RCComposerView: UIView {
     }
 }
 
-// MARK: Observer
+// MARK: Observers & Actions
 
 extension RCComposerView {
     /**
-     Called when the content size of the text view changes and adjusts the composer height constraint
+     Called when the content size of the text view changes and adjusts the composer height constraint.
      */
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if object as AnyObject? === textView && keyPath == "contentSize" {
@@ -261,13 +270,27 @@ extension RCComposerView {
             })
         }
     }
+
+    /**
+     Called when a touch up inside happens in one of the buttons.
+     */
+    @objc func touchUpInside(button: UIButton) {
+        switch button {
+        case leftButton:
+            currentDelegate.composer(self, didTapButtonInSlot: .leftSlot)
+        case rightButton:
+            currentDelegate.composer(self, didTapButtonInSlot: .rightSlot)
+        default:
+            break
+        }
+    }
 }
 
 // MARK: Sizes
 
 private extension RCComposerView {
     /**
-     Constants for sizes and margins in the composer view
+     Constants for sizes and margins in the composer view.
      */
     private struct Sizes {
         static var composerHeight: CGFloat = 54
