@@ -20,6 +20,7 @@
 		80101EC821401F75008E4996 /* RCComposerView.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80101EC721401F75008E4996 /* RCComposerView.xcassets */; };
 		80101ECA21402046008E4996 /* RCComposerAssets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80101EC921402046008E4996 /* RCComposerAssets.swift */; };
 		8012CC642141B9C500A5B5DF /* RCReplyAddonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8012CC632141B9C500A5B5DF /* RCReplyAddonView.swift */; };
+		8012CC662141D7D200A5B5DF /* RCComposerAddon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8012CC652141D7D200A5B5DF /* RCComposerAddon.swift */; };
 		8049AA7E21409349002D3D79 /* RCComposerTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8049AA7D21409349002D3D79 /* RCComposerTextView.swift */; };
 		99405001212DDE3000CFF865 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99405000212DDE3000CFF865 /* ChatViewController.swift */; };
 		996604142117A15D00E4B082 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996604132117A15D00E4B082 /* Message.swift */; };
@@ -56,6 +57,7 @@
 		80101EC721401F75008E4996 /* RCComposerView.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = RCComposerView.xcassets; sourceTree = "<group>"; };
 		80101EC921402046008E4996 /* RCComposerAssets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCComposerAssets.swift; sourceTree = "<group>"; };
 		8012CC632141B9C500A5B5DF /* RCReplyAddonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCReplyAddonView.swift; sourceTree = "<group>"; };
+		8012CC652141D7D200A5B5DF /* RCComposerAddon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCComposerAddon.swift; sourceTree = "<group>"; };
 		8049AA7D21409349002D3D79 /* RCComposerTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCComposerTextView.swift; sourceTree = "<group>"; };
 		91BDF435ACF397E2211DE8C9 /* Pods_RocketChatViewController_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RocketChatViewController_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		99405000212DDE3000CFF865 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 		8012CC622141B9B100A5B5DF /* Addons */ = {
 			isa = PBXGroup;
 			children = (
+				8012CC652141D7D200A5B5DF /* RCComposerAddon.swift */,
 				8012CC632141B9C500A5B5DF /* RCReplyAddonView.swift */,
 			);
 			path = Addons;
@@ -344,6 +347,7 @@
 				996604162117A16A00E4B082 /* Attachment.swift in Sources */,
 				99943BBC213F0286005CDFC6 /* ImageAttachmentCollectionViewCell.swift in Sources */,
 				41D775A02110996C00FABB49 /* DataController.swift in Sources */,
+				8012CC662141D7D200A5B5DF /* RCComposerAddon.swift in Sources */,
 				99943BC0213F1265005CDFC6 /* VideoAttachmentCollectionViewCell.swift in Sources */,
 				99943BB6213F0185005CDFC6 /* VideoAttachmentViewModel.swift in Sources */,
 				41D7759E2110995200FABB49 /* RocketChatViewController.swift in Sources */,

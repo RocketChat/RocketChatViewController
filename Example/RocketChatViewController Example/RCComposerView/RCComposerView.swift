@@ -86,9 +86,14 @@ protocol RCComposerDelegate: class {
     func composerHeightForAddonView(_ composerView: RCComposerView) -> CGFloat
 
     /**
-     Asks the delegate for a view to place in the addon view slot.
+     Asks the delegate which addon to place in the addon slot.
      */
-    func composerViewForAddonView(_ composerView: RCComposerView) -> UIView?
+    func composerCurrentAddon(_ composerView: RCComposerView) -> RCComposerAddon?
+
+    /**
+     Tells the delegate the current addon view has been updated or changed.
+     */
+    func composer(_ composerView: RCComposerView, didUpdateCurrentAddonView view: UIView?)
 
     /**
      Tells the delegate the button in the slot has been tapped.
@@ -114,10 +119,11 @@ extension RCComposerDelegate {
         return 50.0
     }
 
-    func composerViewForAddonView(_ composerView: RCComposerView) -> UIView? {
+    func composerCurrentAddon(_ composerView: RCComposerView) -> RCComposerAddon? {
         return nil
     }
 
+    func composer(_ composerView: RCComposerView, didUpdateCurrentAddonView view: UIView?) { }
     func composer(_ composerView: RCComposerView, didTapButtonInSlot slot: RCComposerButtonSlot) { }
 }
 
@@ -225,36 +231,7 @@ class RCComposerView: UIView {
     /**
      The cache for registered addon classes and instances
      */
-    private var registeredAddons = [String: (addonClass: UIView.Type, instance: UIView?)]()
-
-    /**
-     Registers a class for use in creating new addon views
-     */
-    func register(_ addonClass: UIView.Type?, forAddonReuseIdentifier identifier: String) {
-        guard let addonClass = addonClass else {
-            registeredAddons.removeValue(forKey: identifier)
-            return
-        }
-
-        registeredAddons.updateValue((addonClass, nil), forKey: identifier)
-    }
-
-    /**
-     Returns a resusable addon view located by its identifier
-     */
-    func dequeueReusableAddonView(withIdentifier identifier: String) -> UIView? {
-        guard let addon = registeredAddons[identifier] else {
-            return nil
-        }
-
-        guard let instance = addon.instance else {
-            let instance = addon.addonClass.init()
-            registeredAddons.updateValue(tap(addon) { $0.instance = instance }, forKey: identifier)
-            return instance
-        }
-
-        return instance
-    }
+    private var addonCache = [RCComposerAddon: UIView]()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -365,7 +342,16 @@ class RCComposerView: UIView {
         leftButton.setBackgroundImage(currentDelegate.composerView(self, buttonForSlot: .leftSlot)?.image.raw, for: .normal)
         rightButton.setBackgroundImage(currentDelegate.composerView(self, buttonForSlot: .rightSlot)?.image.raw, for: .normal)
 
-        if let addonView = currentDelegate.composerViewForAddonView(self) {
+        if let addon = currentDelegate.composerCurrentAddon(self) {
+            let addonView: UIView
+
+            if let cachedAddonView = addonCache[addon] {
+                addonView = cachedAddonView
+            } else {
+                addonView = addon.viewType.init()
+                addonCache.updateValue(addonView, forKey: addon)
+            }
+
             addonView.frame = addonContainerView.frame
             addonContainerView.addSubview(addonView)
 
@@ -375,6 +361,10 @@ class RCComposerView: UIView {
                 addonView.widthAnchor.constraint(equalTo: addonContainerView.widthAnchor),
                 addonView.heightAnchor.constraint(equalTo: addonContainerView.heightAnchor)
             ])
+
+            currentDelegate.composer(self, didUpdateCurrentAddonView: addonView)
+        } else {
+            currentDelegate.composer(self, didUpdateCurrentAddonView: nil)
         }
     }
 }

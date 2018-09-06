@@ -231,8 +231,6 @@ class RocketChatViewController: UIViewController {
         let composer = RCComposerView(frame: .zero)
         composer.delegate = self
 
-        composer.register(RCReplyAddonView.self, forAddonReuseIdentifier: "reply")
-
         return composer
     }()
 
@@ -359,11 +357,13 @@ extension RocketChatViewController: RCComposerDelegate {
         return CGFloat(50.0 * (sin(Date().timeIntervalSince1970) + 1))
     }
 
-    func composerViewForAddonView(_ composerView: RCComposerView) -> UIView? {
-        guard let replyAddonView = composerView.dequeueReusableAddonView(withIdentifier: "reply") as? RCReplyAddonView else {
-            return nil
-        }
+    func composerCurrentAddon(_ composerView: RCComposerView) -> RCComposerAddon? {
+        return .replyAddon
+    }
 
-        return replyAddonView
+    func composer(_ composerView: RCComposerView, didUpdateCurrentAddonView view: UIView?) {
+        if let replyView = view as? RCReplyAddonView {
+            replyView.backgroundColor = .orange
+        }
     }
 }
