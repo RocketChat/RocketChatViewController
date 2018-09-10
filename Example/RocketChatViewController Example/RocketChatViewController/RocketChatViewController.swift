@@ -131,9 +131,7 @@ extension SectionController {
 /**
     A single split of an object that binds an UICollectionViewCell and can be differentiated.
 
-    A ChatCellViewModel also holds the related UICollectionViewCell's reuseIdentifier
-    and is reponsible for calculating its height based on its state when not using
-    self-sizing cells.
+    A ChatCellViewModel also holds the related UICollectionViewCell's reuseIdentifier.
  */
 
 protocol ChatCellViewModel {
@@ -150,11 +148,7 @@ extension ChatCellViewModel where Self: Differentiable {
 }
 
 /**
-    A helper protocol that makes all UICollectionViewCells to have a `bind(viewModel: Any)`
-    method meant to be overwritten.
-
-    With the help of this protocol we doesn't need to always cast an UICollectionViewCell to
-    a dynamic type just to bind a view model on it.
+    A protocol that must be implemented by all cells to padronize the way we bind the data on its view.
  */
 
 protocol BindableCell {
@@ -231,6 +225,7 @@ class RocketChatViewController: UIViewController {
     }()
 
     var isInverted = true
+    var isSelfSizing = false
     private let invertedTransform = CGAffineTransform(scaleX: 1, y: -1)
 
     override func viewDidLoad() {
@@ -278,6 +273,10 @@ class RocketChatViewController: UIViewController {
 
         collectionView.dataSource = self
         collectionView.delegate = self
+
+        if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout, isSelfSizing {
+            flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+        }
     }
 
     @objc func updateData() {
