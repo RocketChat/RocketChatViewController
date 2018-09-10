@@ -15,11 +15,21 @@ fileprivate extension NSNotification.Name {
     static let triggerDataUpdate = NSNotification.Name("TRIGGER_DATA_UPDATE")
 }
 
+extension UICollectionView {
+    func dequeueChatCell(withReuseIdentifier reuseIdetifier: String, for indexPath: IndexPath) -> BindableCell {
+        guard let cell = dequeueReusableCell(withReuseIdentifier: reuseIdetifier, for: indexPath) as? BindableCell else {
+            fatalError("Trying to dequeue a reusable UICollectionViewCell that doesn't conforms to BindableCell protocol")
+        }
+
+        return cell
+    }
+}
+
 /**
     A type-erased ChatCellViewModel that must conform to the Differentiable protocol.
 
     The `AnyChatCellViewModel` type forwards equality comparisons and utilities operations or properties
-    such as relatedReuseIdentifier and heightForCurrentState() to an underlying differentiable value,
+    such as relatedReuseIdentifier to an underlying differentiable value,
     hiding its specific underlying type.
  */
 
@@ -46,10 +56,6 @@ struct AnyChatCellViewModel: ChatCellViewModel, Differentiable {
     func isContentEqual(to source: AnyChatCellViewModel) -> Bool {
         return isUpdatedFrom(source)
     }
-
-    func heightForCurrentState() -> CGFloat? {
-        return base.heightForCurrentState()
-    }
 }
 
 /**
@@ -74,12 +80,8 @@ struct AnySectionController: SectionController {
         return base.viewModels()
     }
 
-    func cell(for viewModel: AnyChatCellViewModel, on collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
+    func cell(for viewModel: AnyChatCellViewModel, on collectionView: UICollectionView, at indexPath: IndexPath) -> BindableCell {
         return base.cell(for: viewModel, on: collectionView, at: indexPath)
-    }
-
-    func height(for viewModel: AnyChatCellViewModel) -> CGFloat? {
-        return base.height(for: viewModel)
     }
 }
 
@@ -114,8 +116,7 @@ fileprivate extension AnySectionController {
 protocol SectionController {
     var object: AnyDifferentiable { get }
     func viewModels() -> [AnyChatCellViewModel]
-    func cell(for viewModel: AnyChatCellViewModel, on collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell
-    func height(for viewModel: AnyChatCellViewModel) -> CGFloat?
+    func cell(for viewModel: AnyChatCellViewModel, on collectionView: UICollectionView, at indexPath: IndexPath) -> BindableCell
 }
 
 extension SectionController {
@@ -137,13 +138,6 @@ extension SectionController {
 
 protocol ChatCellViewModel {
     var relatedReuseIdentifier: String { get }
-    func heightForCurrentState() -> CGFloat?
-}
-
-extension ChatCellViewModel {
-    // The heightForCurrentState is set to nil by default, we must override in order to
-    // manually calculate a ChatCellViewModel height.
-    func heightForCurrentState() -> CGFloat? { return nil }
 }
 
 extension ChatCellViewModel where Self: Differentiable {
@@ -164,11 +158,7 @@ extension ChatCellViewModel where Self: Differentiable {
  */
 
 protocol BindableCell {
-    func bind(viewModel: Any)
-}
-
-extension UICollectionViewCell: BindableCell {
-    @objc func bind(viewModel: Any) {}
+    func bind(viewModel: AnyChatCellViewModel)
 }
 
 /**
@@ -216,7 +206,7 @@ extension UICollectionViewCell: BindableCell {
  */
 
 class RocketChatViewController: UIViewController {
-    var collectionView: UICollectionView =  {
+    var collectionView: UICollectionView = {
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout()
@@ -318,7 +308,12 @@ extension RocketChatViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let sectionController = internalData[indexPath.section].model
         let viewModel = sectionController.viewModels()[indexPath.row]
-        return sectionController.cell(for: viewModel, on: collectionView, at: indexPath)
+
+        guard let chatCell = sectionController.cell(for: viewModel, on: collectionView, at: indexPath) as? UICollectionViewCell else {
+            fatalError("The object conforming to BindableCell is not a UICollectionViewCell as it must be")
+        }
+
+        return chatCell
     }
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -326,15 +321,4 @@ extension RocketChatViewController: UICollectionViewDataSource {
     }
 }
 
-extension RocketChatViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let sectionController = internalData[indexPath.section].model
-        let viewModel = sectionController.viewModels()[indexPath.row]
-
-        guard let height = sectionController.height(for: viewModel) else {
-            return CGSize.zero
-        }
-
-        return CGSize(width: UIScreen.main.bounds.width, height: height)
-    }
-}
+extension RocketChatViewController: UICollectionViewDelegateFlowLayout {}

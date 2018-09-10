@@ -16,10 +16,6 @@ struct ImageAttachmentViewModel: ChatCellViewModel, Differentiable {
 
     var url: URL
 
-    func heightForCurrentState() -> CGFloat? {
-        return 202
-    }
-
     // MARK: Differentiable
 
     var differenceIdentifier: String {

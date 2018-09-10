@@ -47,13 +47,9 @@ struct MessageSectionController: SectionController {
         return viewModels
     }
 
-    func cell(for viewModel: AnyChatCellViewModel, on collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: viewModel.relatedReuseIdentifier, for: indexPath)
-        cell.bind(viewModel: viewModel.base)
+    func cell(for viewModel: AnyChatCellViewModel, on collectionView: UICollectionView, at indexPath: IndexPath) -> BindableCell {
+        let cell = collectionView.dequeueChatCell(withReuseIdentifier: viewModel.relatedReuseIdentifier, for: indexPath)
+        cell.bind(viewModel: viewModel)
         return cell
-    }
-
-    func height(for viewModel: AnyChatCellViewModel) -> CGFloat? {
-        return viewModel.heightForCurrentState()
     }
 }

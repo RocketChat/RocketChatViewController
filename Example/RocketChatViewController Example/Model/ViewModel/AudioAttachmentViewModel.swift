@@ -16,10 +16,6 @@ struct AudioAttachmentViewModel: ChatCellViewModel, Differentiable {
 
     var url: URL
 
-    func heightForCurrentState() -> CGFloat? {
-        return 44
-    }
-
     // MARK: Differentiable
 
     var differenceIdentifier: String {

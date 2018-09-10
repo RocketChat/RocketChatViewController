@@ -45,7 +45,26 @@ final class ChatViewController: RocketChatViewController {
         updateData()
         data = []
         updateData()
-        data = DataControllerPlaceholder.generateDumbData(elements: 220)
+        data = DataControllerPlaceholder.generateDumbData(elements: 5000)
         updateData()
+    }
+}
+
+extension ChatViewController {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let sectionController = data[indexPath.section].base
+        let viewModel = sectionController.viewModels()[indexPath.row]
+        switch viewModel.base {
+        case is BasicMessageViewModel:
+            return CGSize(width: UIScreen.main.bounds.width, height: 60)
+        case is ImageAttachmentViewModel:
+            return CGSize(width: UIScreen.main.bounds.width, height: 202)
+        case is VideoAttachmentViewModel:
+            return CGSize(width: UIScreen.main.bounds.width, height: 222)
+        case is AudioAttachmentViewModel:
+            return CGSize(width: UIScreen.main.bounds.width, height: 44)
+        default:
+            return .zero
+        }
     }
 }

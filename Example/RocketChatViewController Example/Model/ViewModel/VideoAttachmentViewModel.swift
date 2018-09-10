@@ -16,10 +16,6 @@ struct VideoAttachmentViewModel: ChatCellViewModel, Differentiable {
 
     var url: URL
 
-    func heightForCurrentState() -> CGFloat? {
-        return 222
-    }
-
     // MARK: Differentiable
 
     var differenceIdentifier: String {

@@ -17,10 +17,6 @@ struct BasicMessageViewModel: ChatCellViewModel, Differentiable {
     var username: String
     var text: String
 
-    func heightForCurrentState() -> CGFloat? {
-        return 60
-    }
-
     // MARK: Differentiable
 
     var differenceIdentifier: String {
