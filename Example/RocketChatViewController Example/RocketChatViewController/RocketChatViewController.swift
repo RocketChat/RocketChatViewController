@@ -260,19 +260,21 @@ class RocketChatViewController: UIViewController {
         let bottomMargin = view.safeAreaLayoutGuide.bottomAnchor
 
         composerHeightConstraint = viewComposer.heightAnchor.constraint(equalToConstant: 50)
-        composerHeightConstraint.isActive = true
 
-        viewComposer.bottomAnchor.constraint(equalTo: bottomMargin).isActive = true
-        viewComposer.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        viewComposer.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-
-        collectionView.topAnchor.constraint(equalTo: topMargin).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: viewComposer.topAnchor).isActive = true
-        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            composerHeightConstraint,
+            viewComposer.bottomAnchor.constraint(equalTo: bottomMargin),
+            viewComposer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            viewComposer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: topMargin),
+            collectionView.bottomAnchor.constraint(equalTo: viewComposer.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
 
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.scrollsToTop = false
 
         if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout, isSelfSizing {
             flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
