@@ -8,17 +8,16 @@
 
 import UIKit
 
-class ImageAttachmentCollectionViewCell: UICollectionViewCell {
+class ImageAttachmentCollectionViewCell: UICollectionViewCell, BindableCell {
     static let identifier = String(describing: ImageAttachmentCollectionViewCell.self)
 
     @IBOutlet weak var image: UIImageView!
 
-    override func bind(viewModel: Any) {
-        guard let _ = viewModel as? ImageAttachmentViewModel else {
+    func bind(viewModel: AnyChatCellViewModel) {
+        guard let _ = viewModel.base as? ImageAttachmentViewModel else {
             return
         }
 
         // Bind remote image on image view
     }
-    
 }

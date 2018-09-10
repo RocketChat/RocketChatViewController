@@ -8,8 +8,14 @@
 
 import UIKit
 
-class AudioAttachmentCollectionViewCell: UICollectionViewCell {
+class AudioAttachmentCollectionViewCell: UICollectionViewCell, BindableCell {
     static let identifier = String(describing: AudioAttachmentCollectionViewCell.self)
 
+    func bind(viewModel: AnyChatCellViewModel) {
+        guard let _ = viewModel.base as? AudioAttachmentViewModel else {
+            return
+        }
 
+        // Bind audio file from remote url
+    }
 }

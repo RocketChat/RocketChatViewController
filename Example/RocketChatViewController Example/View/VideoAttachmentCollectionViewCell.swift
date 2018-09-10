@@ -8,17 +8,16 @@
 
 import UIKit
 
-class VideoAttachmentCollectionViewCell: UICollectionViewCell {
+class VideoAttachmentCollectionViewCell: UICollectionViewCell, BindableCell {
     static let identifier = String(describing: VideoAttachmentCollectionViewCell.self)
 
     @IBOutlet weak var videoPreview: UIImageView!
 
-    override func bind(viewModel: Any) {
-        guard let _ = viewModel as? VideoAttachmentViewModel else {
+    func bind(viewModel: AnyChatCellViewModel) {
+        guard let _ = viewModel.base as? VideoAttachmentViewModel else {
             return
         }
 
         // Bind remote video URL on video player view
     }
-
 }
