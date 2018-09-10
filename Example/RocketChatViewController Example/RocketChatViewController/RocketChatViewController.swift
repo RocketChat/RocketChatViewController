@@ -343,25 +343,25 @@ extension RocketChatViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: Composer Delegate
 
-extension RocketChatViewController: RCComposerDelegate {
-    func composer(_ composerView: RCComposerView, didTapButtonInSlot slot: RCComposerButtonSlot) {
+extension RocketChatViewController: RCComposerViewDelegate {
+    func composerView(_ composerView: RCComposerView, didTapButtonAt slot: RCComposerButtonSlot) {
         switch slot {
-        case .rightSlot:
+        case .right:
             composerView.textView.text = ""
-        case .leftSlot:
+        case .left:
             break
         }
     }
 
-    func composerHeightForAddonView(_ composerView: RCComposerView) -> CGFloat {
+    func composerView(_ composerView: RCComposerView, heightForAddonAt slot: RCComposerAddonSlot) -> CGFloat {
         return CGFloat(50.0 * (sin(Date().timeIntervalSince1970) + 1))
     }
 
-    func composerCurrentAddon(_ composerView: RCComposerView) -> RCComposerAddon? {
+    func composerView(_ composerView: RCComposerView, addonAt slot: RCComposerAddonSlot) -> RCComposerAddon? {
         return .replyAddon
     }
 
-    func composer(_ composerView: RCComposerView, didUpdateCurrentAddonView view: UIView?) {
+    func composerView(_ composerView: RCComposerView, didUpdateAddonView view: UIView?, at slot: RCComposerAddonSlot) {
         if let replyView = view as? RCReplyAddonView {
             replyView.backgroundColor = .orange
         }

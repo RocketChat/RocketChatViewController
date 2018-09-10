@@ -12,8 +12,8 @@ import UIKit
  An enum that represents a place in the composer view where a button is placed.
  */
 enum RCComposerButtonSlot {
-    case leftSlot
-    case rightSlot
+    case left
+    case right
 }
 
 /**
@@ -69,68 +69,79 @@ extension RCComposerButton {
     }
 }
 
-protocol RCComposerDelegate: class {
+typealias RCComposerAddonSlot = UInt
+
+protocol RCComposerViewDelegate: class {
     /**
      Asks the delegate for the button to place in the slot.
      */
-    func composerView(_ composerView: RCComposerView, buttonForSlot slot: RCComposerButtonSlot) -> RCComposerButton?
+    func composerView(_ composerView: RCComposerView, buttonAt slot: RCComposerButtonSlot) -> RCComposerButton?
 
     /**
      Asks the delegate which height should be the maximum for the composer.
      */
-    func composerViewMaximumHeight(_ composerView: RCComposerView) -> CGFloat
+    func maximumHeight(for composerView: RCComposerView) -> CGFloat
+
+    /**
+     Asks the how many addons to place in the composer (minus addons).
+     */
+    func numberOfAddons(in composerView: RCComposerView) -> RCComposerAddonSlot
+
+    /**
+     Asks the delegate which addon to place in the addon index slot.
+     */
+    func composerView(_ composerView: RCComposerView, addonAt slot: RCComposerAddonSlot) -> RCComposerAddon?
 
     /**
      Asks the delegate which height should the addon view have.
      */
-    func composerHeightForAddonView(_ composerView: RCComposerView) -> CGFloat
-
-    /**
-     Asks the delegate which addon to place in the addon slot.
-     */
-    func composerCurrentAddon(_ composerView: RCComposerView) -> RCComposerAddon?
+    func composerView(_ composerView: RCComposerView, heightForAddonAt slot: RCComposerAddonSlot) -> CGFloat
 
     /**
      Tells the delegate the current addon view has been updated or changed.
      */
-    func composer(_ composerView: RCComposerView, didUpdateCurrentAddonView view: UIView?)
+    func composerView(_ composerView: RCComposerView, didUpdateAddonView view: UIView?, at slot: RCComposerAddonSlot)
 
     /**
      Tells the delegate the button in the slot has been tapped.
      */
-    func composer(_ composerView: RCComposerView, didTapButtonInSlot slot: RCComposerButtonSlot)
+    func composerView(_ composerView: RCComposerView, didTapButtonAt slot: RCComposerButtonSlot)
 }
 
-extension RCComposerDelegate {
-    func composerView(_ composerView: RCComposerView, buttonForSlot slot: RCComposerButtonSlot) -> RCComposerButton? {
+extension RCComposerViewDelegate {
+    func composerView(_ composerView: RCComposerView, buttonAt slot: RCComposerButtonSlot) -> RCComposerButton? {
         switch slot {
-        case .leftSlot:
+        case .left:
             return .addButton
-        case .rightSlot:
+        case .right:
             return .sendButton
         }
     }
 
-    func composerViewMaximumHeight(_ composerView: RCComposerView) -> CGFloat {
+    func maximumHeight(for composerView: RCComposerView) -> CGFloat {
         return UIScreen.main.bounds.height/3.0
     }
 
-    func composerHeightForAddonView(_ composerView: RCComposerView) -> CGFloat {
-        return 50.0
+    func numberOfAddons(in composerView: RCComposerView) -> RCComposerAddonSlot {
+        return 0
     }
 
-    func composerCurrentAddon(_ composerView: RCComposerView) -> RCComposerAddon? {
+    func composerView(_ composerView: RCComposerView, addonAt slot: RCComposerAddonSlot) -> RCComposerAddon? {
         return nil
     }
 
-    func composer(_ composerView: RCComposerView, didUpdateCurrentAddonView view: UIView?) { }
-    func composer(_ composerView: RCComposerView, didTapButtonInSlot slot: RCComposerButtonSlot) { }
+    func composerView(_ composerView: RCComposerView, heightForAddonAt slot: RCComposerAddonSlot) -> CGFloat {
+        return 50.0
+    }
+
+    func composerView(_ composerView: RCComposerView, didUpdateAddonView view: UIView?, at slot: RCComposerAddonSlot) { }
+    func composerView(_ composerView: RCComposerView, didTapButtonAt slot: RCComposerButtonSlot) { }
 }
 
 /*
- A default RCComposerDelegate delegate with default behaviors.
+ A default RCComposerViewDelegate delegate with default behaviors.
  */
-private class RCDefaultComposerDelegate: RCComposerDelegate { }
+private class RCDefaultComposerViewDelegate: RCComposerViewDelegate { }
 
 // MARK: Initializers
 
@@ -138,19 +149,19 @@ class RCComposerView: UIView {
     /**
      The object that acts as the delegate of the composer.
      */
-    weak var delegate: RCComposerDelegate?
+    weak var delegate: RCComposerViewDelegate?
 
     /**
      A default delegate for when delegate is nil.
      */
-    private var defaultDelegate = RCDefaultComposerDelegate()
+    private var defaultDelegate = RCDefaultComposerViewDelegate()
 
     /**
      Returns the delegate if set, if not, returns the default delegate.
 
      Delegate should only be accessed inside this class via this computed property.
      */
-    private var currentDelegate: RCComposerDelegate {
+    private var currentDelegate: RCComposerViewDelegate {
         return delegate ?? defaultDelegate
     }
 
@@ -216,7 +227,7 @@ class RCComposerView: UIView {
     /**
      The view that contains additional content on top of the composer
      */
-    let addonContainerView = tap(UIView()) {
+    let addonContainerView = tap(UIStackView()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
@@ -323,8 +334,8 @@ class RCComposerView: UIView {
     func updateHeight() {
         let newHeight = textView.contentSize.height + Sizes.textViewTop + Sizes.textViewBottom
         UIView.animate(withDuration: 0.2, animations: {
-            let addonContainerHeight = self.currentDelegate.composerHeightForAddonView(self)
-            self.heightConstraint.constant = min(newHeight, self.currentDelegate.composerViewMaximumHeight(self)) + addonContainerHeight
+            let addonContainerHeight = self.currentDelegate.composerView(self, heightForAddonAt: 0)
+            self.heightConstraint.constant = min(newHeight, self.currentDelegate.maximumHeight(for: self)) + addonContainerHeight
             self.addonContainerHeightConstraint.constant = addonContainerHeight
         }, completion: { _ in
             self.textView.setContentOffset(.zero, animated: true)
@@ -339,10 +350,10 @@ class RCComposerView: UIView {
     override func willMove(toSuperview newSuperview: UIView?) {
         super.willMove(toSuperview: newSuperview)
 
-        leftButton.setBackgroundImage(currentDelegate.composerView(self, buttonForSlot: .leftSlot)?.image.raw, for: .normal)
-        rightButton.setBackgroundImage(currentDelegate.composerView(self, buttonForSlot: .rightSlot)?.image.raw, for: .normal)
+        leftButton.setBackgroundImage(currentDelegate.composerView(self, buttonAt: .left)?.image.raw, for: .normal)
+        rightButton.setBackgroundImage(currentDelegate.composerView(self, buttonAt: .right)?.image.raw, for: .normal)
 
-        if let addon = currentDelegate.composerCurrentAddon(self) {
+        if let addon = currentDelegate.composerView(self, addonAt: 0) {
             let addonView: UIView
 
             if let cachedAddonView = addonCache[addon] {
@@ -353,7 +364,7 @@ class RCComposerView: UIView {
             }
 
             addonView.frame = addonContainerView.frame
-            addonContainerView.addSubview(addonView)
+            addonContainerView.addArrangedSubview(addonView)
 
             NSLayoutConstraint.activate([
                 addonView.centerXAnchor.constraint(equalTo: addonContainerView.centerXAnchor),
@@ -362,9 +373,9 @@ class RCComposerView: UIView {
                 addonView.heightAnchor.constraint(equalTo: addonContainerView.heightAnchor)
             ])
 
-            currentDelegate.composer(self, didUpdateCurrentAddonView: addonView)
+            currentDelegate.composerView(self, didUpdateAddonView: addonView, at: 0)
         } else {
-            currentDelegate.composer(self, didUpdateCurrentAddonView: nil)
+            currentDelegate.composerView(self, didUpdateAddonView: nil, at: 0)
         }
     }
 }
@@ -387,9 +398,9 @@ extension RCComposerView {
     @objc func touchUpInside(button: UIButton) {
         switch button {
         case leftButton:
-            currentDelegate.composer(self, didTapButtonInSlot: .leftSlot)
+            currentDelegate.composerView(self, didTapButtonAt: .left)
         case rightButton:
-            currentDelegate.composer(self, didTapButtonInSlot: .rightSlot)
+            currentDelegate.composerView(self, didTapButtonAt: .right)
         default:
             break
         }
