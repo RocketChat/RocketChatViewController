@@ -9,7 +9,7 @@
 import Foundation
 import DifferenceKit
 
-struct VideoAttachmentChatItem: ChatItem, Differentiable {
+struct VideoAttachmentChatItem: ChatItem, Differentiable, Equatable {
     var relatedReuseIdentifier: String {
         return VideoAttachmentChatCell.identifier
     }
@@ -20,9 +20,5 @@ struct VideoAttachmentChatItem: ChatItem, Differentiable {
 
     var differenceIdentifier: String {
         return url.absoluteString
-    }
-
-    func isContentEqual(to source: VideoAttachmentChatItem) -> Bool {
-        return url.absoluteString == source.url.absoluteString
     }
 }

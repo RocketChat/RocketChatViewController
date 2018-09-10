@@ -9,7 +9,7 @@
 import Foundation
 import DifferenceKit
 
-struct BasicMessageChatItem: ChatItem, Differentiable {
+struct BasicMessageChatItem: ChatItem, Differentiable, Equatable {
     var relatedReuseIdentifier: String {
         return BasicMessageChatCell.identifier
     }
@@ -21,9 +21,5 @@ struct BasicMessageChatItem: ChatItem, Differentiable {
 
     var differenceIdentifier: String {
         return username + text
-    }
-
-    func isContentEqual(to source: BasicMessageChatItem) -> Bool {
-        return text == source.text
     }
 }
