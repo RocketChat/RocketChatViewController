@@ -1,5 +1,5 @@
 //
-//  ImageAttachmentViewModel.swift
+//  AudioAttachmentViewModel.swift
 //  RocketChatViewController Example
 //
 //  Created by Filipe Alvarenga on 04/09/18.
@@ -9,9 +9,9 @@
 import Foundation
 import DifferenceKit
 
-struct ImageAttachmentViewModel: ChatCellViewModel, Differentiable {
+struct AudioAttachmentChatItem: ChatItem, Differentiable {
     var relatedReuseIdentifier: String {
-        return ImageAttachmentCollectionViewCell.identifier
+        return AudioAttachmentChatCell.identifier
     }
 
     var url: URL
@@ -22,7 +22,7 @@ struct ImageAttachmentViewModel: ChatCellViewModel, Differentiable {
         return url.absoluteString
     }
 
-    func isContentEqual(to source: ImageAttachmentViewModel) -> Bool {
+    func isContentEqual(to source: AudioAttachmentChatItem) -> Bool {
         return url.absoluteString == source.url.absoluteString
     }
 }

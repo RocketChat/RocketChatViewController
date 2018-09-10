@@ -8,13 +8,13 @@
 
 import UIKit
 
-class ImageAttachmentCollectionViewCell: UICollectionViewCell, BindableCell {
-    static let identifier = String(describing: ImageAttachmentCollectionViewCell.self)
+class ImageAttachmentChatCell: UICollectionViewCell, ChatCell {
+    static let identifier = String(describing: ImageAttachmentChatCell.self)
 
     @IBOutlet weak var image: UIImageView!
 
-    func bind(viewModel: AnyChatCellViewModel) {
-        guard let _ = viewModel.base as? ImageAttachmentViewModel else {
+    func bind(viewModel: AnyChatItem) {
+        guard let _ = viewModel.base as? ImageAttachmentChatItem else {
             return
         }
 

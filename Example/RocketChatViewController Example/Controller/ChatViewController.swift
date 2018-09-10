@@ -15,30 +15,30 @@ final class ChatViewController: RocketChatViewController {
 
         collectionView.register(
             UINib(
-                nibName: BasicMessageCollectionViewCell.identifier, bundle: nil
+                nibName: BasicMessageChatCell.identifier, bundle: nil
             ),
-            forCellWithReuseIdentifier: BasicMessageCollectionViewCell.identifier
+            forCellWithReuseIdentifier: BasicMessageChatCell.identifier
         )
 
         collectionView.register(
             UINib(
-                nibName: ImageAttachmentCollectionViewCell.identifier, bundle: nil
+                nibName: ImageAttachmentChatCell.identifier, bundle: nil
             ),
-            forCellWithReuseIdentifier: ImageAttachmentCollectionViewCell.identifier
+            forCellWithReuseIdentifier: ImageAttachmentChatCell.identifier
         )
 
         collectionView.register(
             UINib(
-                nibName: VideoAttachmentCollectionViewCell.identifier, bundle: nil
+                nibName: VideoAttachmentChatCell.identifier, bundle: nil
             ),
-            forCellWithReuseIdentifier: VideoAttachmentCollectionViewCell.identifier
+            forCellWithReuseIdentifier: VideoAttachmentChatCell.identifier
         )
 
         collectionView.register(
             UINib(
-                nibName: AudioAttachmentCollectionViewCell.identifier, bundle: nil
+                nibName: AudioAttachmentChatCell.identifier, bundle: nil
             ),
-            forCellWithReuseIdentifier: AudioAttachmentCollectionViewCell.identifier
+            forCellWithReuseIdentifier: AudioAttachmentChatCell.identifier
         )
 
         data = DataControllerPlaceholder.generateDumbData(elements: 10)
@@ -55,13 +55,13 @@ extension ChatViewController {
         let sectionController = data[indexPath.section].base
         let viewModel = sectionController.viewModels()[indexPath.row]
         switch viewModel.base {
-        case is BasicMessageViewModel:
+        case is BasicMessageChatItem:
             return CGSize(width: UIScreen.main.bounds.width, height: 60)
-        case is ImageAttachmentViewModel:
+        case is ImageAttachmentChatItem:
             return CGSize(width: UIScreen.main.bounds.width, height: 202)
-        case is VideoAttachmentViewModel:
+        case is VideoAttachmentChatItem:
             return CGSize(width: UIScreen.main.bounds.width, height: 222)
-        case is AudioAttachmentViewModel:
+        case is AudioAttachmentChatItem:
             return CGSize(width: UIScreen.main.bounds.width, height: 44)
         default:
             return .zero

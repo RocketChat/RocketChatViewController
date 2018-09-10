@@ -9,15 +9,13 @@
 import UIKit
 import DifferenceKit
 
-typealias Section = AnySectionController
-
 fileprivate extension NSNotification.Name {
     static let triggerDataUpdate = NSNotification.Name("TRIGGER_DATA_UPDATE")
 }
 
 extension UICollectionView {
-    func dequeueChatCell(withReuseIdentifier reuseIdetifier: String, for indexPath: IndexPath) -> BindableCell {
-        guard let cell = dequeueReusableCell(withReuseIdentifier: reuseIdetifier, for: indexPath) as? BindableCell else {
+    func dequeueChatCell(withReuseIdentifier reuseIdetifier: String, for indexPath: IndexPath) -> ChatCell {
+        guard let cell = dequeueReusableCell(withReuseIdentifier: reuseIdetifier, for: indexPath) as? ChatCell else {
             fatalError("Trying to dequeue a reusable UICollectionViewCell that doesn't conforms to BindableCell protocol")
         }
 
@@ -33,17 +31,17 @@ extension UICollectionView {
     hiding its specific underlying type.
  */
 
-struct AnyChatCellViewModel: ChatCellViewModel, Differentiable {
+struct AnyChatItem: ChatItem, Differentiable {
     var relatedReuseIdentifier: String {
         return base.relatedReuseIdentifier
     }
 
-    let base: ChatCellViewModel
+    let base: ChatItem
     let differenceIdentifier: AnyHashable
 
-    let isUpdatedFrom: (AnyChatCellViewModel) -> Bool
+    let isUpdatedFrom: (AnyChatItem) -> Bool
 
-    public init<D: Differentiable & ChatCellViewModel>(_ base: D) {
+    public init<D: Differentiable & ChatItem>(_ base: D) {
         self.base = base
         self.differenceIdentifier = AnyHashable(base.differenceIdentifier)
 
@@ -53,7 +51,7 @@ struct AnyChatCellViewModel: ChatCellViewModel, Differentiable {
         }
     }
 
-    func isContentEqual(to source: AnyChatCellViewModel) -> Bool {
+    func isContentEqual(to source: AnyChatItem) -> Bool {
         return isUpdatedFrom(source)
     }
 }
@@ -65,38 +63,38 @@ struct AnyChatCellViewModel: ChatCellViewModel, Differentiable {
     for RocketChatViewController to build one section, hiding its specific underlying type.
  */
 
-struct AnySectionController: SectionController {
+struct AnyChatSection: ChatSection {
     var object: AnyDifferentiable {
         return base.object
     }
 
-    let base: SectionController
+    let base: ChatSection
 
-    public init<D: SectionController>(_ base: D) {
+    public init<D: ChatSection>(_ base: D) {
         self.base = base
     }
 
-    func viewModels() -> [AnyChatCellViewModel] {
+    func viewModels() -> [AnyChatItem] {
         return base.viewModels()
     }
 
-    func cell(for viewModel: AnyChatCellViewModel, on collectionView: UICollectionView, at indexPath: IndexPath) -> BindableCell {
+    func cell(for viewModel: AnyChatItem, on collectionView: UICollectionView, at indexPath: IndexPath) -> ChatCell {
         return base.cell(for: viewModel, on: collectionView, at: indexPath)
     }
 }
 
-extension AnySectionController: Differentiable {
+extension AnyChatSection: Differentiable {
     var differenceIdentifier: AnyHashable {
         return AnyHashable(base.object.differenceIdentifier)
     }
 
-    func isContentEqual(to source: AnySectionController) -> Bool {
+    func isContentEqual(to source: AnyChatSection) -> Bool {
         return base.object.isContentEqual(to: source.object)
     }
 }
 
-fileprivate extension AnySectionController {
-    var toArraySection: ArraySection<AnySectionController, AnyChatCellViewModel> {
+fileprivate extension AnyChatSection {
+    var toArraySection: ArraySection<AnyChatSection, AnyChatItem> {
         return ArraySection(model: self, elements: viewModels())
     }
 }
@@ -113,13 +111,13 @@ fileprivate extension AnySectionController {
     A SectionController's object is meant to be immutable.
  */
 
-protocol SectionController {
+protocol ChatSection {
     var object: AnyDifferentiable { get }
-    func viewModels() -> [AnyChatCellViewModel]
-    func cell(for viewModel: AnyChatCellViewModel, on collectionView: UICollectionView, at indexPath: IndexPath) -> BindableCell
+    func viewModels() -> [AnyChatItem]
+    func cell(for viewModel: AnyChatItem, on collectionView: UICollectionView, at indexPath: IndexPath) -> ChatCell
 }
 
-extension SectionController {
+extension ChatSection {
     func update() {
         NotificationCenter.default.post(
             name: .triggerDataUpdate,
@@ -134,16 +132,16 @@ extension SectionController {
     A ChatCellViewModel also holds the related UICollectionViewCell's reuseIdentifier.
  */
 
-protocol ChatCellViewModel {
+protocol ChatItem {
     var relatedReuseIdentifier: String { get }
 }
 
-extension ChatCellViewModel where Self: Differentiable {
+extension ChatItem where Self: Differentiable {
     // In order to use a ChatCellViewModel along with a SectionController
     // we must use it as a type-erased ChatCellViewModel, which in this case also means
     // that it must conform to the Differentiable protocol.
-    var wrapped: AnyChatCellViewModel {
-        return AnyChatCellViewModel(self)
+    var wrapped: AnyChatItem {
+        return AnyChatItem(self)
     }
 }
 
@@ -151,8 +149,8 @@ extension ChatCellViewModel where Self: Differentiable {
     A protocol that must be implemented by all cells to padronize the way we bind the data on its view.
  */
 
-protocol BindableCell {
-    func bind(viewModel: AnyChatCellViewModel)
+protocol ChatCell {
+    func bind(viewModel: AnyChatItem)
 }
 
 /**
@@ -213,8 +211,8 @@ class RocketChatViewController: UIViewController {
     var composerHeightConstraint: NSLayoutConstraint!
     var viewComposer: UIView! = UIView()
 
-    var data: [Section] = []
-    private var internalData: [ArraySection<AnySectionController, AnyChatCellViewModel>] = []
+    var data: [AnyChatSection] = []
+    private var internalData: [ArraySection<AnyChatSection, AnyChatItem>] = []
 
     private let updateDataQueue: OperationQueue = {
         let operationQueue = OperationQueue()

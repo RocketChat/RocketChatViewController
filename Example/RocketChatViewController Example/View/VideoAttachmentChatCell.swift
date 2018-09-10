@@ -8,13 +8,13 @@
 
 import UIKit
 
-class VideoAttachmentCollectionViewCell: UICollectionViewCell, BindableCell {
-    static let identifier = String(describing: VideoAttachmentCollectionViewCell.self)
+class VideoAttachmentChatCell: UICollectionViewCell, ChatCell {
+    static let identifier = String(describing: VideoAttachmentChatCell.self)
 
     @IBOutlet weak var videoPreview: UIImageView!
 
-    func bind(viewModel: AnyChatCellViewModel) {
-        guard let _ = viewModel.base as? VideoAttachmentViewModel else {
+    func bind(viewModel: AnyChatItem) {
+        guard let _ = viewModel.base as? VideoAttachmentChatItem else {
             return
         }
 

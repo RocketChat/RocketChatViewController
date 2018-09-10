@@ -8,11 +8,11 @@
 
 import UIKit
 
-class AudioAttachmentCollectionViewCell: UICollectionViewCell, BindableCell {
-    static let identifier = String(describing: AudioAttachmentCollectionViewCell.self)
+class AudioAttachmentChatCell: UICollectionViewCell, ChatCell {
+    static let identifier = String(describing: AudioAttachmentChatCell.self)
 
-    func bind(viewModel: AnyChatCellViewModel) {
-        guard let _ = viewModel.base as? AudioAttachmentViewModel else {
+    func bind(viewModel: AnyChatItem) {
+        guard let _ = viewModel.base as? AudioAttachmentChatItem else {
             return
         }
 
