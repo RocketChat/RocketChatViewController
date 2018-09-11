@@ -9,6 +9,10 @@
 import UIKit
 
 class RCReplyAddonView: UIView {
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: 50.0, height: 20.0)
+    }
+
     init() {
         super.init(frame: .zero)
         self.commonInit()

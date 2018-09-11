@@ -353,17 +353,26 @@ extension RocketChatViewController: RCComposerViewDelegate {
         }
     }
 
-    func composerView(_ composerView: RCComposerView, heightForAddonAt slot: RCComposerAddonSlot) -> CGFloat {
-        return CGFloat(50.0 * (sin(Date().timeIntervalSince1970) + 1))
+    func numberOfAddons(in composerView: RCComposerView) -> RCComposerAddonSlot {
+        return 2
     }
 
     func composerView(_ composerView: RCComposerView, addonAt slot: RCComposerAddonSlot) -> RCComposerAddon? {
         return .replyAddon
     }
 
+    func composerView(_ composerView: RCComposerView, heightForAddonAt slot: RCComposerAddonSlot) -> CGFloat {
+        return 20
+    }
+
     func composerView(_ composerView: RCComposerView, didUpdateAddonView view: UIView?, at slot: RCComposerAddonSlot) {
-        if let replyView = view as? RCReplyAddonView {
-            replyView.backgroundColor = .orange
+        switch slot {
+        case 0:
+            view?.backgroundColor = .orange
+        case 1:
+            view?.backgroundColor = .blue
+        default:
+            break
         }
     }
 }

@@ -229,20 +229,8 @@ class RCComposerView: UIView {
      */
     let addonContainerView = tap(UIStackView()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.axis = .vertical
     }
-
-    /**
-     The addon container view height constraint.
-     */
-    lazy var addonContainerHeightConstraint: NSLayoutConstraint = {
-        let constraint = addonContainerView.heightAnchor.constraint(equalToConstant: 0)
-        return constraint
-    }()
-
-    /**
-     The cache for registered addon classes and instances
-     */
-    private var addonCache = [RCComposerAddon: UIView]()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -289,7 +277,6 @@ class RCComposerView: UIView {
             topSeparatorView.widthAnchor.constraint(equalTo: widthAnchor),
 
             // addonContainerView constraints
-            addonContainerHeightConstraint,
             addonContainerView.widthAnchor.constraint(equalTo: widthAnchor),
             addonContainerView.topAnchor.constraint(equalTo: topSeparatorView.bottomAnchor),
 
@@ -333,10 +320,10 @@ class RCComposerView: UIView {
      */
     func updateHeight() {
         let newHeight = textView.contentSize.height + Sizes.textViewTop + Sizes.textViewBottom
+        let addonContainerHeight = self.addonContainerView.frame.height
+
         UIView.animate(withDuration: 0.2, animations: {
-            let addonContainerHeight = self.currentDelegate.composerView(self, heightForAddonAt: 0)
             self.heightConstraint.constant = min(newHeight, self.currentDelegate.maximumHeight(for: self)) + addonContainerHeight
-            self.addonContainerHeightConstraint.constant = addonContainerHeight
         }, completion: { _ in
             self.textView.setContentOffset(.zero, animated: true)
         })
@@ -353,29 +340,21 @@ class RCComposerView: UIView {
         leftButton.setBackgroundImage(currentDelegate.composerView(self, buttonAt: .left)?.image.raw, for: .normal)
         rightButton.setBackgroundImage(currentDelegate.composerView(self, buttonAt: .right)?.image.raw, for: .normal)
 
-        if let addon = currentDelegate.composerView(self, addonAt: 0) {
-            let addonView: UIView
+        addonContainerView.subviews.forEach {
+            addonContainerView.removeArrangedSubview($0)
+            $0.removeFromSuperview()
+        }
 
-            if let cachedAddonView = addonCache[addon] {
-                addonView = cachedAddonView
+        for slot in 0..<currentDelegate.numberOfAddons(in: self) {
+            if let addon = currentDelegate.composerView(self, addonAt: slot) {
+                let addonView: UIView = addon.viewType.init()
+                addonView.frame = addonContainerView.frame
+                addonContainerView.addArrangedSubview(addonView)
+
+                currentDelegate.composerView(self, didUpdateAddonView: addonView, at: slot)
             } else {
-                addonView = addon.viewType.init()
-                addonCache.updateValue(addonView, forKey: addon)
+                currentDelegate.composerView(self, didUpdateAddonView: nil, at: slot)
             }
-
-            addonView.frame = addonContainerView.frame
-            addonContainerView.addArrangedSubview(addonView)
-
-            NSLayoutConstraint.activate([
-                addonView.centerXAnchor.constraint(equalTo: addonContainerView.centerXAnchor),
-                addonView.centerYAnchor.constraint(equalTo: addonContainerView.centerYAnchor),
-                addonView.widthAnchor.constraint(equalTo: addonContainerView.widthAnchor),
-                addonView.heightAnchor.constraint(equalTo: addonContainerView.heightAnchor)
-            ])
-
-            currentDelegate.composerView(self, didUpdateAddonView: addonView, at: 0)
-        } else {
-            currentDelegate.composerView(self, didUpdateAddonView: nil, at: 0)
         }
     }
 }
