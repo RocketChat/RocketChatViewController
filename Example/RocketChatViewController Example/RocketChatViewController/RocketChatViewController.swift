@@ -214,8 +214,6 @@ class RocketChatViewController: UIViewController {
     var data: [AnyChatSection] = []
     private var internalData: [ArraySection<AnyChatSection, AnyChatItem>] = []
 
-    var lastOperationAdded: Operation?
-    var lastChangeset: StagedChangeset<[ArraySection<AnyChatSection, AnyChatItem>]>?
     private let updateDataQueue: OperationQueue = {
         let operationQueue = OperationQueue()
         operationQueue.maxConcurrentOperationCount = 1
