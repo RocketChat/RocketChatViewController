@@ -17,6 +17,7 @@
 		41D775A02110996C00FABB49 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D7759F2110996C00FABB49 /* DataController.swift */; };
 		41D775A221109AAF00FABB49 /* DataControllerPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D775A121109AAF00FABB49 /* DataControllerPlaceholder.swift */; };
 		99405001212DDE3000CFF865 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99405000212DDE3000CFF865 /* ChatViewController.swift */; };
+		994A3524214830DA0024F71A /* UIKitExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 994A3523214830DA0024F71A /* UIKitExtension.swift */; };
 		996604142117A15D00E4B082 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996604132117A15D00E4B082 /* Message.swift */; };
 		996604162117A16A00E4B082 /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996604152117A16A00E4B082 /* Attachment.swift */; };
 		996604182117A17D00E4B082 /* MessageSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996604172117A17D00E4B082 /* MessageSectionModel.swift */; };
@@ -49,6 +50,7 @@
 		51F5BB0A3783F263AF67E692 /* Pods-RocketChatViewController Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RocketChatViewController Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RocketChatViewController Example/Pods-RocketChatViewController Example.debug.xcconfig"; sourceTree = "<group>"; };
 		91BDF435ACF397E2211DE8C9 /* Pods_RocketChatViewController_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RocketChatViewController_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		99405000212DDE3000CFF865 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		994A3523214830DA0024F71A /* UIKitExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitExtension.swift; sourceTree = "<group>"; };
 		996604132117A15D00E4B082 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		996604152117A16A00E4B082 /* Attachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
 		996604172117A17D00E4B082 /* MessageSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSectionModel.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				41D7759D2110995200FABB49 /* RocketChatViewController.swift */,
+				994A3523214830DA0024F71A /* UIKitExtension.swift */,
 			);
 			path = RocketChatViewController;
 			sourceTree = "<group>";
@@ -306,6 +309,7 @@
 			files = (
 				99943BB8213F01AF005CDFC6 /* AudioAttachmentChatItem.swift in Sources */,
 				996604202117A4EF00E4B082 /* BasicMessageChatCell.swift in Sources */,
+				994A3524214830DA0024F71A /* UIKitExtension.swift in Sources */,
 				9966041B2117A1A400E4B082 /* MessageChatSection.swift in Sources */,
 				417670E2210FABAA0070CA5B /* ViewController.swift in Sources */,
 				99943BC2213F15B3005CDFC6 /* AudioAttachmentChatCell.swift in Sources */,

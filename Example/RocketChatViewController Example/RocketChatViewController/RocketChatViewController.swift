@@ -296,10 +296,17 @@ class RocketChatViewController: UIViewController {
         updateDataQueue.addOperation { [weak self] in
             guard let strongSelf = self else { return }
 
-            let changeset = StagedChangeset(source: strongSelf.internalData, target: strongSelf.data.map({ $0.toArraySection }))
-
             DispatchQueue.main.async {
-                strongSelf.collectionView.reload(using: changeset, interrupt: { $0.changeCount > 100 }) { newData in
+                let changeset = StagedChangeset(source: strongSelf.internalData, target: strongSelf.data.map({ $0.toArraySection }))
+                strongSelf.collectionView.reload(using: changeset, updateRows: { indexPaths in
+                    for indexPath in indexPaths {
+                        if strongSelf.collectionView.indexPathsForVisibleItems.contains(indexPath),
+                            let cell = strongSelf.collectionView.cellForItem(at: indexPath) as? ChatCell {
+                            let viewModel = strongSelf.internalData[indexPath.section].elements[indexPath.item]
+                            cell.bind(viewModel: viewModel)
+                        }
+                    }
+                }, interrupt: { $0.changeCount > 100 }) { newData in
                     strongSelf.internalData = newData
                     strongSelf.data = newData.map { $0.model }
                 }
