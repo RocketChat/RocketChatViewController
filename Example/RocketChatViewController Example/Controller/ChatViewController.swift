@@ -41,12 +41,27 @@ final class ChatViewController: RocketChatViewController {
             forCellWithReuseIdentifier: AudioAttachmentChatCell.identifier
         )
 
-        data = DataControllerPlaceholder.generateDumbData(elements: 10)
+        data = DataControllerPlaceholder.generateDumbData(elements: 5)
         updateData()
-        data = []
+        data = DataControllerPlaceholder.generateDumbData(elements: 1)
         updateData()
-        data = DataControllerPlaceholder.generateDumbData(elements: 5000)
+        data = DataControllerPlaceholder.generateDumbData(elements: 30)
         updateData()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if let first = data.first {
+            if var messageSectionModel = first.base.object.base as? MessageSectionModel {
+                messageSectionModel.message.text = "TEST TEST TEST"
+                data.remove(at: 0)
+                let chatSection = MessageChatSection(object: AnyDifferentiable(messageSectionModel))
+                data.insert(AnyChatSection(chatSection), at: 0)
+                updateData()
+            }
+        }
+
     }
 }
 
