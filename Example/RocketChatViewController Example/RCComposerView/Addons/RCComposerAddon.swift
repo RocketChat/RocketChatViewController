@@ -21,7 +21,11 @@ struct RCComposerAddon: Hashable {
 }
 
 extension RCComposerAddon {
-    static var replyAddon: RCComposerAddon {
+    static var reply: RCComposerAddon {
+        return RCComposerAddon(viewType: RCReplyAddonView.self)
+    }
+
+    static var hint: RCComposerAddon {
         return RCComposerAddon(viewType: RCReplyAddonView.self)
     }
 }

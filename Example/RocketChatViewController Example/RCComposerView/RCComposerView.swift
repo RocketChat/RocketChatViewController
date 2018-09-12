@@ -69,79 +69,25 @@ extension RCComposerButton {
     }
 }
 
-typealias RCComposerAddonSlot = UInt
-
-protocol RCComposerViewDelegate: class {
+/**
+ An enum that represents a place in the composer view where an addon is placed.
+ */
+enum RCComposerAddonSlot {
     /**
-     Asks the delegate for the button to place in the slot.
+     When the addon represents something in the message (eg. attached media)
      */
-    func composerView(_ composerView: RCComposerView, buttonAt slot: RCComposerButtonSlot) -> RCComposerButton?
-
-    /**
-     Asks the delegate which height should be the maximum for the composer.
-     */
-    func maximumHeight(for composerView: RCComposerView) -> CGFloat
+    case component
 
     /**
-     Asks the how many addons to place in the composer (minus addons).
+     When the addon represents a utility to the composer (eg. hint view)
      */
-    func numberOfAddons(in composerView: RCComposerView) -> RCComposerAddonSlot
-
-    /**
-     Asks the delegate which addon to place in the addon index slot.
-     */
-    func composerView(_ composerView: RCComposerView, addonAt slot: RCComposerAddonSlot) -> RCComposerAddon?
-
-    /**
-     Asks the delegate which height should the addon view have.
-     */
-    func composerView(_ composerView: RCComposerView, heightForAddonAt slot: RCComposerAddonSlot) -> CGFloat
-
-    /**
-     Tells the delegate the current addon view has been updated or changed.
-     */
-    func composerView(_ composerView: RCComposerView, didUpdateAddonView view: UIView?, at slot: RCComposerAddonSlot)
-
-    /**
-     Tells the delegate the button in the slot has been tapped.
-     */
-    func composerView(_ composerView: RCComposerView, didTapButtonAt slot: RCComposerButtonSlot)
-}
-
-extension RCComposerViewDelegate {
-    func composerView(_ composerView: RCComposerView, buttonAt slot: RCComposerButtonSlot) -> RCComposerButton? {
-        switch slot {
-        case .left:
-            return .addButton
-        case .right:
-            return .sendButton
-        }
-    }
-
-    func maximumHeight(for composerView: RCComposerView) -> CGFloat {
-        return UIScreen.main.bounds.height/3.0
-    }
-
-    func numberOfAddons(in composerView: RCComposerView) -> RCComposerAddonSlot {
-        return 0
-    }
-
-    func composerView(_ composerView: RCComposerView, addonAt slot: RCComposerAddonSlot) -> RCComposerAddon? {
-        return nil
-    }
-
-    func composerView(_ composerView: RCComposerView, heightForAddonAt slot: RCComposerAddonSlot) -> CGFloat {
-        return 50.0
-    }
-
-    func composerView(_ composerView: RCComposerView, didUpdateAddonView view: UIView?, at slot: RCComposerAddonSlot) { }
-    func composerView(_ composerView: RCComposerView, didTapButtonAt slot: RCComposerButtonSlot) { }
+    case utility
 }
 
 /*
- A default RCComposerViewDelegate delegate with default behaviors.
+ A default RCComposerDelegate delegate with default behaviors.
  */
-private class RCDefaultComposerViewDelegate: RCComposerViewDelegate { }
+private class RCDefaultComposerDelegate: RCComposerDelegate { }
 
 // MARK: Initializers
 
@@ -149,19 +95,19 @@ class RCComposerView: UIView {
     /**
      The object that acts as the delegate of the composer.
      */
-    weak var delegate: RCComposerViewDelegate?
+    weak var delegate: RCComposerDelegate?
 
     /**
      A default delegate for when delegate is nil.
      */
-    private var defaultDelegate = RCDefaultComposerViewDelegate()
+    private var defaultDelegate = RCDefaultComposerDelegate()
 
     /**
      Returns the delegate if set, if not, returns the default delegate.
 
      Delegate should only be accessed inside this class via this computed property.
      */
-    private var currentDelegate: RCComposerViewDelegate {
+    private var currentDelegate: RCComposerDelegate {
         return delegate ?? defaultDelegate
     }
 
@@ -211,6 +157,14 @@ class RCComposerView: UIView {
     }
 
     /**
+     The view that contains component addons on top of the text (eg. attached media)
+     */
+    let componentStackView = tap(RCComposerAddonStackView()) {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.axis = .vertical
+    }
+
+    /**
      The separator line on top of the composer
      */
     let topSeparatorView = tap(UIView()) {
@@ -222,14 +176,11 @@ class RCComposerView: UIView {
         ])
     }
 
-    // MARK: Addons
-
     /**
-     The view that contains additional content on top of the composer
+     The view that contains utility addons on top of the composer (eg. hint view)
      */
-    let addonContainerView = tap(UIStackView()) {
+    let utilityStackView = tap(RCComposerAddonStackView()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.axis = .vertical
     }
 
     override init(frame: CGRect) {
@@ -256,11 +207,12 @@ class RCComposerView: UIView {
      Adds buttons and other UI elements as subviews.
      */
     private func addSubviews() {
-        addSubview(addonContainerView)
-        addSubview(topSeparatorView)
         addSubview(leftButton)
         addSubview(rightButton)
         addSubview(textView)
+        addSubview(componentStackView)
+        addSubview(topSeparatorView)
+        addSubview(utilityStackView)
     }
 
     /**
@@ -272,22 +224,17 @@ class RCComposerView: UIView {
         NSLayoutConstraint.activate([
             heightConstraint,
 
+            // utilityStackView constraints
+            utilityStackView.topAnchor.constraint(equalTo: topAnchor),
+            utilityStackView.widthAnchor.constraint(equalTo: widthAnchor),
+
             // topSeparatorView constraints
-            topSeparatorView.topAnchor.constraint(equalTo: topAnchor),
+            topSeparatorView.topAnchor.constraint(equalTo: utilityStackView.bottomAnchor),
             topSeparatorView.widthAnchor.constraint(equalTo: widthAnchor),
 
-            // addonContainerView constraints
-            addonContainerView.widthAnchor.constraint(equalTo: widthAnchor),
-            addonContainerView.topAnchor.constraint(equalTo: topSeparatorView.bottomAnchor),
-
-            // leftButton constraints
-
-            tap(leftButton.leadingAnchor.constraint(equalTo: leadingAnchor)) {
-                $0.constant = Sizes.leftButtonLeading
-            },
-            tap(leftButton.bottomAnchor.constraint(equalTo: bottomAnchor)) {
-                $0.constant = -Sizes.leftButtonBottom
-            },
+            // componentStackView constraints
+            componentStackView.widthAnchor.constraint(equalTo: widthAnchor),
+            componentStackView.topAnchor.constraint(equalTo: topSeparatorView.bottomAnchor),
 
             // textView constraints
 
@@ -297,7 +244,7 @@ class RCComposerView: UIView {
             tap(textView.trailingAnchor.constraint(equalTo: rightButton.leadingAnchor)) {
                 $0.constant = -Sizes.textViewTrailing
             },
-            tap(textView.topAnchor.constraint(equalTo: addonContainerView.bottomAnchor)) {
+            tap(textView.topAnchor.constraint(equalTo: componentStackView.bottomAnchor)) {
                 $0.constant = Sizes.textViewTop
             },
             tap(textView.bottomAnchor.constraint(equalTo: bottomAnchor)) {
@@ -311,6 +258,15 @@ class RCComposerView: UIView {
             },
             tap(rightButton.bottomAnchor.constraint(equalTo: bottomAnchor)) {
                 $0.constant = -Sizes.rightButtonBottom
+            },
+
+            // leftButton constraints
+
+            tap(leftButton.leadingAnchor.constraint(equalTo: leadingAnchor)) {
+                $0.constant = Sizes.leftButtonLeading
+            },
+            tap(leftButton.bottomAnchor.constraint(equalTo: bottomAnchor)) {
+                $0.constant = -Sizes.leftButtonBottom
             }
         ])
     }
@@ -320,7 +276,7 @@ class RCComposerView: UIView {
      */
     func updateHeight() {
         let newHeight = textView.contentSize.height + Sizes.textViewTop + Sizes.textViewBottom
-        let addonContainerHeight = self.addonContainerView.frame.height
+        let addonContainerHeight = self.componentStackView.frame.height
 
         UIView.animate(withDuration: 0.2, animations: {
             self.heightConstraint.constant = min(newHeight, self.currentDelegate.maximumHeight(for: self)) + addonContainerHeight
@@ -340,20 +296,32 @@ class RCComposerView: UIView {
         leftButton.setBackgroundImage(currentDelegate.composerView(self, buttonAt: .left)?.image.raw, for: .normal)
         rightButton.setBackgroundImage(currentDelegate.composerView(self, buttonAt: .right)?.image.raw, for: .normal)
 
-        addonContainerView.subviews.forEach {
-            addonContainerView.removeArrangedSubview($0)
+        componentStackView.subviews.forEach {
+            componentStackView.removeArrangedSubview($0)
             $0.removeFromSuperview()
         }
 
-        for slot in 0..<currentDelegate.numberOfAddons(in: self) {
-            if let addon = currentDelegate.composerView(self, addonAt: slot) {
+        for index in 0..<currentDelegate.numberOfAddons(in: self, at: .component) {
+            if let addon = currentDelegate.composerView(self, addonAt: .component, index: index) {
                 let addonView: UIView = addon.viewType.init()
-                addonView.frame = addonContainerView.frame
-                addonContainerView.addArrangedSubview(addonView)
+                addonView.frame = componentStackView.frame
+                componentStackView.addArrangedSubview(addonView)
 
-                currentDelegate.composerView(self, didUpdateAddonView: addonView, at: slot)
+                currentDelegate.composerView(self, didUpdateAddonView: addonView, at: .component, index: index)
             } else {
-                currentDelegate.composerView(self, didUpdateAddonView: nil, at: slot)
+                currentDelegate.composerView(self, didUpdateAddonView: nil, at: .component, index: index)
+            }
+        }
+
+        for index in 0..<currentDelegate.numberOfAddons(in: self, at: .utility) {
+            if let addon = currentDelegate.composerView(self, addonAt: .utility, index: index) {
+                let addonView: UIView = addon.viewType.init()
+                addonView.frame = componentStackView.frame
+                componentStackView.addArrangedSubview(addonView)
+
+                currentDelegate.composerView(self, didUpdateAddonView: addonView, at: .utility, index: index)
+            } else {
+                currentDelegate.composerView(self, didUpdateAddonView: nil, at: .utility, index: index)
             }
         }
     }

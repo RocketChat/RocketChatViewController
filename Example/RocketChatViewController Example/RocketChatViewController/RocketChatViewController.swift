@@ -343,7 +343,19 @@ extension RocketChatViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: Composer Delegate
 
-extension RocketChatViewController: RCComposerViewDelegate {
+extension RocketChatViewController: RCComposerDelegate, RCComposerReplier, RCComposerHinter {
+    var isComposerReplying: Bool {
+        get {
+            return true
+        }
+    }
+
+    var isComposerHinting: Bool {
+        get {
+            return true
+        }
+    }
+
     func composerView(_ composerView: RCComposerView, didTapButtonAt slot: RCComposerButtonSlot) {
         switch slot {
         case .right:
@@ -353,26 +365,5 @@ extension RocketChatViewController: RCComposerViewDelegate {
         }
     }
 
-    func numberOfAddons(in composerView: RCComposerView) -> RCComposerAddonSlot {
-        return 2
-    }
 
-    func composerView(_ composerView: RCComposerView, addonAt slot: RCComposerAddonSlot) -> RCComposerAddon? {
-        return .replyAddon
-    }
-
-    func composerView(_ composerView: RCComposerView, heightForAddonAt slot: RCComposerAddonSlot) -> CGFloat {
-        return 20
-    }
-
-    func composerView(_ composerView: RCComposerView, didUpdateAddonView view: UIView?, at slot: RCComposerAddonSlot) {
-        switch slot {
-        case 0:
-            view?.backgroundColor = .orange
-        case 1:
-            view?.backgroundColor = .blue
-        default:
-            break
-        }
-    }
 }
