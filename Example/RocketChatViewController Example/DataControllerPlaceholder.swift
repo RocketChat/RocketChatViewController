@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import DifferenceKit
 
 struct DataControllerPlaceholder {
 
@@ -33,7 +34,7 @@ struct DataControllerPlaceholder {
         )
     }
 
-    static private func generateObject() -> Object {
+    static private func generateObject() -> MessageSectionModel {
         var attachments: [Attachment] = []
 
         if let attachment = generateAttachment() {
@@ -47,14 +48,23 @@ struct DataControllerPlaceholder {
             attachments: attachments
         )
 
-        return Object(identifier: identifier, message: message)
+        return MessageSectionModel(identifier: identifier, message: message)
     }
 
-    static func generateDumbData(elements: Int = 5000) -> [Object] {
-        var data: [Object] = []
+    static func generateDumbData(elements: Int = 5000) -> [AnyChatSection] {
+        var data: [AnyChatSection] = []
 
         for _ in 1...elements {
-            data.append(generateObject())
+            let object = generateObject()
+            let sectionController = AnyChatSection(
+                MessageChatSection(
+                    object: AnyDifferentiable(
+                        object
+                    )
+                )
+            )
+
+            data.append(sectionController)
         }
 
         return data
