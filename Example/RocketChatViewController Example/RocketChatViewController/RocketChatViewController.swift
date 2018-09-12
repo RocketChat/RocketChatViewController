@@ -343,7 +343,7 @@ extension RocketChatViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: Composer Delegate
 
-extension RocketChatViewController: RCComposerDelegate, RCComposerReplier, RCComposerHinter {
+extension RocketChatViewController: RCComposerExpandedDelegate {
     var isComposerReplying: Bool {
         get {
             return true
@@ -365,5 +365,7 @@ extension RocketChatViewController: RCComposerDelegate, RCComposerReplier, RCCom
         }
     }
 
-
+    func hintsView(_ hintsView: RCHintsView, cellForHintAt index: Int) -> UITableViewCell {
+        return RCUserHintsViewCell()
+    }
 }

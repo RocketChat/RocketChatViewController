@@ -8,6 +8,10 @@
 
 import UIKit
 
+/**
+ The delegate of an RCComposerView object must adopt the RCComposerDelegate protocol.
+ Optional methods of the protocol allow the delegate to configure composer addons and perform actions.
+ */
 protocol RCComposerDelegate: class {
     /**
      Asks the delegate for the button to place in the slot.
@@ -28,11 +32,6 @@ protocol RCComposerDelegate: class {
      Asks the delegate which addon to place in the addon index slot.
      */
     func composerView(_ composerView: RCComposerView, addonAt slot: RCComposerAddonSlot, index: UInt) -> RCComposerAddon?
-
-    /**
-     Asks the delegate which height should the addon view have.
-     */
-    func composerView(_ composerView: RCComposerView, heightForAddonAt slot: RCComposerAddonSlot, index: UInt) -> CGFloat
 
     /**
      Tells the delegate the current addon view has been updated or changed.
@@ -65,10 +64,6 @@ extension RCComposerDelegate {
 
     func composerView(_ composerView: RCComposerView, addonAt slot: RCComposerAddonSlot, index: UInt) -> RCComposerAddon? {
         return nil
-    }
-
-    func composerView(_ composerView: RCComposerView, heightForAddonAt slot: RCComposerAddonSlot, index: UInt) -> CGFloat {
-        return 50.0
     }
 
     func composerView(_ composerView: RCComposerView, didUpdateAddonView view: UIView?, at slot: RCComposerAddonSlot, index: UInt) { }

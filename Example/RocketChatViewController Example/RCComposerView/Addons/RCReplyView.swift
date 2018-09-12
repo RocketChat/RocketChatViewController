@@ -1,5 +1,5 @@
 //
-//  RCReplyAddonView.swift
+//  RCReplyView.swift
 //  RocketChatViewController Example
 //
 //  Created by Matheus Cardoso on 9/6/18.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RCReplyAddonView: UIView {
+class RCReplyView: UIView {
     override var intrinsicContentSize: CGSize {
         return CGSize(width: 50.0, height: 20.0)
     }

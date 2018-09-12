@@ -1,5 +1,5 @@
 //
-//  RCComposerReplierHinter.swift
+//  RCComposerExpandedDelegate.swift
 //  RocketChatViewController Example
 //
 //  Created by Matheus Cardoso on 9/12/18.
@@ -8,36 +8,36 @@
 
 import UIKit
 
-typealias RCComposerReplierHinter = RCComposerReplier & RCComposerHinter
+/**
+ An expanded child of the RCComposerDelegate protocol.
+ This adds default implementatios for reply, autocompletion and more.
+ */
+protocol RCComposerExpandedDelegate: RCComposerDelegate, RCHintsDelegate {
+    var isComposerReplying: Bool { get }
+    var isComposerHinting: Bool { get }
+}
 
-extension RCComposerDelegate where Self: RCComposerReplierHinter {
+extension RCComposerExpandedDelegate {
     func numberOfAddons(in composerView: RCComposerView, at slot: RCComposerAddonSlot) -> UInt {
         return 1
-    }
-
-    func composerView(_ composerView: RCComposerView, heightForAddonAt slot: RCComposerAddonSlot, index: UInt) -> CGFloat {
-        guard isComposerHinting else {
-            return 0.0
-        }
-
-        return 50.0
     }
 
     func composerView(_ composerView: RCComposerView, addonAt slot: RCComposerAddonSlot, index: UInt) -> RCComposerAddon? {
         switch slot {
         case .utility:
-            return isComposerHinting ? .hint : nil
+            return isComposerHinting ? .hints : nil
         case .component:
             return isComposerReplying ? .reply : nil
         }
     }
 
     func composerView(_ composerView: RCComposerView, didUpdateAddonView view: UIView?, at slot: RCComposerAddonSlot, index: UInt) {
-        switch slot {
-        case .utility:
-            view?.backgroundColor = .orange
-        case .component:
-            view?.backgroundColor = .blue
+        if let view = view as? RCHintsView {
+            view.hintsDelegate = self
+        }
+
+        if let view = view as? RCReplyView {
+            view.backgroundColor = .orange
         }
     }
 }
