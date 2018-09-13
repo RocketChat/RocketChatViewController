@@ -8,12 +8,8 @@
 
 import UIKit
 
-struct RCComposerAddon: Hashable {
+struct RCComposerAddon {
     let viewType: UIView.Type
-
-    var hashValue: Int {
-        return viewType.hash()
-    }
 
     static func == (lhs: RCComposerAddon, rhs: RCComposerAddon) -> Bool {
         return lhs.viewType == rhs.viewType

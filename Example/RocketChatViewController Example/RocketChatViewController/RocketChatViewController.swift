@@ -208,7 +208,6 @@ class RocketChatViewController: UIViewController {
         return collectionView
     }()
 
-    var composerHeightConstraint: NSLayoutConstraint!
     lazy var composerView: RCComposerView = {
         let composer = RCComposerView(frame: .zero)
         composer.delegate = self
@@ -276,10 +275,7 @@ class RocketChatViewController: UIViewController {
 
         let bottomMargin = view.safeAreaLayoutGuide.bottomAnchor
 
-        composerHeightConstraint = composerView.heightAnchor.constraint(equalToConstant: 50)
-
         NSLayoutConstraint.activate([
-            composerHeightConstraint,
             composerView.bottomAnchor.constraint(equalTo: bottomMargin),
             composerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             composerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),

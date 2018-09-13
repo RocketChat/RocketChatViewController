@@ -224,14 +224,17 @@ class RCComposerView: UIView {
             heightConstraint,
 
             // utilityStackView constraints
+
             utilityStackView.topAnchor.constraint(equalTo: topAnchor),
             utilityStackView.widthAnchor.constraint(equalTo: widthAnchor),
 
             // topSeparatorView constraints
+
             topSeparatorView.topAnchor.constraint(equalTo: utilityStackView.bottomAnchor),
             topSeparatorView.widthAnchor.constraint(equalTo: widthAnchor),
 
             // componentStackView constraints
+
             componentStackView.widthAnchor.constraint(equalTo: widthAnchor),
             componentStackView.topAnchor.constraint(equalTo: topSeparatorView.bottomAnchor),
 
@@ -307,22 +310,22 @@ extension RCComposerView {
             (componentStackView, RCComposerAddonSlot.component),
             (utilityStackView, RCComposerAddonSlot.utility)
         ].forEach { (stackView, slot) in
-                stackView.subviews.forEach {
-                    stackView.removeArrangedSubview($0)
-                    $0.removeFromSuperview()
-                }
+            stackView.subviews.forEach {
+                stackView.removeArrangedSubview($0)
+                $0.removeFromSuperview()
+            }
 
-                for index in 0..<currentDelegate.numberOfAddons(in: self, at: slot) {
-                    if let addon = currentDelegate.composerView(self, addonAt: slot, index: index) {
-                        let addonView: UIView = addon.viewType.init()
-                        addonView.frame = stackView.frame
-                        stackView.addArrangedSubview(addonView)
+            for index in 0..<currentDelegate.numberOfAddons(in: self, at: slot) {
+                if let addon = currentDelegate.composerView(self, addonAt: slot, index: index) {
+                    let addonView: UIView = addon.viewType.init()
+                    addonView.frame = stackView.frame
+                    stackView.addArrangedSubview(addonView)
 
-                        currentDelegate.composerView(self, didUpdateAddonView: addonView, at: slot, index: index)
-                    } else {
-                        currentDelegate.composerView(self, didUpdateAddonView: nil, at: slot, index: index)
-                    }
+                    currentDelegate.composerView(self, didUpdateAddonView: addonView, at: slot, index: index)
+                } else {
+                    currentDelegate.composerView(self, didUpdateAddonView: nil, at: slot, index: index)
                 }
+            }
         }
     }
 }
