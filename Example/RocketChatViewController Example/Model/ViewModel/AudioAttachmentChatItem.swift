@@ -9,16 +9,12 @@
 import Foundation
 import DifferenceKit
 
-struct AudioAttachmentViewModel: ChatCellViewModel, Differentiable {
+struct AudioAttachmentChatItem: ChatItem, Differentiable {
     var relatedReuseIdentifier: String {
-        return AudioAttachmentCollectionViewCell.identifier
+        return AudioAttachmentChatCell.identifier
     }
 
     var url: URL
-
-    func heightForCurrentState() -> CGFloat? {
-        return 44
-    }
 
     // MARK: Differentiable
 
@@ -26,7 +22,7 @@ struct AudioAttachmentViewModel: ChatCellViewModel, Differentiable {
         return url.absoluteString
     }
 
-    func isContentEqual(to source: AudioAttachmentViewModel) -> Bool {
+    func isContentEqual(to source: AudioAttachmentChatItem) -> Bool {
         return url.absoluteString == source.url.absoluteString
     }
 }

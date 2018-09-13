@@ -51,13 +51,13 @@ struct DataControllerPlaceholder {
         return MessageSectionModel(identifier: identifier, message: message)
     }
 
-    static func generateDumbData(elements: Int = 5000) -> [Section] {
-        var data: [Section] = []
+    static func generateDumbData(elements: Int = 5000) -> [AnyChatSection] {
+        var data: [AnyChatSection] = []
 
         for _ in 1...elements {
             let object = generateObject()
-            let sectionController = AnySectionController(
-                MessageSectionController(
+            let sectionController = AnyChatSection(
+                MessageChatSection(
                     object: AnyDifferentiable(
                         object
                     )

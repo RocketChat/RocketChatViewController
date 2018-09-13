@@ -9,19 +9,19 @@
 import Foundation
 import DifferenceKit
 
-struct MessageSectionController: SectionController {
+struct MessageChatSection: ChatSection {
     var object: AnyDifferentiable
 
     // MARK: Section Controller
 
-    func viewModels() -> [AnyChatCellViewModel] {
+    func viewModels() -> [AnyChatItem] {
         guard let object = object.base as? MessageSectionModel else {
             return []
         }
 
-        var viewModels: [AnyChatCellViewModel] = []
+        var viewModels: [AnyChatItem] = []
 
-        let basicMessageViewModel = BasicMessageViewModel(
+        let basicMessageViewModel = BasicMessageChatItem(
             username: "test",
             text: object.message.text
         ).wrapped
@@ -31,13 +31,13 @@ struct MessageSectionController: SectionController {
         for attachment in object.message.attachments {
             switch attachment.type {
             case 0:
-                let imageAttachment = ImageAttachmentViewModel(url: attachment.url)
+                let imageAttachment = ImageAttachmentChatItem(url: attachment.url)
                 viewModels.append(imageAttachment.wrapped)
             case 1:
-                let videoAttachment = VideoAttachmentViewModel(url: attachment.url)
+                let videoAttachment = VideoAttachmentChatItem(url: attachment.url)
                 viewModels.append(videoAttachment.wrapped)
             case 2:
-                let audioAttachment = AudioAttachmentViewModel(url: attachment.url)
+                let audioAttachment = AudioAttachmentChatItem(url: attachment.url)
                 viewModels.append(audioAttachment.wrapped)
             default:
                 break
@@ -47,13 +47,9 @@ struct MessageSectionController: SectionController {
         return viewModels
     }
 
-    func cell(for viewModel: AnyChatCellViewModel, on collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: viewModel.relatedReuseIdentifier, for: indexPath)
-        cell.bind(viewModel: viewModel.base)
+    func cell(for viewModel: AnyChatItem, on collectionView: UICollectionView, at indexPath: IndexPath) -> ChatCell {
+        let cell = collectionView.dequeueChatCell(withReuseIdentifier: viewModel.relatedReuseIdentifier, for: indexPath)
+        cell.bind(viewModel: viewModel)
         return cell
-    }
-
-    func height(for viewModel: AnyChatCellViewModel) -> CGFloat? {
-        return viewModel.heightForCurrentState()
     }
 }

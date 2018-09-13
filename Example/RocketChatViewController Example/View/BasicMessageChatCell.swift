@@ -8,15 +8,14 @@
 
 import UIKit
  
-class BasicMessageCollectionViewCell: UICollectionViewCell {
-
-    static let identifier = String(describing: BasicMessageCollectionViewCell.self)
+class BasicMessageChatCell: UICollectionViewCell, ChatCell {
+    static let identifier = String(describing: BasicMessageChatCell.self)
 
     @IBOutlet weak var username: UILabel!
     @IBOutlet weak var message: UILabel!
 
-    override func bind(viewModel: Any) {
-        guard let viewModel = viewModel as? BasicMessageViewModel else {
+    func bind(viewModel: AnyChatItem) {
+        guard let viewModel = viewModel.base as? BasicMessageChatItem else {
             return
         }
 

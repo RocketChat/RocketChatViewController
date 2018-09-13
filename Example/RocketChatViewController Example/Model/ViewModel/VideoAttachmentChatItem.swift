@@ -9,24 +9,16 @@
 import Foundation
 import DifferenceKit
 
-struct VideoAttachmentViewModel: ChatCellViewModel, Differentiable {
+struct VideoAttachmentChatItem: ChatItem, Differentiable, Equatable {
     var relatedReuseIdentifier: String {
-        return VideoAttachmentCollectionViewCell.identifier
+        return VideoAttachmentChatCell.identifier
     }
 
     var url: URL
-
-    func heightForCurrentState() -> CGFloat? {
-        return 222
-    }
 
     // MARK: Differentiable
 
     var differenceIdentifier: String {
         return url.absoluteString
-    }
-
-    func isContentEqual(to source: VideoAttachmentViewModel) -> Bool {
-        return url.absoluteString == source.url.absoluteString
     }
 }

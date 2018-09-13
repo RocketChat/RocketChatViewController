@@ -10,6 +10,6 @@ import Foundation
 
 struct Message {
     let identifier: String
-    let text: String
+    var text: String
     let attachments: [Attachment]
 }
