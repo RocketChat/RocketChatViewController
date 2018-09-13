@@ -246,17 +246,19 @@ class RocketChatViewController: UIViewController {
     }
 
     override func viewSafeAreaInsetsDidChange() {
-        super.viewSafeAreaInsetsDidChange()
+        if #available(iOS 11.0, *) {
+            super.viewSafeAreaInsetsDidChange()
 
-        let top = isInverted ? view.safeAreaInsets.bottom : view.safeAreaInsets.top
-        let bottom = isInverted ? view.safeAreaInsets.top : view.safeAreaInsets.bottom
+            let top = isInverted ? view.safeAreaInsets.bottom : view.safeAreaInsets.top
+            let bottom = isInverted ? view.safeAreaInsets.top : view.safeAreaInsets.bottom
 
-        collectionView.contentInset = UIEdgeInsets(
-            top: top,
-            left: view.safeAreaInsets.left,
-            bottom: bottom,
-            right: view.safeAreaInsets.right
-        )
+            collectionView.contentInset = UIEdgeInsets(
+                top: top,
+                left: view.safeAreaInsets.left,
+                bottom: bottom,
+                right: view.safeAreaInsets.right
+            )
+        }
     }
 
     func setupChatViews() {
@@ -267,9 +269,15 @@ class RocketChatViewController: UIViewController {
 
         viewComposer.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.contentInsetAdjustmentBehavior = .never
 
-        let bottomMargin = view.safeAreaLayoutGuide.bottomAnchor
+        var bottomMargin: NSLayoutYAxisAnchor
+        if #available(iOS 11.0, *) {
+            collectionView.contentInsetAdjustmentBehavior = .never
+            bottomMargin = view.safeAreaLayoutGuide.bottomAnchor
+        } else {
+            bottomMargin = view.bottomAnchor
+        }
+
         composerHeightConstraint = viewComposer.heightAnchor.constraint(equalToConstant: 50)
 
         NSLayoutConstraint.activate([
