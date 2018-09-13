@@ -28,7 +28,7 @@ TODO: Add long description of the pod here.
   s.source           = { :git => 'https://github.com/RocketChat/RocketChatViewController', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/RocketChat'
 
-  s.ios.deployment_target = '11.0'
+  s.ios.deployment_target = '10.0'
 
   s.source_files = 'Example/RocketChatViewController/RocketChatViewController/**/*'
   
