@@ -8,6 +8,7 @@
 
 import Foundation
 import DifferenceKit
+import RocketChatViewController
 
 struct VideoAttachmentChatItem: ChatItem, Differentiable, Equatable {
     var relatedReuseIdentifier: String {

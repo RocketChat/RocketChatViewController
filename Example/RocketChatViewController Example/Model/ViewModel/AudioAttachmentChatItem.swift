@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RocketChatViewController
 import DifferenceKit
 
 struct AudioAttachmentChatItem: ChatItem, Differentiable {
