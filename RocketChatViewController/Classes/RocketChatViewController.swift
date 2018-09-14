@@ -83,7 +83,7 @@ public struct AnyChatSection: ChatSection {
     }
 }
 
-public extension AnyChatSection: Differentiable {
+extension AnyChatSection: Differentiable {
     public var differenceIdentifier: AnyHashable {
         return AnyHashable(base.object.differenceIdentifier)
     }
