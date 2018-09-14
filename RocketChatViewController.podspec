@@ -30,7 +30,7 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '10.0'
 
-  s.source_files = 'Example/RocketChatViewController/RocketChatViewController/**/*'
+  s.source_files = 'Pod/Classes/**/*'
   
   # s.resource_bundles = {
   #   'RocketChatViewController' => ['Example/RocketChatViewController/RocketChatViewController/Assets/*.png']
