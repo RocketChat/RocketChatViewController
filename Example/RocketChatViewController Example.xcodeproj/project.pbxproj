@@ -15,6 +15,22 @@
 		417670EA210FABAD0070CA5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 417670E8210FABAD0070CA5B /* LaunchScreen.storyboard */; };
 		41D775A02110996C00FABB49 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D7759F2110996C00FABB49 /* DataController.swift */; };
 		41D775A221109AAF00FABB49 /* DataControllerPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D775A121109AAF00FABB49 /* DataControllerPlaceholder.swift */; };
+		80101EC621401CBB008E4996 /* RCComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80101EC521401CBB008E4996 /* RCComposerView.swift */; };
+		80101EC821401F75008E4996 /* RCComposerView.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80101EC721401F75008E4996 /* RCComposerView.xcassets */; };
+		80101ECA21402046008E4996 /* RCComposerAssets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80101EC921402046008E4996 /* RCComposerAssets.swift */; };
+		8012CC642141B9C500A5B5DF /* RCReplyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8012CC632141B9C500A5B5DF /* RCReplyView.swift */; };
+		8012CC662141D7D200A5B5DF /* RCComposerAddon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8012CC652141D7D200A5B5DF /* RCComposerAddon.swift */; };
+		8049AA7E21409349002D3D79 /* RCComposerTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8049AA7D21409349002D3D79 /* RCComposerTextView.swift */; };
+		808D42B6214944D100643616 /* RCComposerAddonStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808D42B5214944D100643616 /* RCComposerAddonStackView.swift */; };
+		80E2242E2149698500251AD9 /* RCComposerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E2242D2149698500251AD9 /* RCComposerDelegate.swift */; };
+		80E224322149A76700251AD9 /* RCComposerExpandedDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E224312149A76700251AD9 /* RCComposerExpandedDelegate.swift */; };
+		80E224342149B27A00251AD9 /* RCHintsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E224332149B27A00251AD9 /* RCHintsView.swift */; };
+		80E224372149C02800251AD9 /* RCUserHintCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E224362149C02800251AD9 /* RCUserHintCell.swift */; };
+		80E2243A2149DAC700251AD9 /* ImageAttachmentChatItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E224392149DAC700251AD9 /* ImageAttachmentChatItem.swift */; };
+		80E2243C2149DAFF00251AD9 /* AudioAttachmentChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E2243B2149DAFF00251AD9 /* AudioAttachmentChatCell.swift */; };
+		80E2243E2149DB2F00251AD9 /* VideoAttachmentChatItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E2243D2149DB2E00251AD9 /* VideoAttachmentChatItem.swift */; };
+		80E224402149DB6D00251AD9 /* VideoAttachmentChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E2243F2149DB6D00251AD9 /* VideoAttachmentChatCell.swift */; };
+		80F4DE36214ABD6700836A7E /* Tap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F4DE35214ABD6700836A7E /* Tap.swift */; };
 		99405001212DDE3000CFF865 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99405000212DDE3000CFF865 /* ChatViewController.swift */; };
 		996604142117A15D00E4B082 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996604132117A15D00E4B082 /* Message.swift */; };
 		996604162117A16A00E4B082 /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996604152117A16A00E4B082 /* Attachment.swift */; };
@@ -23,14 +39,10 @@
 		9966041D2117A1F600E4B082 /* BasicMessageChatItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9966041C2117A1F600E4B082 /* BasicMessageChatItem.swift */; };
 		996604202117A4EF00E4B082 /* BasicMessageChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9966041F2117A4EF00E4B082 /* BasicMessageChatCell.swift */; };
 		996604222117A50100E4B082 /* BasicMessageChatCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 996604212117A50100E4B082 /* BasicMessageChatCell.xib */; };
-		99943BB4213EFFEF005CDFC6 /* ImageAttachmentChatItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99943BB3213EFFEF005CDFC6 /* ImageAttachmentChatItem.swift */; };
-		99943BB6213F0185005CDFC6 /* VideoAttachmentChatItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99943BB5213F0185005CDFC6 /* VideoAttachmentChatItem.swift */; };
 		99943BB8213F01AF005CDFC6 /* AudioAttachmentChatItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99943BB7213F01AF005CDFC6 /* AudioAttachmentChatItem.swift */; };
 		99943BBA213F0208005CDFC6 /* ImageAttachmentChatCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99943BB9213F0208005CDFC6 /* ImageAttachmentChatCell.xib */; };
 		99943BBC213F0286005CDFC6 /* ImageAttachmentChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99943BBB213F0286005CDFC6 /* ImageAttachmentChatCell.swift */; };
 		99943BBE213F1255005CDFC6 /* VideoAttachmentChatCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99943BBD213F1255005CDFC6 /* VideoAttachmentChatCell.xib */; };
-		99943BC0213F1265005CDFC6 /* VideoAttachmentChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99943BBF213F1265005CDFC6 /* VideoAttachmentChatCell.swift */; };
-		99943BC2213F15B3005CDFC6 /* AudioAttachmentChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99943BC1213F15B3005CDFC6 /* AudioAttachmentChatCell.swift */; };
 		99943BC4213F15D2005CDFC6 /* AudioAttachmentChatCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99943BC3213F15D2005CDFC6 /* AudioAttachmentChatCell.xib */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +57,23 @@
 		41D7759F2110996C00FABB49 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		41D775A121109AAF00FABB49 /* DataControllerPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataControllerPlaceholder.swift; sourceTree = "<group>"; };
 		51F5BB0A3783F263AF67E692 /* Pods-RocketChatViewController Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RocketChatViewController Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RocketChatViewController Example/Pods-RocketChatViewController Example.debug.xcconfig"; sourceTree = "<group>"; };
+		80101EC521401CBB008E4996 /* RCComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCComposerView.swift; sourceTree = "<group>"; };
+		80101EC721401F75008E4996 /* RCComposerView.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = RCComposerView.xcassets; sourceTree = "<group>"; };
+		80101EC921402046008E4996 /* RCComposerAssets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCComposerAssets.swift; sourceTree = "<group>"; };
+		8012CC632141B9C500A5B5DF /* RCReplyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCReplyView.swift; sourceTree = "<group>"; };
+		8012CC652141D7D200A5B5DF /* RCComposerAddon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCComposerAddon.swift; sourceTree = "<group>"; };
+		8049AA7D21409349002D3D79 /* RCComposerTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCComposerTextView.swift; sourceTree = "<group>"; };
+		808D42B5214944D100643616 /* RCComposerAddonStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCComposerAddonStackView.swift; sourceTree = "<group>"; };
+		80E2242D2149698500251AD9 /* RCComposerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCComposerDelegate.swift; sourceTree = "<group>"; };
+		80E224312149A76700251AD9 /* RCComposerExpandedDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCComposerExpandedDelegate.swift; sourceTree = "<group>"; };
+		80E224332149B27A00251AD9 /* RCHintsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCHintsView.swift; sourceTree = "<group>"; };
+		80E224362149C02800251AD9 /* RCUserHintCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCUserHintCell.swift; sourceTree = "<group>"; };
+		80E224382149DA9000251AD9 /* AudioAttachmentChatItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AudioAttachmentChatItem.swift; path = "RocketChatViewController Example/Model/ViewModel/AudioAttachmentChatItem.swift"; sourceTree = "<group>"; };
+		80E224392149DAC700251AD9 /* ImageAttachmentChatItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageAttachmentChatItem.swift; path = "RocketChatViewController Example/Model/ViewModel/ImageAttachmentChatItem.swift"; sourceTree = "<group>"; };
+		80E2243B2149DAFF00251AD9 /* AudioAttachmentChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AudioAttachmentChatCell.swift; path = "RocketChatViewController Example/View/AudioAttachmentChatCell.swift"; sourceTree = "<group>"; };
+		80E2243D2149DB2E00251AD9 /* VideoAttachmentChatItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VideoAttachmentChatItem.swift; path = "RocketChatViewController Example/Model/ViewModel/VideoAttachmentChatItem.swift"; sourceTree = "<group>"; };
+		80E2243F2149DB6D00251AD9 /* VideoAttachmentChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VideoAttachmentChatCell.swift; path = "RocketChatViewController Example/View/VideoAttachmentChatCell.swift"; sourceTree = "<group>"; };
+		80F4DE35214ABD6700836A7E /* Tap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tap.swift; sourceTree = "<group>"; };
 		91BDF435ACF397E2211DE8C9 /* Pods_RocketChatViewController_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RocketChatViewController_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		99405000212DDE3000CFF865 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		996604132117A15D00E4B082 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -90,6 +119,11 @@
 		417670D3210FABAA0070CA5B = {
 			isa = PBXGroup;
 			children = (
+				80E2243F2149DB6D00251AD9 /* VideoAttachmentChatCell.swift */,
+				80E2243D2149DB2E00251AD9 /* VideoAttachmentChatItem.swift */,
+				80E2243B2149DAFF00251AD9 /* AudioAttachmentChatCell.swift */,
+				80E224392149DAC700251AD9 /* ImageAttachmentChatItem.swift */,
+				80E224382149DA9000251AD9 /* AudioAttachmentChatItem.swift */,
 				417670DE210FABAA0070CA5B /* RocketChatViewController Example */,
 				417670DD210FABAA0070CA5B /* Products */,
 				1658F163EF86A1EE58DD6349 /* Pods */,
@@ -111,6 +145,7 @@
 				9966041E2117A4D700E4B082 /* View */,
 				996604192117A18600E4B082 /* Controller */,
 				996604122117A0E800E4B082 /* Model */,
+				80101EC221401C67008E4996 /* RCComposerView */,
 				417670DF210FABAA0070CA5B /* AppDelegate.swift */,
 				41D7759F2110996C00FABB49 /* DataController.swift */,
 				41D775A121109AAF00FABB49 /* DataControllerPlaceholder.swift */,
@@ -121,6 +156,65 @@
 				417670EB210FABAD0070CA5B /* Info.plist */,
 			);
 			path = "RocketChatViewController Example";
+			sourceTree = "<group>";
+		};
+		80101EC221401C67008E4996 /* RCComposerView */ = {
+			isa = PBXGroup;
+			children = (
+				80F4DE34214ABD5300836A7E /* Library */,
+				808D42B72149627B00643616 /* Delegate */,
+				8012CC622141B9B100A5B5DF /* Addons */,
+				808D42B5214944D100643616 /* RCComposerAddonStackView.swift */,
+				8049AA7D21409349002D3D79 /* RCComposerTextView.swift */,
+				80101EC521401CBB008E4996 /* RCComposerView.swift */,
+				80101EC921402046008E4996 /* RCComposerAssets.swift */,
+				80101EC721401F75008E4996 /* RCComposerView.xcassets */,
+			);
+			path = RCComposerView;
+			sourceTree = "<group>";
+		};
+		8012CC622141B9B100A5B5DF /* Addons */ = {
+			isa = PBXGroup;
+			children = (
+				8012CC652141D7D200A5B5DF /* RCComposerAddon.swift */,
+				80E224352149BFD500251AD9 /* Hints */,
+				80E224422149DD8900251AD9 /* Reply */,
+			);
+			path = Addons;
+			sourceTree = "<group>";
+		};
+		808D42B72149627B00643616 /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				80E2242D2149698500251AD9 /* RCComposerDelegate.swift */,
+				80E224312149A76700251AD9 /* RCComposerExpandedDelegate.swift */,
+			);
+			path = Delegate;
+			sourceTree = "<group>";
+		};
+		80E224352149BFD500251AD9 /* Hints */ = {
+			isa = PBXGroup;
+			children = (
+				80E224332149B27A00251AD9 /* RCHintsView.swift */,
+				80E224362149C02800251AD9 /* RCUserHintCell.swift */,
+			);
+			path = Hints;
+			sourceTree = "<group>";
+		};
+		80E224422149DD8900251AD9 /* Reply */ = {
+			isa = PBXGroup;
+			children = (
+				8012CC632141B9C500A5B5DF /* RCReplyView.swift */,
+			);
+			path = Reply;
+			sourceTree = "<group>";
+		};
+		80F4DE34214ABD5300836A7E /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				80F4DE35214ABD6700836A7E /* Tap.swift */,
+			);
+			path = Library;
 			sourceTree = "<group>";
 		};
 		996604122117A0E800E4B082 /* Model */ = {
@@ -238,6 +332,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				99943BC4213F15D2005CDFC6 /* AudioAttachmentChatCell.xib in Resources */,
+				80101EC821401F75008E4996 /* RCComposerView.xcassets in Resources */,
+				99943BBA213F0208005CDFC6 /* ImageAttachmentChatCell.xib in Resources */,
+				99943BC4213F15D2005CDFC6 /* AudioAttachmentChatCell.xib in Resources */,
 				99943BBA213F0208005CDFC6 /* ImageAttachmentChatCell.xib in Resources */,
 				417670EA210FABAD0070CA5B /* LaunchScreen.storyboard in Resources */,
 				996604222117A50100E4B082 /* BasicMessageChatCell.xib in Resources */,
@@ -295,23 +392,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80E224402149DB6D00251AD9 /* VideoAttachmentChatCell.swift in Sources */,
+				80E2243E2149DB2F00251AD9 /* VideoAttachmentChatItem.swift in Sources */,
+				80E2243C2149DAFF00251AD9 /* AudioAttachmentChatCell.swift in Sources */,
+				80E2243A2149DAC700251AD9 /* ImageAttachmentChatItem.swift in Sources */,
 				99943BB8213F01AF005CDFC6 /* AudioAttachmentChatItem.swift in Sources */,
+				80F4DE36214ABD6700836A7E /* Tap.swift in Sources */,
 				996604202117A4EF00E4B082 /* BasicMessageChatCell.swift in Sources */,
 				9966041B2117A1A400E4B082 /* MessageChatSection.swift in Sources */,
 				417670E2210FABAA0070CA5B /* ViewController.swift in Sources */,
-				99943BC2213F15B3005CDFC6 /* AudioAttachmentChatCell.swift in Sources */,
 				996604162117A16A00E4B082 /* Attachment.swift in Sources */,
 				99943BBC213F0286005CDFC6 /* ImageAttachmentChatCell.swift in Sources */,
 				41D775A02110996C00FABB49 /* DataController.swift in Sources */,
-				99943BC0213F1265005CDFC6 /* VideoAttachmentChatCell.swift in Sources */,
-				99943BB6213F0185005CDFC6 /* VideoAttachmentChatItem.swift in Sources */,
+				80E224342149B27A00251AD9 /* RCHintsView.swift in Sources */,
+				8012CC662141D7D200A5B5DF /* RCComposerAddon.swift in Sources */,
+				80E2242E2149698500251AD9 /* RCComposerDelegate.swift in Sources */,
 				996604142117A15D00E4B082 /* Message.swift in Sources */,
+				80101EC621401CBB008E4996 /* RCComposerView.swift in Sources */,
 				41D775A221109AAF00FABB49 /* DataControllerPlaceholder.swift in Sources */,
 				9966041D2117A1F600E4B082 /* BasicMessageChatItem.swift in Sources */,
 				99405001212DDE3000CFF865 /* ChatViewController.swift in Sources */,
-				99943BB4213EFFEF005CDFC6 /* ImageAttachmentChatItem.swift in Sources */,
+				8049AA7E21409349002D3D79 /* RCComposerTextView.swift in Sources */,
+				808D42B6214944D100643616 /* RCComposerAddonStackView.swift in Sources */,
+				80E224322149A76700251AD9 /* RCComposerExpandedDelegate.swift in Sources */,
+				80101ECA21402046008E4996 /* RCComposerAssets.swift in Sources */,
 				417670E0210FABAA0070CA5B /* AppDelegate.swift in Sources */,
+				80E224372149C02800251AD9 /* RCUserHintCell.swift in Sources */,
 				996604182117A17D00E4B082 /* MessageSectionModel.swift in Sources */,
+				8012CC642141B9C500A5B5DF /* RCReplyView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

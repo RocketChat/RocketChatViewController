@@ -208,8 +208,12 @@ open class RocketChatViewController: UIViewController {
         return collectionView
     }()
 
-    open var composerHeightConstraint: NSLayoutConstraint!
-    open var viewComposer: UIView! = UIView()
+    open lazy var composerView: RCComposerView = {
+        let composer = RCComposerView(frame: .zero)
+        composer.delegate = self
+
+        return composer
+    }()
 
     open var data: [AnyChatSection] = []
     private var internalData: [ArraySection<AnyChatSection, AnyChatItem>] = []
@@ -262,12 +266,12 @@ open class RocketChatViewController: UIViewController {
     }
 
     func setupChatViews() {
-        view.addSubview(viewComposer)
+        view.addSubview(composerView)
         view.addSubview(collectionView)
 
         collectionView.transform = isInverted ? invertedTransform : collectionView.transform
 
-        viewComposer.translatesAutoresizingMaskIntoConstraints = false
+        composerView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
 
         var bottomMargin: NSLayoutYAxisAnchor
@@ -278,15 +282,12 @@ open class RocketChatViewController: UIViewController {
             bottomMargin = view.bottomAnchor
         }
 
-        composerHeightConstraint = viewComposer.heightAnchor.constraint(equalToConstant: 50)
-
         NSLayoutConstraint.activate([
-            composerHeightConstraint,
-            viewComposer.bottomAnchor.constraint(equalTo: bottomMargin),
-            viewComposer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            viewComposer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            composerView.bottomAnchor.constraint(equalTo: bottomMargin),
+            composerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            composerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: viewComposer.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: composerView.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
@@ -349,4 +350,51 @@ extension RocketChatViewController: UICollectionViewDataSource {
     }
 }
 
+// MARK: Composer Delegate
+
+extension RocketChatViewController: RCComposerExpandedDelegate {
+    var isComposerReplying: Bool {
+        get {
+            return true
+        }
+    }
+
+    var isComposerHinting: Bool {
+        get {
+            return true
+        }
+    }
+
+    func composerView(_ composerView: RCComposerView, didTapButtonAt slot: RCComposerButtonSlot) {
+        switch slot {
+        case .right:
+            composerView.textView.text = ""
+        case .left:
+            break
+        }
+    }
+
+    func numberOfHints(in hintsView: RCHintsView) -> Int {
+        return 3
+    }
+
+    func hintsView(_ hintsView: RCHintsView, cellForHintAt index: Int) -> UITableViewCell {
+        let cell: RCUserHintCell
+
+        if let userCell = hintsView.dequeueReusableCell(withIdentifier: "cell") as? RCUserHintCell {
+            cell = userCell
+        } else {
+            hintsView.register(RCUserHintCell.self, forCellReuseIdentifier: "cell")
+            cell = hintsView.dequeueReusableCell(withIdentifier: "cell") as? RCUserHintCell ?? RCUserHintCell()
+        }
+
+        cell.avatarView.backgroundColor = .black
+        cell.nameLabel.text = "Karem Flusser"
+        cell.usernameLabel.text = "@karem.flusser"
+
+        return cell
+    }
+}
+
 extension RocketChatViewController: UICollectionViewDelegateFlowLayout {}
+
