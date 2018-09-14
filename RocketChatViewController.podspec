@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.version          = '0.1.0'
   s.summary          = 'RocketChatViewController is a light weight library that allows you to implement a chat on iOS.'
  
-  spec.dependency 'DifferenceKit/Core', '~> 0.5.3'
+  s.dependency 'DifferenceKit/Core', '~> 0.5.3'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
