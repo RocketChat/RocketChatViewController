@@ -13,8 +13,8 @@ fileprivate extension NSNotification.Name {
     static let triggerDataUpdate = NSNotification.Name("TRIGGER_DATA_UPDATE")
 }
 
-extension UICollectionView {
-    func dequeueChatCell(withReuseIdentifier reuseIdetifier: String, for indexPath: IndexPath) -> ChatCell {
+public extension UICollectionView {
+    public func dequeueChatCell(withReuseIdentifier reuseIdetifier: String, for indexPath: IndexPath) -> ChatCell {
         guard let cell = dequeueReusableCell(withReuseIdentifier: reuseIdetifier, for: indexPath) as? ChatCell else {
             fatalError("Trying to dequeue a reusable UICollectionViewCell that doesn't conforms to BindableCell protocol")
         }
@@ -197,7 +197,7 @@ public protocol ChatCell {
 
  */
 
-public class RocketChatViewController: UIViewController {
+open class RocketChatViewController: UIViewController {
     public var collectionView: UICollectionView = {
         let collectionView = UICollectionView(
             frame: .zero,
@@ -208,10 +208,10 @@ public class RocketChatViewController: UIViewController {
         return collectionView
     }()
 
-    public var composerHeightConstraint: NSLayoutConstraint!
-    public var viewComposer: UIView! = UIView()
+    open var composerHeightConstraint: NSLayoutConstraint!
+    open var viewComposer: UIView! = UIView()
 
-    public var data: [AnyChatSection] = []
+    open var data: [AnyChatSection] = []
     private var internalData: [ArraySection<AnyChatSection, AnyChatItem>] = []
 
     private let updateDataQueue: OperationQueue = {
@@ -222,11 +222,11 @@ public class RocketChatViewController: UIViewController {
         return operationQueue
     }()
 
-    public var isInverted = true
-    public var isSelfSizing = false
+    open var isInverted = true
+    open var isSelfSizing = false
     private let invertedTransform = CGAffineTransform(scaleX: 1, y: -1)
 
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         setupChatViews()
         registerObservers()
@@ -245,7 +245,7 @@ public class RocketChatViewController: UIViewController {
         )
     }
 
-    override public func viewSafeAreaInsetsDidChange() {
+    override open func viewSafeAreaInsetsDidChange() {
         if #available(iOS 11.0, *) {
             super.viewSafeAreaInsetsDidChange()
 
@@ -300,7 +300,7 @@ public class RocketChatViewController: UIViewController {
         }
     }
 
-    @objc public func updateData() {
+    @objc open func updateData() {
         updateDataQueue.addOperation { [weak self] in
             guard let strongSelf = self else { return }
 
@@ -325,15 +325,15 @@ public class RocketChatViewController: UIViewController {
 }
 
 extension RocketChatViewController: UICollectionViewDataSource {
-    public func numberOfSections(in collectionView: UICollectionView) -> Int {
+    open func numberOfSections(in collectionView: UICollectionView) -> Int {
         return internalData.count
     }
 
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return internalData[section].elements.count
     }
 
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let sectionController = internalData[indexPath.section].model
         let viewModel = sectionController.viewModels()[indexPath.row]
 
@@ -344,7 +344,7 @@ extension RocketChatViewController: UICollectionViewDataSource {
         return chatCell
     }
 
-    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    open func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         cell.contentView.transform = isInverted ? invertedTransform : cell.contentView.transform
     }
 }
