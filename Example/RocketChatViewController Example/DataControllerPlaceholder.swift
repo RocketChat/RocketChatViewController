@@ -8,6 +8,7 @@
 
 import Foundation
 import DifferenceKit
+import RocketChatViewController
 
 struct DataControllerPlaceholder {
 

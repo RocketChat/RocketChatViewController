@@ -1,16 +1,29 @@
 PODS:
+  - DifferenceKit (0.5.3):
+    - DifferenceKit/Core (= 0.5.3)
+    - DifferenceKit/UIExtensions (= 0.5.3)
   - DifferenceKit/Core (0.5.3)
+  - DifferenceKit/UIExtensions (0.5.3):
+    - DifferenceKit/Core
+  - RocketChatViewController (0.1.0):
+    - DifferenceKit (~> 0.5.3)
 
 DEPENDENCIES:
   - DifferenceKit/Core (~> 0.5.3)
+  - RocketChatViewController (from `../`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - DifferenceKit
 
+EXTERNAL SOURCES:
+  RocketChatViewController:
+    :path: "../"
+
 SPEC CHECKSUMS:
   DifferenceKit: 2037137305c55a39ff729baa72697efa30b1052d
+  RocketChatViewController: 0b7ef975684fbfb7ce78ea1497c3e2258ead3c3e
 
-PODFILE CHECKSUM: 4b9dc9d6088fb0e0ebace093fea6097172379284
+PODFILE CHECKSUM: 5ea8a150f246234c0e33ada810343be53fc57bc2
 
 COCOAPODS: 1.5.3

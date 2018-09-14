@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RocketChatViewController
  
 class BasicMessageChatCell: UICollectionViewCell, ChatCell {
     static let identifier = String(describing: BasicMessageChatCell.self)

@@ -8,6 +8,7 @@
 
 import UIKit
 import DifferenceKit
+import RocketChatViewController
 
 final class ChatViewController: RocketChatViewController {
     override func viewDidLoad() {

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RocketChatViewController
 
 class ImageAttachmentChatCell: UICollectionViewCell, ChatCell {
     static let identifier = String(describing: ImageAttachmentChatCell.self)
