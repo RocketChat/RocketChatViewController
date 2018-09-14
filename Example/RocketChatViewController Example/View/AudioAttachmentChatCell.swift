@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RocketChatViewController
 
 class AudioAttachmentChatCell: UICollectionViewCell, ChatCell {
     static let identifier = String(describing: AudioAttachmentChatCell.self)
