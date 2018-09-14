@@ -32,12 +32,12 @@ extension UICollectionView {
  */
 
 public struct AnyChatItem: ChatItem, Differentiable {
-    var relatedReuseIdentifier: String {
+   public var relatedReuseIdentifier: String {
         return base.relatedReuseIdentifier
     }
 
-    let base: ChatItem
-    let differenceIdentifier: AnyHashable
+    public let base: ChatItem
+    public let differenceIdentifier: AnyHashable
 
     let isUpdatedFrom: (AnyChatItem) -> Bool
 
@@ -51,7 +51,7 @@ public struct AnyChatItem: ChatItem, Differentiable {
         }
     }
 
-    func isContentEqual(to source: AnyChatItem) -> Bool {
+    public func isContentEqual(to source: AnyChatItem) -> Bool {
         return isUpdatedFrom(source)
     }
 }
@@ -64,31 +64,31 @@ public struct AnyChatItem: ChatItem, Differentiable {
  */
 
 public struct AnyChatSection: ChatSection {
-    var object: AnyDifferentiable {
+    public var object: AnyDifferentiable {
         return base.object
     }
 
-    let base: ChatSection
+    public let base: ChatSection
 
     public init<D: ChatSection>(_ base: D) {
         self.base = base
     }
 
-    func viewModels() -> [AnyChatItem] {
+    public func viewModels() -> [AnyChatItem] {
         return base.viewModels()
     }
 
-    func cell(for viewModel: AnyChatItem, on collectionView: UICollectionView, at indexPath: IndexPath) -> ChatCell {
+    public func cell(for viewModel: AnyChatItem, on collectionView: UICollectionView, at indexPath: IndexPath) -> ChatCell {
         return base.cell(for: viewModel, on: collectionView, at: indexPath)
     }
 }
 
 public extension AnyChatSection: Differentiable {
-    var differenceIdentifier: AnyHashable {
+    public var differenceIdentifier: AnyHashable {
         return AnyHashable(base.object.differenceIdentifier)
     }
 
-    func isContentEqual(to source: AnyChatSection) -> Bool {
+    public func isContentEqual(to source: AnyChatSection) -> Bool {
         return base.object.isContentEqual(to: source.object)
     }
 }
@@ -118,7 +118,7 @@ public protocol ChatSection {
 }
 
 public extension ChatSection {
-    func update() {
+    public func update() {
         NotificationCenter.default.post(
             name: .triggerDataUpdate,
             object: nil
@@ -140,7 +140,7 @@ public extension ChatItem where Self: Differentiable {
     // In order to use a ChatCellViewModel along with a SectionController
     // we must use it as a type-erased ChatCellViewModel, which in this case also means
     // that it must conform to the Differentiable protocol.
-    var wrapped: AnyChatItem {
+    public var wrapped: AnyChatItem {
         return AnyChatItem(self)
     }
 }
@@ -226,7 +226,7 @@ public class RocketChatViewController: UIViewController {
     public var isSelfSizing = false
     private let invertedTransform = CGAffineTransform(scaleX: 1, y: -1)
 
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         setupChatViews()
         registerObservers()
@@ -245,7 +245,7 @@ public class RocketChatViewController: UIViewController {
         )
     }
 
-    override func viewSafeAreaInsetsDidChange() {
+    override public func viewSafeAreaInsetsDidChange() {
         if #available(iOS 11.0, *) {
             super.viewSafeAreaInsetsDidChange()
 
@@ -325,15 +325,15 @@ public class RocketChatViewController: UIViewController {
 }
 
 extension RocketChatViewController: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    public func numberOfSections(in collectionView: UICollectionView) -> Int {
         return internalData.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return internalData[section].elements.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let sectionController = internalData[indexPath.section].model
         let viewModel = sectionController.viewModels()[indexPath.row]
 
@@ -344,9 +344,9 @@ extension RocketChatViewController: UICollectionViewDataSource {
         return chatCell
     }
 
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         cell.contentView.transform = isInverted ? invertedTransform : cell.contentView.transform
     }
 }
 
-public extension RocketChatViewController: UICollectionViewDelegateFlowLayout {}
+extension RocketChatViewController: UICollectionViewDelegateFlowLayout {}
