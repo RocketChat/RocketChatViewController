@@ -31,7 +31,7 @@ extension UICollectionView {
     hiding its specific underlying type.
  */
 
-struct AnyChatItem: ChatItem, Differentiable {
+public struct AnyChatItem: ChatItem, Differentiable {
     var relatedReuseIdentifier: String {
         return base.relatedReuseIdentifier
     }
@@ -63,7 +63,7 @@ struct AnyChatItem: ChatItem, Differentiable {
     for RocketChatViewController to build one section, hiding its specific underlying type.
  */
 
-struct AnyChatSection: ChatSection {
+public struct AnyChatSection: ChatSection {
     var object: AnyDifferentiable {
         return base.object
     }
@@ -83,7 +83,7 @@ struct AnyChatSection: ChatSection {
     }
 }
 
-extension AnyChatSection: Differentiable {
+public extension AnyChatSection: Differentiable {
     var differenceIdentifier: AnyHashable {
         return AnyHashable(base.object.differenceIdentifier)
     }
@@ -111,13 +111,13 @@ fileprivate extension AnyChatSection {
     A SectionController's object is meant to be immutable.
  */
 
-protocol ChatSection {
+public protocol ChatSection {
     var object: AnyDifferentiable { get }
     func viewModels() -> [AnyChatItem]
     func cell(for viewModel: AnyChatItem, on collectionView: UICollectionView, at indexPath: IndexPath) -> ChatCell
 }
 
-extension ChatSection {
+public extension ChatSection {
     func update() {
         NotificationCenter.default.post(
             name: .triggerDataUpdate,
@@ -132,11 +132,11 @@ extension ChatSection {
     A ChatCellViewModel also holds the related UICollectionViewCell's reuseIdentifier.
  */
 
-protocol ChatItem {
+public protocol ChatItem {
     var relatedReuseIdentifier: String { get }
 }
 
-extension ChatItem where Self: Differentiable {
+public extension ChatItem where Self: Differentiable {
     // In order to use a ChatCellViewModel along with a SectionController
     // we must use it as a type-erased ChatCellViewModel, which in this case also means
     // that it must conform to the Differentiable protocol.
@@ -149,7 +149,7 @@ extension ChatItem where Self: Differentiable {
     A protocol that must be implemented by all cells to padronize the way we bind the data on its view.
  */
 
-protocol ChatCell {
+public protocol ChatCell {
     func bind(viewModel: AnyChatItem)
 }
 
@@ -197,8 +197,8 @@ protocol ChatCell {
 
  */
 
-class RocketChatViewController: UIViewController {
-    var collectionView: UICollectionView = {
+public class RocketChatViewController: UIViewController {
+    public var collectionView: UICollectionView = {
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout()
@@ -208,10 +208,10 @@ class RocketChatViewController: UIViewController {
         return collectionView
     }()
 
-    var composerHeightConstraint: NSLayoutConstraint!
-    var viewComposer: UIView! = UIView()
+    public var composerHeightConstraint: NSLayoutConstraint!
+    public var viewComposer: UIView! = UIView()
 
-    var data: [AnyChatSection] = []
+    public var data: [AnyChatSection] = []
     private var internalData: [ArraySection<AnyChatSection, AnyChatItem>] = []
 
     private let updateDataQueue: OperationQueue = {
@@ -222,8 +222,8 @@ class RocketChatViewController: UIViewController {
         return operationQueue
     }()
 
-    var isInverted = true
-    var isSelfSizing = false
+    public var isInverted = true
+    public var isSelfSizing = false
     private let invertedTransform = CGAffineTransform(scaleX: 1, y: -1)
 
     override func viewDidLoad() {
@@ -300,7 +300,7 @@ class RocketChatViewController: UIViewController {
         }
     }
 
-    @objc func updateData() {
+    @objc public func updateData() {
         updateDataQueue.addOperation { [weak self] in
             guard let strongSelf = self else { return }
 
@@ -349,4 +349,4 @@ extension RocketChatViewController: UICollectionViewDataSource {
     }
 }
 
-extension RocketChatViewController: UICollectionViewDelegateFlowLayout {}
+public extension RocketChatViewController: UICollectionViewDelegateFlowLayout {}
