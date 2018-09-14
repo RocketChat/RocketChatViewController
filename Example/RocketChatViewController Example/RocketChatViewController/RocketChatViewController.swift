@@ -367,8 +367,25 @@ extension RocketChatViewController: RCComposerExpandedDelegate {
         }
     }
 
+    func numberOfHints(in hintsView: RCHintsView) -> Int {
+        return 3
+    }
+
     func hintsView(_ hintsView: RCHintsView, cellForHintAt index: Int) -> UITableViewCell {
-        return RCUserHintsViewCell()
+        let cell: RCUserHintCell
+
+        if let userCell = hintsView.dequeueReusableCell(withIdentifier: "cell") as? RCUserHintCell {
+            cell = userCell
+        } else {
+            hintsView.register(RCUserHintCell.self, forCellReuseIdentifier: "cell")
+            cell = hintsView.dequeueReusableCell(withIdentifier: "cell") as? RCUserHintCell ?? RCUserHintCell()
+        }
+
+        cell.avatarView.backgroundColor = .black
+        cell.nameLabel.text = "Karem Flusser"
+        cell.usernameLabel.text = "@karem.flusser"
+
+        return cell
     }
 }
 

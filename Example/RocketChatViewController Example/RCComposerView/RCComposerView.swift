@@ -26,15 +26,6 @@ enum RCComposerButtonState {
 }
 
 /**
- A helper function that returns the object with a transformation applied.
- */
-@discardableResult private func tap<Object>(_ object: Object, transform: (inout Object) throws -> Void) rethrows -> Object {
-    var object = object
-    try transform(&object)
-    return object
-}
-
-/**
  A struct that represents a button in the composer.
  */
 struct RCComposerButton {
@@ -111,21 +102,14 @@ class RCComposerView: UIView {
     }
 
     /**
-     The composer's height constraint.
-     */
-    lazy var heightConstraint: NSLayoutConstraint = {
-        return heightAnchor.constraint(equalToConstant: Sizes.composerHeight)
-    }()
-
-    /**
      The button that stays in the left side of the composer.
      */
     let leftButton = tap(UIButton()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            $0.widthAnchor.constraint(equalToConstant: Sizes.leftButtonWidth),
-            $0.heightAnchor.constraint(equalToConstant: Sizes.leftButtonHeight)
+            $0.widthAnchor.constraint(equalToConstant: Consts.leftButtonWidth),
+            $0.heightAnchor.constraint(equalToConstant: Consts.leftButtonHeight)
         ])
 
         $0.addTarget(self, action: #selector(touchUpInside(button:)), for: .touchUpInside)
@@ -138,8 +122,8 @@ class RCComposerView: UIView {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            $0.widthAnchor.constraint(equalToConstant: Sizes.rightButtonWidth),
-            $0.heightAnchor.constraint(equalToConstant: Sizes.rightButtonHeight)
+            $0.widthAnchor.constraint(equalToConstant: Consts.rightButtonWidth),
+            $0.heightAnchor.constraint(equalToConstant: Consts.rightButtonHeight)
         ])
 
         $0.addTarget(self, action: #selector(touchUpInside(button:)), for: .touchUpInside)
@@ -152,7 +136,7 @@ class RCComposerView: UIView {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
         $0.placeholderLabel.text = "Type a message"
-        $0.font = UIFont.systemFont(ofSize: Sizes.fontSize)
+        $0.font = UIFont.systemFont(ofSize: Consts.fontSize)
     }
 
     /**
@@ -171,7 +155,7 @@ class RCComposerView: UIView {
         $0.backgroundColor = #colorLiteral(red: 0.8823529412, green: 0.8980392157, blue: 0.9098039216, alpha: 1)
 
         NSLayoutConstraint.activate([
-            $0.heightAnchor.constraint(equalToConstant: Sizes.topSeparatorViewHeight)
+            $0.heightAnchor.constraint(equalToConstant: Consts.topSeparatorViewHeight)
         ])
     }
 
@@ -180,6 +164,14 @@ class RCComposerView: UIView {
      */
     let utilityStackView = tap(RCComposerAddonStackView()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    override var intrinsicContentSize: CGSize {
+        let composerHeight = textView.contentSize.height + Consts.textViewTop + Consts.textViewBottom
+        let addonsHeight = componentStackView.frame.height + utilityStackView.frame.height
+        let height = min(composerHeight, currentDelegate.maximumHeight(for: self)) + addonsHeight
+
+        return CGSize(width: super.intrinsicContentSize.width, height: height)
     }
 
     override init(frame: CGRect) {
@@ -221,7 +213,6 @@ class RCComposerView: UIView {
         self.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            heightConstraint,
 
             // utilityStackView constraints
 
@@ -241,34 +232,34 @@ class RCComposerView: UIView {
             // textView constraints
 
             tap(textView.leadingAnchor.constraint(equalTo: leftButton.trailingAnchor)) {
-                $0.constant = Sizes.textViewLeading
+                $0.constant = Consts.textViewLeading
             },
             tap(textView.trailingAnchor.constraint(equalTo: rightButton.leadingAnchor)) {
-                $0.constant = -Sizes.textViewTrailing
+                $0.constant = -Consts.textViewTrailing
             },
             tap(textView.topAnchor.constraint(equalTo: componentStackView.bottomAnchor)) {
-                $0.constant = Sizes.textViewTop
+                $0.constant = Consts.textViewTop
             },
             tap(textView.bottomAnchor.constraint(equalTo: bottomAnchor)) {
-                $0.constant = -Sizes.textViewBottom
+                $0.constant = -Consts.textViewBottom
             },
 
             // rightButton constraints
 
             tap(rightButton.trailingAnchor.constraint(equalTo: trailingAnchor)) {
-                $0.constant = -Sizes.rightButtonTrailing
+                $0.constant = -Consts.rightButtonTrailing
             },
             tap(rightButton.bottomAnchor.constraint(equalTo: bottomAnchor)) {
-                $0.constant = -Sizes.rightButtonBottom
+                $0.constant = -Consts.rightButtonBottom
             },
 
             // leftButton constraints
 
             tap(leftButton.leadingAnchor.constraint(equalTo: leadingAnchor)) {
-                $0.constant = Sizes.leftButtonLeading
+                $0.constant = Consts.leftButtonLeading
             },
             tap(leftButton.bottomAnchor.constraint(equalTo: bottomAnchor)) {
-                $0.constant = -Sizes.leftButtonBottom
+                $0.constant = -Consts.leftButtonBottom
             }
         ])
     }
@@ -277,14 +268,7 @@ class RCComposerView: UIView {
      Update composer height
      */
     func updateHeight() {
-        let newHeight = textView.contentSize.height + Sizes.textViewTop + Sizes.textViewBottom
-        let addonsHeight = componentStackView.frame.height + utilityStackView.frame.height
-
-        UIView.animate(withDuration: 0.2, animations: {
-            self.heightConstraint.constant = min(newHeight, self.currentDelegate.maximumHeight(for: self)) + addonsHeight
-        }, completion: { _ in
-            self.textView.setContentOffset(.zero, animated: true)
-        })
+        invalidateIntrinsicContentSize()
     }
 
     override func layoutSubviews() {
@@ -357,13 +341,13 @@ extension RCComposerView {
     }
 }
 
-// MARK: Sizes
+// MARK: Consts
 
 private extension RCComposerView {
     /**
      Constants for sizes and margins in the composer view.
      */
-    private struct Sizes {
+    private struct Consts {
         static var composerHeight: CGFloat = 54
         static var fontSize: CGFloat = 17
 

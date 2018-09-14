@@ -49,6 +49,11 @@ class RCHintsView: UITableView {
         return CGSize(width: contentSize.width, height: min(contentSize.height, currentDelegate.maximumHeight(for: self)))
     }
 
+    override func reloadData() {
+        super.reloadData()
+        invalidateIntrinsicContentSize()
+    }
+
     init() {
         super.init(frame: .zero, style: .plain)
         self.commonInit()
@@ -64,7 +69,8 @@ class RCHintsView: UITableView {
      */
     func commonInit() {
         dataSource = self
-        backgroundColor = .blue
+        rowHeight = UITableViewAutomaticDimension
+        estimatedRowHeight = 44
 
         addSubviews()
         setupConstraints()
@@ -81,7 +87,7 @@ class RCHintsView: UITableView {
      Sets up constraints between the UI elements in the composer.
      */
     private func setupConstraints() {
-        self.translatesAutoresizingMaskIntoConstraints = false
+        //translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
 
