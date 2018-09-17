@@ -197,11 +197,48 @@ public protocol ChatCell {
 
  */
 
+fileprivate final class RocketChatFlowLayout: UICollectionViewFlowLayout {
+
+    override init() {
+        super.init()
+        estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        guard let layoutAttributes = super.layoutAttributesForItem(at: indexPath) else { return nil }
+        guard let collectionView = collectionView else { return nil }
+
+        if #available(iOS 11.0, *) {
+            layoutAttributes.bounds.size.width = collectionView.safeAreaLayoutGuide.layoutFrame.width - sectionInset.left - sectionInset.right
+        } else {
+            layoutAttributes.bounds.size.width = collectionView.frame.size.width - sectionInset.left - sectionInset.right
+        }
+
+        return layoutAttributes
+    }
+
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        guard let superLayoutAttributes = super.layoutAttributesForElements(in: rect) else { return nil }
+        guard scrollDirection == .vertical else { return superLayoutAttributes }
+
+        let computedAttributes = superLayoutAttributes.compactMap { layoutAttribute in
+            return layoutAttribute.representedElementCategory == .cell ? layoutAttributesForItem(at: layoutAttribute.indexPath) : layoutAttribute
+        }
+
+        return computedAttributes
+    }
+
+}
+
 open class RocketChatViewController: UIViewController {
     public var collectionView: UICollectionView = {
         let collectionView = UICollectionView(
             frame: .zero,
-            collectionViewLayout: UICollectionViewFlowLayout()
+            collectionViewLayout: RocketChatFlowLayout()
         )
 
         collectionView.backgroundColor = .white
@@ -222,8 +259,8 @@ open class RocketChatViewController: UIViewController {
         return operationQueue
     }()
 
-    open var isInverted = true
-    open var isSelfSizing = false
+    open var isInverted = false
+    open var isSelfSizing = true
     private let invertedTransform = CGAffineTransform(scaleX: 1, y: -1)
 
     override open func viewDidLoad() {
@@ -272,7 +309,7 @@ open class RocketChatViewController: UIViewController {
 
         var bottomMargin: NSLayoutYAxisAnchor
         if #available(iOS 11.0, *) {
-            collectionView.contentInsetAdjustmentBehavior = .never
+            collectionView.contentInsetAdjustmentBehavior = .always
             bottomMargin = view.safeAreaLayoutGuide.bottomAnchor
         } else {
             bottomMargin = view.bottomAnchor
@@ -294,10 +331,6 @@ open class RocketChatViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.scrollsToTop = false
-
-        if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout, isSelfSizing {
-            flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
-        }
     }
 
     @objc open func updateData() {
@@ -349,4 +382,10 @@ extension RocketChatViewController: UICollectionViewDataSource {
     }
 }
 
-extension RocketChatViewController: UICollectionViewDelegateFlowLayout {}
+extension RocketChatViewController: UICollectionViewDelegateFlowLayout {
+
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return .zero
+    }
+
+}

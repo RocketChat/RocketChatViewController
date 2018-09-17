@@ -9,7 +9,7 @@
 import UIKit
 import RocketChatViewController
  
-class BasicMessageChatCell: UICollectionViewCell, ChatCell {
+final class BasicMessageChatCell: UICollectionViewCell, ChatCell {
     static let identifier = String(describing: BasicMessageChatCell.self)
 
     @IBOutlet weak var username: UILabel!
@@ -22,6 +22,16 @@ class BasicMessageChatCell: UICollectionViewCell, ChatCell {
 
         username.text = viewModel.username
         message.text = viewModel.text
+    }
+
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        layoutIfNeeded()
+
+        let layoutAttributes = super.preferredLayoutAttributesFitting(layoutAttributes)
+        let height = systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+        layoutAttributes.bounds.size.height = height
+
+        return layoutAttributes
     }
 
 }
