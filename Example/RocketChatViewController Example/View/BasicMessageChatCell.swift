@@ -14,6 +14,14 @@ class BasicMessageChatCell: UICollectionViewCell, ChatCell {
 
     @IBOutlet weak var username: UILabel!
     @IBOutlet weak var message: UILabel!
+    @IBOutlet weak var containerViewWidthConstraint: NSLayoutConstraint!
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        containerViewWidthConstraint.constant = 320
+    }
 
     func bind(viewModel: AnyChatItem) {
         guard let viewModel = viewModel.base as? BasicMessageChatItem else {
@@ -22,6 +30,9 @@ class BasicMessageChatCell: UICollectionViewCell, ChatCell {
 
         username.text = viewModel.username
         message.text = viewModel.text
+
+        setNeedsLayout()
+        layoutIfNeeded()
     }
 
 }

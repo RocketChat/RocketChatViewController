@@ -29,21 +29,21 @@ struct MessageChatSection: ChatSection {
 
         viewModels.append(basicMessageViewModel)
 
-        for attachment in object.message.attachments {
-            switch attachment.type {
-            case 0:
-                let imageAttachment = ImageAttachmentChatItem(url: attachment.url)
-                viewModels.append(imageAttachment.wrapped)
-            case 1:
-                let videoAttachment = VideoAttachmentChatItem(url: attachment.url)
-                viewModels.append(videoAttachment.wrapped)
-            case 2:
-                let audioAttachment = AudioAttachmentChatItem(url: attachment.url)
-                viewModels.append(audioAttachment.wrapped)
-            default:
-                break
-            }
-        }
+//        for attachment in object.message.attachments {
+//            switch attachment.type {
+//            case 0:
+//                let imageAttachment = ImageAttachmentChatItem(url: attachment.url)
+//                viewModels.append(imageAttachment.wrapped)
+//            case 1:
+//                let videoAttachment = VideoAttachmentChatItem(url: attachment.url)
+//                viewModels.append(videoAttachment.wrapped)
+//            case 2:
+//                let audioAttachment = AudioAttachmentChatItem(url: attachment.url)
+//                viewModels.append(audioAttachment.wrapped)
+//            default:
+//                break
+//            }
+//        }
 
         return viewModels
     }

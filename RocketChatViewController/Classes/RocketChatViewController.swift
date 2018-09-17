@@ -222,8 +222,8 @@ open class RocketChatViewController: UIViewController {
         return operationQueue
     }()
 
-    open var isInverted = true
-    open var isSelfSizing = false
+    open var isInverted = false
+    open var isSelfSizing = true
     private let invertedTransform = CGAffineTransform(scaleX: 1, y: -1)
 
     override open func viewDidLoad() {
@@ -267,6 +267,10 @@ open class RocketChatViewController: UIViewController {
 
         collectionView.transform = isInverted ? invertedTransform : collectionView.transform
 
+        if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout, isSelfSizing {
+            flowLayout.estimatedItemSize = CGSize(width: 1, height: 1)
+        }
+
         viewComposer.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -294,10 +298,6 @@ open class RocketChatViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.scrollsToTop = false
-
-        if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout, isSelfSizing {
-            flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
-        }
     }
 
     @objc open func updateData() {
@@ -349,4 +349,10 @@ extension RocketChatViewController: UICollectionViewDataSource {
     }
 }
 
-extension RocketChatViewController: UICollectionViewDelegateFlowLayout {}
+extension RocketChatViewController: UICollectionViewDelegateFlowLayout {
+
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+
+}

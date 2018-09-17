@@ -14,6 +14,8 @@ final class ChatViewController: RocketChatViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        isSelfSizing = true
+
         collectionView.register(
             UINib(
                 nibName: BasicMessageChatCell.identifier, bundle: nil
@@ -42,10 +44,10 @@ final class ChatViewController: RocketChatViewController {
             forCellWithReuseIdentifier: AudioAttachmentChatCell.identifier
         )
 
-        data = DataControllerPlaceholder.generateDumbData(elements: 5)
-        updateData()
-        data = DataControllerPlaceholder.generateDumbData(elements: 1)
-        updateData()
+//        data = DataControllerPlaceholder.generateDumbData(elements: 5)
+//        updateData()
+//        data = DataControllerPlaceholder.generateDumbData(elements: 1)
+//        updateData()
         data = DataControllerPlaceholder.generateDumbData(elements: 30)
         updateData()
     }
@@ -65,22 +67,22 @@ final class ChatViewController: RocketChatViewController {
 
     }
 }
-
-extension ChatViewController {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let sectionController = data[indexPath.section].base
-        let viewModel = sectionController.viewModels()[indexPath.row]
-        switch viewModel.base {
-        case is BasicMessageChatItem:
-            return CGSize(width: UIScreen.main.bounds.width, height: 60)
-        case is ImageAttachmentChatItem:
-            return CGSize(width: UIScreen.main.bounds.width, height: 202)
-        case is VideoAttachmentChatItem:
-            return CGSize(width: UIScreen.main.bounds.width, height: 222)
-        case is AudioAttachmentChatItem:
-            return CGSize(width: UIScreen.main.bounds.width, height: 44)
-        default:
-            return .zero
-        }
-    }
-}
+//
+//extension ChatViewController {
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        let sectionController = data[indexPath.section].base
+//        let viewModel = sectionController.viewModels()[indexPath.row]
+//        switch viewModel.base {
+//        case is BasicMessageChatItem:
+//            return CGSize(width: UIScreen.main.bounds.width, height: 60)
+//        case is ImageAttachmentChatItem:
+//            return CGSize(width: UIScreen.main.bounds.width, height: 202)
+//        case is VideoAttachmentChatItem:
+//            return CGSize(width: UIScreen.main.bounds.width, height: 222)
+//        case is AudioAttachmentChatItem:
+//            return CGSize(width: UIScreen.main.bounds.width, height: 44)
+//        default:
+//            return .zero
+//        }
+//    }
+//}
