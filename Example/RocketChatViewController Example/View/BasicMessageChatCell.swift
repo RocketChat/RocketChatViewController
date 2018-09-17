@@ -9,19 +9,11 @@
 import UIKit
 import RocketChatViewController
  
-class BasicMessageChatCell: UICollectionViewCell, ChatCell {
+final class BasicMessageChatCell: UICollectionViewCell, ChatCell {
     static let identifier = String(describing: BasicMessageChatCell.self)
 
     @IBOutlet weak var username: UILabel!
     @IBOutlet weak var message: UILabel!
-    @IBOutlet weak var containerViewWidthConstraint: NSLayoutConstraint!
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-//        contentView.translatesAutoresizingMaskIntoConstraints = false
-//        containerViewWidthConstraint.constant = 320
-    }
 
     func bind(viewModel: AnyChatItem) {
         guard let viewModel = viewModel.base as? BasicMessageChatItem else {
@@ -35,12 +27,9 @@ class BasicMessageChatCell: UICollectionViewCell, ChatCell {
         layoutIfNeeded()
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         layoutIfNeeded()
+
         let layoutAttributes = super.preferredLayoutAttributesFitting(layoutAttributes)
         layoutAttributes.bounds.size.height = systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
         return layoutAttributes

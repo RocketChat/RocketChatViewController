@@ -197,7 +197,7 @@ public protocol ChatCell {
 
  */
 
-class FlowLayout: UICollectionViewFlowLayout {
+fileprivate final class RocketChatFlowLayout: UICollectionViewFlowLayout {
 
     override init() {
         super.init()
@@ -215,7 +215,7 @@ class FlowLayout: UICollectionViewFlowLayout {
         if #available(iOS 11.0, *) {
             layoutAttributes.bounds.size.width = collectionView.safeAreaLayoutGuide.layoutFrame.width - sectionInset.left - sectionInset.right
         } else {
-            // Fallback on earlier versions
+            layoutAttributes.bounds.size.width = collectionView.frame.size.width - sectionInset.left - sectionInset.right
         }
 
         return layoutAttributes
@@ -238,7 +238,7 @@ open class RocketChatViewController: UIViewController {
     public var collectionView: UICollectionView = {
         let collectionView = UICollectionView(
             frame: .zero,
-            collectionViewLayout: FlowLayout()
+            collectionViewLayout: RocketChatFlowLayout()
         )
 
         collectionView.backgroundColor = .white
