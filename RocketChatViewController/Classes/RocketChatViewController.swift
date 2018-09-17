@@ -197,11 +197,48 @@ public protocol ChatCell {
 
  */
 
+class FlowLayout: UICollectionViewFlowLayout {
+
+    override init() {
+        super.init()
+        estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        guard let layoutAttributes = super.layoutAttributesForItem(at: indexPath) else { return nil }
+        guard let collectionView = collectionView else { return nil }
+
+        if #available(iOS 11.0, *) {
+            layoutAttributes.bounds.size.width = collectionView.safeAreaLayoutGuide.layoutFrame.width - sectionInset.left - sectionInset.right
+        } else {
+            // Fallback on earlier versions
+        }
+
+        return layoutAttributes
+    }
+
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        guard let superLayoutAttributes = super.layoutAttributesForElements(in: rect) else { return nil }
+        guard scrollDirection == .vertical else { return superLayoutAttributes }
+
+        let computedAttributes = superLayoutAttributes.compactMap { layoutAttribute in
+            return layoutAttribute.representedElementCategory == .cell ? layoutAttributesForItem(at: layoutAttribute.indexPath) : layoutAttribute
+        }
+
+        return computedAttributes
+    }
+
+}
+
 open class RocketChatViewController: UIViewController {
     public var collectionView: UICollectionView = {
         let collectionView = UICollectionView(
             frame: .zero,
-            collectionViewLayout: UICollectionViewFlowLayout()
+            collectionViewLayout: FlowLayout()
         )
 
         collectionView.backgroundColor = .white
@@ -266,10 +303,6 @@ open class RocketChatViewController: UIViewController {
         view.addSubview(collectionView)
 
         collectionView.transform = isInverted ? invertedTransform : collectionView.transform
-
-        if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout, isSelfSizing {
-            flowLayout.estimatedItemSize = CGSize(width: 1, height: 1)
-        }
 
         viewComposer.backgroundColor = .blue
         collectionView.backgroundColor = .red

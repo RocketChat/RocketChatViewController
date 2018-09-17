@@ -35,4 +35,15 @@ class BasicMessageChatCell: UICollectionViewCell, ChatCell {
         layoutIfNeeded()
     }
 
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        layoutIfNeeded()
+        let layoutAttributes = super.preferredLayoutAttributesFitting(layoutAttributes)
+        layoutAttributes.bounds.size.height = systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+        return layoutAttributes
+    }
+
 }
