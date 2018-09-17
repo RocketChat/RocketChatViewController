@@ -43,9 +43,16 @@ struct DataControllerPlaceholder {
         }
 
         let identifier = generateRandom(size: 20)
+        var messageText = generateRandom()
+
+        let loops = UInt(arc4random_uniform(43))
+        for loop in 0..<loops {
+            messageText += generateRandom()
+        }
+
         let message = Message(
             identifier: identifier,
-            text: generateRandom(size: 43),
+            text: messageText,
             attachments: attachments
         )
 

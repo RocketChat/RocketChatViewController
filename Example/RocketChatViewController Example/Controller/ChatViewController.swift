@@ -48,7 +48,7 @@ final class ChatViewController: RocketChatViewController {
 //        updateData()
 //        data = DataControllerPlaceholder.generateDumbData(elements: 1)
 //        updateData()
-        data = DataControllerPlaceholder.generateDumbData(elements: 30)
+        data = DataControllerPlaceholder.generateDumbData(elements: 1000)
         updateData()
     }
 
@@ -59,8 +59,10 @@ final class ChatViewController: RocketChatViewController {
             if var messageSectionModel = first.base.object.base as? MessageSectionModel {
                 messageSectionModel.message.text = "TEST TEST TEST"
                 data.remove(at: 0)
+
                 let chatSection = MessageChatSection(object: AnyDifferentiable(messageSectionModel))
                 data.insert(AnyChatSection(chatSection), at: 0)
+
                 updateData()
             }
         }
