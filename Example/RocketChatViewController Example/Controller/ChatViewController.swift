@@ -10,9 +10,12 @@ import UIKit
 import DifferenceKit
 import RocketChatViewController
 
+
 final class ChatViewController: RocketChatViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        composerView.delegate = self
 
         collectionView.register(
             UINib(
@@ -82,5 +85,46 @@ extension ChatViewController {
         default:
             return .zero
         }
+    }
+}
+
+// MARK: Composer Delegate
+extension ChatViewController: ComposerViewExpandedDelegate {
+    func composerView(_ composerView: ComposerView, didTapButtonAt slot: ComposerButtonSlot) {
+        switch slot {
+        case .right:
+            composerView.textView.text = ""
+        case .left:
+            break
+        }
+    }
+
+    func composerViewIsReplying(_ composerView: ComposerView) -> Bool {
+        return false
+    }
+
+    func composerViewIsHinting(_ composerView: ComposerView) -> Bool {
+        return false
+    }
+
+    func numberOfHints(in hintsView: HintsView) -> Int {
+        return 3
+    }
+
+    func hintsView(_ hintsView: HintsView, cellForHintAt index: Int) -> UITableViewCell {
+        let cell: UserHintCell
+
+        if let userCell = hintsView.dequeueReusableCell(withIdentifier: "cell") as? UserHintCell {
+            cell = userCell
+        } else {
+            hintsView.register(UserHintCell.self, forCellReuseIdentifier: "cell")
+            cell = hintsView.dequeueReusableCell(withIdentifier: "cell") as? UserHintCell ?? UserHintCell()
+        }
+
+        cell.avatarView.backgroundColor = .black
+        cell.nameLabel.text = "Karem Flusser"
+        cell.usernameLabel.text = "@karem.flusser"
+
+        return cell
     }
 }

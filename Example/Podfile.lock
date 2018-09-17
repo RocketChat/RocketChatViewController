@@ -6,6 +6,10 @@ PODS:
   - DifferenceKit/UIExtensions (0.5.3):
     - DifferenceKit/Core
   - RocketChatViewController (0.1.0):
+    - RocketChatViewController/Composer (= 0.1.0)
+    - RocketChatViewController/ViewController (= 0.1.0)
+  - RocketChatViewController/Composer (0.1.0)
+  - RocketChatViewController/ViewController (0.1.0):
     - DifferenceKit (~> 0.5.3)
 
 DEPENDENCIES:
@@ -22,7 +26,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   DifferenceKit: 2037137305c55a39ff729baa72697efa30b1052d
-  RocketChatViewController: 0b7ef975684fbfb7ce78ea1497c3e2258ead3c3e
+  RocketChatViewController: ec9b265cde9dcf251d173588974405bc649f67fc
 
 PODFILE CHECKSUM: 5ea8a150f246234c0e33ada810343be53fc57bc2
 
