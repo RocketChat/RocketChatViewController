@@ -9,9 +9,18 @@
 import UIKit
 
 private var bundle = Bundle(for: ComposerView.self)
-private var addButtonImage = ComposerAsset(UIImage(named: "addButton", in: bundle, compatibleWith: nil)!)
-private var sendButtonImage = ComposerAsset(UIImage(named: "sendButton", in: bundle, compatibleWith: nil)!)
-private var micButtonImage = ComposerAsset(UIImage(named: "micButton", in: bundle, compatibleWith: nil)!)
+
+private func imageNamed(_ name: String) -> ComposerAsset<UIImage> {
+    guard let image = UIImage(named: name, in: bundle, compatibleWith: nil) else {
+        fatalError("RocketChatViewController: Could not load image named '\(name)'.")
+    }
+
+    return ComposerAsset(image)
+}
+
+private var addButtonImage = imageNamed("addButton")
+private var sendButtonImage = imageNamed("sendButton")
+private var micButtonImage = imageNamed("micButton")
 
 public struct ComposerAsset<T> {
     let raw: T
