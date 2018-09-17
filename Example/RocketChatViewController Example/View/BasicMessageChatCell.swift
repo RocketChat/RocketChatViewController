@@ -19,8 +19,8 @@ class BasicMessageChatCell: UICollectionViewCell, ChatCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        containerViewWidthConstraint.constant = 320
+//        contentView.translatesAutoresizingMaskIntoConstraints = false
+//        containerViewWidthConstraint.constant = 320
     }
 
     func bind(viewModel: AnyChatItem) {

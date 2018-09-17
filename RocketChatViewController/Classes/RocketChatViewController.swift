@@ -271,6 +271,9 @@ open class RocketChatViewController: UIViewController {
             flowLayout.estimatedItemSize = CGSize(width: 1, height: 1)
         }
 
+        viewComposer.backgroundColor = .blue
+        collectionView.backgroundColor = .red
+
         viewComposer.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
 
