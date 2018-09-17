@@ -15,9 +15,6 @@ final class ChatViewController: RocketChatViewController {
         super.viewDidLoad()
 
         isSelfSizing = true
-        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.estimatedItemSize = CGSize(width: view.frame.width, height: 100)
-        }
 
         collectionView.register(
             UINib(
@@ -58,20 +55,17 @@ final class ChatViewController: RocketChatViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        collectionView.backgroundColor = .red
-        view.bringSubview(toFront: collectionView)
-
-        if let first = data.first {
-            if var messageSectionModel = first.base.object.base as? MessageSectionModel {
-                messageSectionModel.message.text = "TEST TEST TEST"
-                data.remove(at: 0)
-
-                let chatSection = MessageChatSection(object: AnyDifferentiable(messageSectionModel))
-                data.insert(AnyChatSection(chatSection), at: 0)
-
-                updateData()
-            }
-        }
+//        if let first = data.first {
+//            if var messageSectionModel = first.base.object.base as? MessageSectionModel {
+//                messageSectionModel.message.text = "TEST TEST TEST"
+//                data.remove(at: 0)
+//
+//                let chatSection = MessageChatSection(object: AnyDifferentiable(messageSectionModel))
+//                data.insert(AnyChatSection(chatSection), at: 0)
+//
+//                updateData()
+//            }
+//        }
 
     }
 }

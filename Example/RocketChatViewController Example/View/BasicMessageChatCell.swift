@@ -22,16 +22,15 @@ final class BasicMessageChatCell: UICollectionViewCell, ChatCell {
 
         username.text = viewModel.username
         message.text = viewModel.text
-
-        setNeedsLayout()
-        layoutIfNeeded()
     }
 
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         layoutIfNeeded()
 
         let layoutAttributes = super.preferredLayoutAttributesFitting(layoutAttributes)
-        layoutAttributes.bounds.size.height = systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+        let height = systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+        layoutAttributes.bounds.size.height = height
+
         return layoutAttributes
     }
 

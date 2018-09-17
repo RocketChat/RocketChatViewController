@@ -12,50 +12,36 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="" id="Fk7-ak-p9S" customClass="BasicMessageChatCell" customModule="RocketChatViewController_Example" customModuleProvider="target">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" reuseIdentifier="" id="Fk7-ak-p9S" customClass="BasicMessageChatCell" customModule="RocketChatViewController_Example" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="352" height="60"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                 <rect key="frame" x="0.0" y="0.0" width="352" height="60"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" horizontalHuggingPriority="255" horizontalCompressionResistancePriority="745" translatesAutoresizingMaskIntoConstraints="NO" id="CQf-SQ-53V">
-                        <rect key="frame" x="0.0" y="0.0" width="352" height="60"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Qay-Dp-r61">
-                                <rect key="frame" x="8" y="8" width="336" height="44"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="255" verticalHuggingPriority="251" horizontalCompressionResistancePriority="745" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W4d-Id-XO4">
-                                        <rect key="frame" x="0.0" y="0.0" width="336" height="31.5"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="255" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dsS-Jo-3Om">
-                                        <rect key="frame" x="0.0" y="31.5" width="336" height="12.5"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                            </stackView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="bottomMargin" secondItem="Qay-Dp-r61" secondAttribute="bottom" id="7bL-MU-T9x"/>
-                            <constraint firstItem="Qay-Dp-r61" firstAttribute="top" secondItem="CQf-SQ-53V" secondAttribute="topMargin" id="Ckn-tr-QmH"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Qay-Dp-r61" secondAttribute="trailing" id="Klq-SM-utc"/>
-                            <constraint firstItem="Qay-Dp-r61" firstAttribute="leading" secondItem="CQf-SQ-53V" secondAttribute="leadingMargin" id="RdQ-MW-27Q"/>
-                        </constraints>
-                    </view>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="249" verticalCompressionResistancePriority="755" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W4d-Id-XO4">
+                        <rect key="frame" x="16" y="8" width="320" height="23.5"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="755" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dsS-Jo-3Om">
+                        <rect key="frame" x="16" y="31.5" width="320" height="20.5"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </view>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="CQf-SQ-53V" firstAttribute="leading" secondItem="Fk7-ak-p9S" secondAttribute="leading" id="bKZ-tA-DS4"/>
-                <constraint firstAttribute="bottom" secondItem="CQf-SQ-53V" secondAttribute="bottom" id="fCS-th-j5E"/>
-                <constraint firstAttribute="trailing" secondItem="CQf-SQ-53V" secondAttribute="trailing" id="kdM-WL-LGm"/>
-                <constraint firstItem="CQf-SQ-53V" firstAttribute="top" secondItem="Fk7-ak-p9S" secondAttribute="top" id="qfw-YG-Gsq"/>
+                <constraint firstItem="dsS-Jo-3Om" firstAttribute="top" secondItem="W4d-Id-XO4" secondAttribute="bottom" id="87b-Vz-OiB"/>
+                <constraint firstAttribute="trailingMargin" secondItem="dsS-Jo-3Om" secondAttribute="trailing" id="8sM-P7-SeH"/>
+                <constraint firstItem="dsS-Jo-3Om" firstAttribute="leading" secondItem="Fk7-ak-p9S" secondAttribute="leadingMargin" id="RlF-9X-5M2"/>
+                <constraint firstItem="W4d-Id-XO4" firstAttribute="leading" secondItem="Fk7-ak-p9S" secondAttribute="leadingMargin" id="SNP-3j-vJS"/>
+                <constraint firstAttribute="trailingMargin" secondItem="W4d-Id-XO4" secondAttribute="trailing" id="aeG-d0-6We"/>
+                <constraint firstAttribute="bottomMargin" secondItem="dsS-Jo-3Om" secondAttribute="bottom" id="iXR-Fj-HqY"/>
+                <constraint firstItem="W4d-Id-XO4" firstAttribute="top" secondItem="Fk7-ak-p9S" secondAttribute="topMargin" id="spe-4S-KI9"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="F3L-aA-Y0i"/>
             <size key="customSize" width="352" height="60"/>
@@ -63,7 +49,7 @@
                 <outlet property="message" destination="dsS-Jo-3Om" id="2oT-O6-Kgy"/>
                 <outlet property="username" destination="W4d-Id-XO4" id="Nqt-ea-QK1"/>
             </connections>
-            <point key="canvasLocation" x="283" y="413"/>
+            <point key="canvasLocation" x="281.60000000000002" y="412.89355322338832"/>
         </collectionViewCell>
     </objects>
 </document>

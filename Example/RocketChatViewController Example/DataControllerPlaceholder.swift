@@ -46,7 +46,7 @@ struct DataControllerPlaceholder {
         var messageText = generateRandom()
 
         let loops = UInt(arc4random_uniform(43))
-        for loop in 0..<loops {
+        for _ in 0..<loops {
             messageText += generateRandom()
         }
 

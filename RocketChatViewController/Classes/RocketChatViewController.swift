@@ -312,7 +312,7 @@ open class RocketChatViewController: UIViewController {
 
         var bottomMargin: NSLayoutYAxisAnchor
         if #available(iOS 11.0, *) {
-            collectionView.contentInsetAdjustmentBehavior = .never
+            collectionView.contentInsetAdjustmentBehavior = .always
             bottomMargin = view.safeAreaLayoutGuide.bottomAnchor
         } else {
             bottomMargin = view.bottomAnchor
@@ -388,7 +388,7 @@ extension RocketChatViewController: UICollectionViewDataSource {
 extension RocketChatViewController: UICollectionViewDelegateFlowLayout {
 
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        return .zero
     }
 
 }
