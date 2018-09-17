@@ -304,9 +304,6 @@ open class RocketChatViewController: UIViewController {
 
         collectionView.transform = isInverted ? invertedTransform : collectionView.transform
 
-        viewComposer.backgroundColor = .blue
-        collectionView.backgroundColor = .red
-
         viewComposer.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
 
