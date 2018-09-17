@@ -15,9 +15,9 @@ private func imageNamed(_ name: String) -> ComposerAsset<UIImage> {
     return ComposerAsset(image ?? UIImage())
 }
 
-private var addButtonImage = imageNamed("addButton")
-private var sendButtonImage = imageNamed("sendButton")
-private var micButtonImage = imageNamed("micButton")
+private var addButtonImage = imageNamed("Add Button")
+private var sendButtonImage = imageNamed("Send Button")
+private var micButtonImage = imageNamed("Mic Button")
 
 public struct ComposerAsset<T> {
     let raw: T
