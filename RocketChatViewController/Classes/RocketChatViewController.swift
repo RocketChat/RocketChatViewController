@@ -209,7 +209,7 @@ open class RocketChatViewController: UIViewController {
     }()
 
     open var composerHeightConstraint: NSLayoutConstraint!
-    open var viewComposer: UIView! = UIView()
+    open var composerView = ComposerView()
 
     open var data: [AnyChatSection] = []
     private var internalData: [ArraySection<AnyChatSection, AnyChatItem>] = []
@@ -262,12 +262,12 @@ open class RocketChatViewController: UIViewController {
     }
 
     func setupChatViews() {
-        view.addSubview(viewComposer)
+        view.addSubview(composerView)
         view.addSubview(collectionView)
 
         collectionView.transform = isInverted ? invertedTransform : collectionView.transform
 
-        viewComposer.translatesAutoresizingMaskIntoConstraints = false
+        composerView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
 
         var bottomMargin: NSLayoutYAxisAnchor
@@ -278,15 +278,12 @@ open class RocketChatViewController: UIViewController {
             bottomMargin = view.bottomAnchor
         }
 
-        composerHeightConstraint = viewComposer.heightAnchor.constraint(equalToConstant: 50)
-
         NSLayoutConstraint.activate([
-            composerHeightConstraint,
-            viewComposer.bottomAnchor.constraint(equalTo: bottomMargin),
-            viewComposer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            viewComposer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            composerView.bottomAnchor.constraint(equalTo: bottomMargin),
+            composerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            composerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: viewComposer.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: composerView.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
