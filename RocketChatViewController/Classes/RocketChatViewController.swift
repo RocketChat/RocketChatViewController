@@ -279,7 +279,7 @@ open class RocketChatViewController: UIViewController {
         }
 
         NSLayoutConstraint.activate([
-            composerView.bottomAnchor.constraint(equalTo: bottomMargin),
+            composerView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor),
             composerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             composerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
