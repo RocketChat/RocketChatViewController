@@ -113,8 +113,8 @@ public class ComposerView: UIView {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            $0.widthAnchor.constraint(equalToConstant: Consts.leftButtonWidth),
-            $0.heightAnchor.constraint(equalToConstant: Consts.leftButtonHeight)
+            $0.widthAnchor.constraint(equalToConstant: 24),
+            $0.heightAnchor.constraint(equalToConstant: 24)
         ])
 
         $0.addTarget(self, action: #selector(touchUpInside(button:)), for: .touchUpInside)
@@ -127,8 +127,8 @@ public class ComposerView: UIView {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            $0.widthAnchor.constraint(equalToConstant: Consts.rightButtonWidth),
-            $0.heightAnchor.constraint(equalToConstant: Consts.rightButtonHeight)
+            $0.widthAnchor.constraint(equalToConstant: 24),
+            $0.heightAnchor.constraint(equalToConstant: 24)
         ])
 
         $0.addTarget(self, action: #selector(touchUpInside(button:)), for: .touchUpInside)
@@ -164,7 +164,7 @@ public class ComposerView: UIView {
         $0.backgroundColor = #colorLiteral(red: 0.8823529412, green: 0.8980392157, blue: 0.9098039216, alpha: 1)
 
         NSLayoutConstraint.activate([
-            $0.heightAnchor.constraint(equalToConstant: Consts.topSeparatorViewHeight)
+            $0.heightAnchor.constraint(equalToConstant: 0.5)
         ])
     }
 
@@ -176,9 +176,17 @@ public class ComposerView: UIView {
     }
 
     public override var intrinsicContentSize: CGSize {
-        let composerHeight = textView.contentSize.height + Consts.textViewTop + Consts.textViewBottom
+        let composerHeight: CGFloat
+
+
+        if #available(iOS 11, *) {
+            composerHeight = textView.contentSize.height + directionalLayoutMargins.top + directionalLayoutMargins.bottom
+        } else {
+            composerHeight = textView.contentSize.height + layoutMargins.top + layoutMargins.bottom
+        }
+
         let addonsHeight = componentStackView.frame.height + utilityStackView.frame.height
-        let height = min(composerHeight, currentDelegate.maximumHeight(for: self)) + addonsHeight
+        let height = min(composerHeight, currentDelegate.maximumHeight(for: self)) + addonsHeight + topSeparatorView.frame.height
 
         return CGSize(width: super.intrinsicContentSize.width, height: height)
     }
@@ -202,11 +210,6 @@ public class ComposerView: UIView {
      */
     public func commonInit() {
         textView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(dynamicTextSizeDidChange),
-            name: .UIContentSizeCategoryDidChange, object: nil
-        )
 
         addSubviews()
         setupConstraints()
@@ -230,56 +233,122 @@ public class ComposerView: UIView {
     private func setupConstraints() {
         self.translatesAutoresizingMaskIntoConstraints = false
 
-        NSLayoutConstraint.activate([
 
-            // utilityStackView constraints
+        if #available(iOS 11.0, *) {
+            NSLayoutConstraint.activate([
 
-            utilityStackView.topAnchor.constraint(equalTo: topAnchor),
-            utilityStackView.widthAnchor.constraint(equalTo: widthAnchor),
+                // utilityStackView constraints
 
-            // topSeparatorView constraints
+                utilityStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+                utilityStackView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor),
 
-            topSeparatorView.topAnchor.constraint(equalTo: utilityStackView.bottomAnchor),
-            topSeparatorView.widthAnchor.constraint(equalTo: widthAnchor),
+                // topSeparatorView constraints
 
-            // componentStackView constraints
+                topSeparatorView.topAnchor.constraint(equalTo: utilityStackView.bottomAnchor),
+                topSeparatorView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor),
 
-            componentStackView.widthAnchor.constraint(equalTo: widthAnchor),
-            componentStackView.topAnchor.constraint(equalTo: topSeparatorView.bottomAnchor),
+                // componentStackView constraints
 
-            // textView constraints
+                componentStackView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor),
+                componentStackView.topAnchor.constraint(equalTo: topSeparatorView.bottomAnchor),
+            ])
 
-            tap(textView.leadingAnchor.constraint(equalTo: leftButton.trailingAnchor)) {
-                $0.constant = Consts.textViewLeading
-            },
-            tap(textView.trailingAnchor.constraint(equalTo: rightButton.leadingAnchor)) {
-                $0.constant = -Consts.textViewTrailing
-            },
-            tap(textView.topAnchor.constraint(equalTo: componentStackView.bottomAnchor)) {
-                $0.constant = Consts.textViewTop
-            },
-            tap(textView.bottomAnchor.constraint(equalTo: bottomAnchor)) {
-                $0.constant = -Consts.textViewBottom
-            },
+            NSLayoutConstraint.activate([
+                // textView constraints
 
-            // rightButton constraints
+                tap(textView.leadingAnchor.constraint(equalTo: leftButton.trailingAnchor)) {
+                    $0.constant = directionalLayoutMargins.leading
+                },
+                tap(textView.trailingAnchor.constraint(equalTo: rightButton.leadingAnchor)) {
+                    $0.constant = -directionalLayoutMargins.trailing
+                },
+                tap(textView.topAnchor.constraint(equalTo: componentStackView.bottomAnchor)) {
+                    $0.constant = directionalLayoutMargins.top
+                },
+                tap(textView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)) {
+                    $0.constant = -directionalLayoutMargins.bottom
+                }
+            ])
 
-            tap(rightButton.trailingAnchor.constraint(equalTo: trailingAnchor)) {
-                $0.constant = -Consts.rightButtonTrailing
-            },
-            tap(rightButton.bottomAnchor.constraint(equalTo: bottomAnchor)) {
-                $0.constant = -Consts.rightButtonBottom
-            },
+            NSLayoutConstraint.activate([
+                // rightButton constraints
 
-            // leftButton constraints
+                tap(rightButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)) {
+                    $0.constant = -directionalLayoutMargins.trailing
+                },
+                tap(rightButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)) {
+                    $0.constant = -directionalLayoutMargins.bottom*2
+                }
+            ])
 
-            tap(leftButton.leadingAnchor.constraint(equalTo: leadingAnchor)) {
-                $0.constant = Consts.leftButtonLeading
-            },
-            tap(leftButton.bottomAnchor.constraint(equalTo: bottomAnchor)) {
-                $0.constant = -Consts.leftButtonBottom
-            }
-        ])
+            NSLayoutConstraint.activate([
+                // leftButton constraints
+
+                tap(leftButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor)) {
+                    $0.constant = directionalLayoutMargins.leading
+                },
+                tap(leftButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)) {
+                    $0.constant = -directionalLayoutMargins.bottom*2
+                }
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+
+                // utilityStackView constraints
+
+                utilityStackView.topAnchor.constraint(equalTo: topAnchor),
+                utilityStackView.widthAnchor.constraint(equalTo: widthAnchor),
+
+                // topSeparatorView constraints
+
+                topSeparatorView.topAnchor.constraint(equalTo: utilityStackView.bottomAnchor),
+                topSeparatorView.widthAnchor.constraint(equalTo: widthAnchor),
+
+                // componentStackView constraints
+
+                componentStackView.widthAnchor.constraint(equalTo: widthAnchor),
+                componentStackView.topAnchor.constraint(equalTo: topSeparatorView.bottomAnchor),
+            ])
+
+            NSLayoutConstraint.activate([
+                // textView constraints
+
+                tap(textView.leadingAnchor.constraint(equalTo: leftButton.trailingAnchor)) {
+                    $0.constant = layoutMargins.left
+                },
+                tap(textView.trailingAnchor.constraint(equalTo: rightButton.leadingAnchor)) {
+                    $0.constant = -layoutMargins.right
+                },
+                tap(textView.topAnchor.constraint(equalTo: componentStackView.bottomAnchor)) {
+                    $0.constant = layoutMargins.top
+                },
+                tap(textView.bottomAnchor.constraint(equalTo: bottomAnchor)) {
+                    $0.constant = -layoutMargins.bottom
+                }
+            ])
+
+            NSLayoutConstraint.activate([
+                // rightButton constraints
+
+                tap(rightButton.trailingAnchor.constraint(equalTo: trailingAnchor)) {
+                    $0.constant = -layoutMargins.right
+                },
+                tap(rightButton.bottomAnchor.constraint(equalTo: bottomAnchor)) {
+                    $0.constant = -layoutMargins.bottom*2
+                }
+            ])
+
+            NSLayoutConstraint.activate([
+                // leftButton constraints
+
+                tap(leftButton.leadingAnchor.constraint(equalTo: leadingAnchor)) {
+                    $0.constant = layoutMargins.left
+                },
+                tap(leftButton.bottomAnchor.constraint(equalTo: bottomAnchor)) {
+                    $0.constant = -layoutMargins.bottom*2
+                }
+            ])
+        }
     }
 
     /**
@@ -355,57 +424,6 @@ public extension ComposerView {
             currentDelegate.composerView(self, didTapButtonAt: .right)
         default:
             break
-        }
-    }
-
-    /**
-     Called when the dynamic text size for the system changes
-     */
-    @objc func dynamicTextSizeDidChange() {
-        /*textView.font = Fonts.textViewFont
-        textView.placeholderLabel.font = Fonts.textViewPlaceholderFont
-
-        textView.contentSize*/
-    }
-}
-
-// MARK: Consts
-
-private extension ComposerView {
-    /**
-     Constants for sizes and margins in the composer view.
-     */
-    private struct Consts {
-        static var composerHeight: CGFloat = 54
-
-        static var topSeparatorViewHeight: CGFloat = 0.5
-
-        static var leftButtonWidth: CGFloat = 24
-        static var leftButtonHeight: CGFloat = 24
-        static var leftButtonLeading: CGFloat = 20
-        static var leftButtonBottom: CGFloat = 16
-
-        static var textViewLeading: CGFloat = 12
-        static var textViewTrailing: CGFloat = 12
-        static var textViewTop: CGFloat = 8
-        static var textViewBottom: CGFloat = 8
-
-        static var rightButtonWidth: CGFloat = 24
-        static var rightButtonHeight: CGFloat = 24
-        static var rightButtonTrailing: CGFloat = 20
-        static var rightButtonBottom: CGFloat = 16
-    }
-
-    /**
-     Dynamic Fonts in the composer view
-     */
-    private struct Fonts {
-        static var textViewFont: UIFont {
-            return .preferredFont(forTextStyle: .body)
-        }
-
-        static var textViewPlaceholderFont: UIFont {
-            return .preferredFont(forTextStyle: .body)
         }
     }
 }
