@@ -5,7 +5,7 @@
 //  Created by Sacha DSO on 14/11/2017.
 //  Copyright © 2017 freshos. All rights reserved.
 //
-//  Taken from https://github.com/freshOS/KeyboardLayoutGuide
+//  Modified version of freshOS/KeyboardLayoutGuide ;)
 //
 
 import UIKit
@@ -21,8 +21,8 @@ public extension UIView {
         static var keyboardLayoutGuide = "keyboardLayoutGuide"
     }
 
-    /// A layout guide representing the inset for the keyboard.
-    /// Use this layout guide’s top anchor to create constraints pinning to the top of the keyboard.
+    // A layout guide representing the inset for the keyboard.
+    // Use this layout guide’s top anchor to create constraints pinning to the top of the keyboard.
     public var keyboardLayoutGuide: KeyboardLayoutGuide {
         get {
             if let obj = objc_getAssociatedObject(self, &AssociatedKeys.keyboardLayoutGuide) as? KeyboardLayoutGuide {
@@ -47,11 +47,12 @@ open class KeyboardLayoutGuide: UILayoutGuide {
         super.init()
 
         // Observe keyboardWillChangeFrame notifications
-        let nc = NotificationCenter.default
-        nc.addObserver(self,
-                       selector: #selector(keyboardWillChangeFrame(_:)),
-                       name: .UIKeyboardWillChangeFrame,
-                       object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillChangeFrame(_:)),
+            name: .UIKeyboardWillChangeFrame,
+            object: nil
+        )
     }
 
     internal func setUp() {
@@ -103,9 +104,9 @@ open class KeyboardLayoutGuide: UILayoutGuide {
 extension UILayoutGuide {
     internal var heightConstraint: NSLayoutConstraint? {
         guard let target = owningView else { return nil }
-        for c in target.constraints {
-            if let fi = c.firstItem as? UILayoutGuide, fi == self && c.firstAttribute == .height {
-                return c
+        for constraint in target.constraints {
+            if let firstItem = constraint.firstItem as? UILayoutGuide, firstItem == self && constraint.firstAttribute == .height {
+                return constraint
             }
         }
         return nil
@@ -114,13 +115,13 @@ extension UILayoutGuide {
 
 extension Notification {
     var keyboardHeight: CGFloat? {
-        guard let v = userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue else {
+        guard let value = userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue else {
             return nil
         }
         // Weirdly enough UIKeyboardFrameEndUserInfoKey doesn't have the same behaviour
         // in ios 10 or iOS 11 so we can't rely on v.cgRectValue.width
         let screenHeight = UIApplication.shared.keyWindow?.bounds.height ?? UIScreen.main.bounds.height
-        return screenHeight - v.cgRectValue.minY
+        return screenHeight - value.cgRectValue.minY
     }
 }
 
