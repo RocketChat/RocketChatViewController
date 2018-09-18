@@ -60,6 +60,8 @@ public class ComposerTextView: UITextView {
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(textDidChange), name: .UITextViewTextDidChange, object: nil)
 
+        placeholderLabel.addObserver(self, forKeyPath: "bounds", options: .new, context: nil)
+
         placeholderLabel.font = font
         placeholderLabel.textColor = placeholderColor
         placeholderLabel.textAlignment = textAlignment
@@ -109,4 +111,21 @@ public class ComposerTextView: UITextView {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidChange, object: nil)
     }
 
+}
+
+// MARK: Observers & Actions
+
+public extension ComposerTextView {
+    /**
+     Called when the content size of the placeholder label changes and adjusts the content size.
+     */
+    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if object as AnyObject? === placeholderLabel && keyPath == "bounds" {
+            if text.isEmpty {
+                text = placeholderLabel.text
+                self.contentSize = CGSize(width: contentSize.width, height: sizeThatFits(CGSize(width: contentSize.width, height: .greatestFiniteMagnitude)).height)
+                text = ""
+            }
+        }
+    }
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import NotificationCenter
 
 /**
  An enum that represents a place in the composer view where a button is placed.
@@ -140,7 +141,11 @@ public class ComposerView: UIView {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
         $0.placeholderLabel.text = "Type a message"
-        $0.font = UIFont.systemFont(ofSize: Consts.fontSize)
+        $0.placeholderLabel.font = .preferredFont(forTextStyle: .body)
+        $0.placeholderLabel.adjustsFontForContentSizeCategory = true
+
+        $0.font = .preferredFont(forTextStyle: .body)
+        $0.adjustsFontForContentSizeCategory = true
     }
 
     /**
@@ -197,6 +202,11 @@ public class ComposerView: UIView {
      */
     public func commonInit() {
         textView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(dynamicTextSizeDidChange),
+            name: .UIContentSizeCategoryDidChange, object: nil
+        )
 
         addSubviews()
         setupConstraints()
@@ -347,6 +357,16 @@ public extension ComposerView {
             break
         }
     }
+
+    /**
+     Called when the dynamic text size for the system changes
+     */
+    @objc func dynamicTextSizeDidChange() {
+        /*textView.font = Fonts.textViewFont
+        textView.placeholderLabel.font = Fonts.textViewPlaceholderFont
+
+        textView.contentSize*/
+    }
 }
 
 // MARK: Consts
@@ -357,7 +377,6 @@ private extension ComposerView {
      */
     private struct Consts {
         static var composerHeight: CGFloat = 54
-        static var fontSize: CGFloat = 17
 
         static var topSeparatorViewHeight: CGFloat = 0.5
 
@@ -375,5 +394,18 @@ private extension ComposerView {
         static var rightButtonHeight: CGFloat = 24
         static var rightButtonTrailing: CGFloat = 20
         static var rightButtonBottom: CGFloat = 16
+    }
+
+    /**
+     Dynamic Fonts in the composer view
+     */
+    private struct Fonts {
+        static var textViewFont: UIFont {
+            return .preferredFont(forTextStyle: .body)
+        }
+
+        static var textViewPlaceholderFont: UIFont {
+            return .preferredFont(forTextStyle: .body)
+        }
     }
 }

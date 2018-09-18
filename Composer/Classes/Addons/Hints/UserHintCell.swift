@@ -29,7 +29,8 @@ public class UserHintCell: UITableViewCell {
     public let nameLabel: UILabel = tap(UILabel()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
-        $0.font = Consts.nameFont
+        $0.font = .preferredFont(forTextStyle: .body)
+        $0.adjustsFontForContentSizeCategory = true
     }
 
     /*
@@ -38,7 +39,9 @@ public class UserHintCell: UITableViewCell {
     public let usernameLabel: UILabel = tap(UILabel()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
-        $0.font = Consts.usernameFont
+        $0.font = .preferredFont(forTextStyle: .footnote)
+        $0.adjustsFontForContentSizeCategory = true
+
         $0.textColor = Consts.usernameColor
     }
 
@@ -113,11 +116,9 @@ private extension UserHintCell {
 
         static var nameLeading: CGFloat = 15
         static var nameBottom: CGFloat = -4
-        static var nameFont: UIFont = .systemFont(ofSize: 18.0)
 
         static var usernameLeading: CGFloat = 15
         static var usernameTop: CGFloat = 4
-        static var usernameFont: UIFont = .systemFont(ofSize: 14.0)
         static var usernameColor: UIColor = #colorLiteral(red: 0.6196078431, green: 0.6352941176, blue: 0.6588235294, alpha: 1)
     }
 }
