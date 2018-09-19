@@ -211,6 +211,19 @@ open class RocketChatViewController: UIViewController {
     open var composerHeightConstraint: NSLayoutConstraint!
     open var composerView = ComposerView()
 
+    open override var inputAccessoryView: UIView? {
+        composerView.layoutMargins = view.layoutMargins
+        if #available(iOS 11.0, *) {
+            composerView.directionalLayoutMargins = systemMinimumLayoutMargins
+        }
+        
+        return composerView
+    }
+
+    open override var canBecomeFirstResponder: Bool {
+        return true
+    }
+
     open var data: [AnyChatSection] = []
     private var internalData: [ArraySection<AnyChatSection, AnyChatItem>] = []
 
@@ -237,7 +250,23 @@ open class RocketChatViewController: UIViewController {
     }
 
     func registerObservers() {
-        NotificationCenter.default.addObserver(
+        let notificationCenter = NotificationCenter.default
+
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(adjustForKeyboard),
+            name: .UIKeyboardWillHide,
+            object: nil
+        )
+
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(adjustForKeyboard),
+            name: .UIKeyboardWillChangeFrame,
+            object: nil
+        )
+
+        notificationCenter.addObserver(
             self,
             selector: #selector(updateData),
             name: .triggerDataUpdate,
@@ -262,28 +291,21 @@ open class RocketChatViewController: UIViewController {
     }
 
     func setupChatViews() {
-        view.addSubview(composerView)
         view.addSubview(collectionView)
 
         collectionView.transform = isInverted ? invertedTransform : collectionView.transform
 
-        composerView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-
-        var bottomMargin: NSLayoutYAxisAnchor
+        collectionView.keyboardDismissMode = .interactive
         if #available(iOS 11.0, *) {
-            collectionView.contentInsetAdjustmentBehavior = .never
-            bottomMargin = view.safeAreaLayoutGuide.bottomAnchor
+            collectionView.contentInsetAdjustmentBehavior = .always
         } else {
-            bottomMargin = view.bottomAnchor
+            // Fallback on earlier versions
         }
 
         NSLayoutConstraint.activate([
-            composerView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor),
-            composerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            composerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: composerView.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
@@ -317,6 +339,26 @@ open class RocketChatViewController: UIViewController {
                 }
             }
         }
+    }
+
+    @objc func adjustForKeyboard(notification: Notification) {
+        guard let userInfo = notification.userInfo else {
+            return
+        }
+
+        guard let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+            return
+        }
+
+        let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
+
+        if notification.name == .UIKeyboardWillHide {
+            collectionView.contentInset = .zero
+        } else {
+            collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height, right: 0)
+        }
+
+        collectionView.scrollIndicatorInsets = collectionView.contentInset
     }
 
 }
