@@ -358,7 +358,10 @@ open class RocketChatViewController: UICollectionViewController {
             return
         }
 
-        guard let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+        guard
+            let keyboardScreenBeginFrame = (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue,
+            let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        else {
             return
         }
 
@@ -371,8 +374,8 @@ open class RocketChatViewController: UICollectionViewController {
                 $0.top = keyboardViewEndFrame.height
             }
 
-            tap(collectionView.contentOffset) {
-                $0.y = -keyboardViewEndFrame.height
+            collectionView.contentOffset = tap(collectionView.contentOffset) {
+                $0.y = $0.y - (keyboardViewEndFrame.height - keyboardScreenBeginFrame.height)
             }
         }
 
