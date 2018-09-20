@@ -179,13 +179,13 @@ public class ComposerView: UIView {
         let composerHeight: CGFloat
 
         if #available(iOS 11, *) {
-            composerHeight = textView.contentSize.height + 16 + safeAreaInsets.bottom
+            composerHeight = textView.contentSize.height + 16 + safeAreaInsets.bottom + safeAreaInsets.top
         } else {
             composerHeight = textView.contentSize.height + 16
         }
 
         let addonsHeight = componentStackView.frame.height + utilityStackView.frame.height
-        let height = min(composerHeight, currentDelegate.maximumHeight(for: self)) + addonsHeight + topSeparatorView.frame.height + 1
+        let height = min(composerHeight, currentDelegate.maximumHeight(for: self)) + addonsHeight + topSeparatorView.frame.height
 
         return CGSize(width: super.intrinsicContentSize.width, height: height)
     }
@@ -261,7 +261,7 @@ public class ComposerView: UIView {
                 textView.leadingAnchor.constraint(equalTo: leftButton.trailingAnchor, constant: layoutMargins.left),
                 textView.trailingAnchor.constraint(equalTo: rightButton.leadingAnchor, constant: -layoutMargins.right),
                 textView.topAnchor.constraint(equalTo: componentStackView.bottomAnchor, constant: layoutMargins.top),
-                textView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -layoutMargins.bottom),
+                textView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
 
                 // rightButton constraints
 
