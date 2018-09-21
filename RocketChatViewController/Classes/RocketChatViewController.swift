@@ -264,22 +264,6 @@ open class RocketChatViewController: UICollectionViewController {
         )
     }
 
-    override open func viewSafeAreaInsetsDidChange() {
-        if #available(iOS 11.0, *) {
-            super.viewSafeAreaInsetsDidChange()
-
-            let top = isInverted ? view.safeAreaInsets.bottom : view.safeAreaInsets.top
-            let bottom = isInverted ? view.safeAreaInsets.top : view.safeAreaInsets.bottom
-
-            collectionView?.contentInset = UIEdgeInsets(
-                top: top,
-                left: view.safeAreaInsets.left,
-                bottom: bottom,
-                right: view.safeAreaInsets.right
-            )
-        }
-    }
-
     func setupChatViews() {
         guard let collectionView = collectionView else {
             return
@@ -340,7 +324,7 @@ open class RocketChatViewController: UICollectionViewController {
         }
     }
 
-    var originalInsets: UIEdgeInsets?
+    private var originalInsets: UIEdgeInsets?
     @objc func adjustForKeyboard(notification: Notification) {
         if originalInsets == nil, let insets = collectionView?.contentInset {
             originalInsets = insets
@@ -359,23 +343,24 @@ open class RocketChatViewController: UICollectionViewController {
         }
 
         guard
-            let keyboardScreenBeginFrame = (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue,
-            let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            let beginFrameRaw = (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue,
+            let endFrameRaw = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
         else {
             return
         }
 
-        let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
+        let endFrame = collectionView.convert(endFrameRaw, from: view.window)
+        let beginFrame = collectionView.convert(beginFrameRaw, from: view.window)
 
         if notification.name == .UIKeyboardWillHide {
             collectionView.contentInset = originalInsets
-        } else {
+        } else if endFrame.height > beginFrame.height {
             collectionView.contentInset = tap(originalInsets) {
-                $0.top = keyboardViewEndFrame.height
+                $0.top = endFrame.height
             }
 
             collectionView.contentOffset = tap(collectionView.contentOffset) {
-                $0.y = $0.y - (keyboardViewEndFrame.height - keyboardScreenBeginFrame.height)
+                $0.y = $0.y - (endFrame.height - beginFrame.height)
             }
         }
 
