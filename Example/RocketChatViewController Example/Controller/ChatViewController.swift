@@ -17,28 +17,28 @@ final class ChatViewController: RocketChatViewController {
 
         composerView.delegate = self
 
-        collectionView.register(
+        collectionView?.register(
             UINib(
                 nibName: BasicMessageChatCell.identifier, bundle: nil
             ),
             forCellWithReuseIdentifier: BasicMessageChatCell.identifier
         )
 
-        collectionView.register(
+        collectionView?.register(
             UINib(
                 nibName: ImageAttachmentChatCell.identifier, bundle: nil
             ),
             forCellWithReuseIdentifier: ImageAttachmentChatCell.identifier
         )
 
-        collectionView.register(
+        collectionView?.register(
             UINib(
                 nibName: VideoAttachmentChatCell.identifier, bundle: nil
             ),
             forCellWithReuseIdentifier: VideoAttachmentChatCell.identifier
         )
 
-        collectionView.register(
+        collectionView?.register(
             UINib(
                 nibName: AudioAttachmentChatCell.identifier, bundle: nil
             ),

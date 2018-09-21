@@ -197,19 +197,22 @@ public protocol ChatCell {
 
  */
 
-open class RocketChatViewController: UIViewController {
-    public var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(
-            frame: .zero,
-            collectionViewLayout: UICollectionViewFlowLayout()
-        )
-
-        collectionView.backgroundColor = .white
-        return collectionView
-    }()
-
+open class RocketChatViewController: UICollectionViewController {
     open var composerHeightConstraint: NSLayoutConstraint!
     open var composerView = ComposerView()
+
+    open override var inputAccessoryView: UIView? {
+        composerView.layoutMargins = view.layoutMargins
+        if #available(iOS 11.0, *) {
+            composerView.directionalLayoutMargins = systemMinimumLayoutMargins
+        }
+        
+        return composerView
+    }
+
+    open override var canBecomeFirstResponder: Bool {
+        return true
+    }
 
     open var data: [AnyChatSection] = []
     private var internalData: [ArraySection<AnyChatSection, AnyChatItem>] = []
@@ -237,7 +240,23 @@ open class RocketChatViewController: UIViewController {
     }
 
     func registerObservers() {
-        NotificationCenter.default.addObserver(
+        let notificationCenter = NotificationCenter.default
+
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(adjustForKeyboard),
+            name: .UIKeyboardWillHide,
+            object: nil
+        )
+
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(adjustForKeyboard),
+            name: .UIKeyboardWillChangeFrame,
+            object: nil
+        )
+
+        notificationCenter.addObserver(
             self,
             selector: #selector(updateData),
             name: .triggerDataUpdate,
@@ -245,45 +264,27 @@ open class RocketChatViewController: UIViewController {
         )
     }
 
-    override open func viewSafeAreaInsetsDidChange() {
-        if #available(iOS 11.0, *) {
-            super.viewSafeAreaInsetsDidChange()
-
-            let top = isInverted ? view.safeAreaInsets.bottom : view.safeAreaInsets.top
-            let bottom = isInverted ? view.safeAreaInsets.top : view.safeAreaInsets.bottom
-
-            collectionView.contentInset = UIEdgeInsets(
-                top: top,
-                left: view.safeAreaInsets.left,
-                bottom: bottom,
-                right: view.safeAreaInsets.right
-            )
-        }
-    }
-
     func setupChatViews() {
-        view.addSubview(composerView)
-        view.addSubview(collectionView)
+        guard let collectionView = collectionView else {
+            return
+        }
+
+        collectionView.collectionViewLayout = UICollectionViewFlowLayout()
+        collectionView.backgroundColor = .white
 
         collectionView.transform = isInverted ? invertedTransform : collectionView.transform
 
-        composerView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-
-        var bottomMargin: NSLayoutYAxisAnchor
+        collectionView.keyboardDismissMode = .interactive
         if #available(iOS 11.0, *) {
-            collectionView.contentInsetAdjustmentBehavior = .never
-            bottomMargin = view.safeAreaLayoutGuide.bottomAnchor
+            collectionView.contentInsetAdjustmentBehavior = .always
         } else {
-            bottomMargin = view.bottomAnchor
+            // Fallback on earlier versions
         }
 
         NSLayoutConstraint.activate([
-            composerView.bottomAnchor.constraint(equalTo: bottomMargin),
-            composerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            composerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: composerView.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
@@ -299,14 +300,18 @@ open class RocketChatViewController: UIViewController {
 
     @objc open func updateData() {
         updateDataQueue.addOperation { [weak self] in
-            guard let strongSelf = self else { return }
+            guard
+                let strongSelf = self,
+                let collectionView = strongSelf.collectionView else {
+                return
+            }
 
             DispatchQueue.main.async {
                 let changeset = StagedChangeset(source: strongSelf.internalData, target: strongSelf.data.map({ $0.toArraySection }))
-                strongSelf.collectionView.reload(using: changeset, updateRows: { indexPaths in
+                collectionView.reload(using: changeset, updateRows: { indexPaths in
                     for indexPath in indexPaths {
-                        if strongSelf.collectionView.indexPathsForVisibleItems.contains(indexPath),
-                            let cell = strongSelf.collectionView.cellForItem(at: indexPath) as? ChatCell {
+                        if collectionView.indexPathsForVisibleItems.contains(indexPath),
+                            let cell = collectionView.cellForItem(at: indexPath) as? ChatCell {
                             let viewModel = strongSelf.internalData[indexPath.section].elements[indexPath.item]
                             cell.bind(viewModel: viewModel)
                         }
@@ -319,18 +324,60 @@ open class RocketChatViewController: UIViewController {
         }
     }
 
+    private var originalInsets: UIEdgeInsets?
+    @objc func adjustForKeyboard(notification: Notification) {
+        if originalInsets == nil, let insets = collectionView?.contentInset {
+            originalInsets = insets
+        }
+
+        guard let originalInsets = originalInsets else {
+            return
+        }
+
+        guard let collectionView = collectionView else {
+            return
+        }
+
+        guard let userInfo = notification.userInfo else {
+            return
+        }
+
+        guard
+            let beginFrameRaw = (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue,
+            let endFrameRaw = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        else {
+            return
+        }
+
+        let endFrame = collectionView.convert(endFrameRaw, from: view.window)
+        let beginFrame = collectionView.convert(beginFrameRaw, from: view.window)
+
+        if notification.name == .UIKeyboardWillHide {
+            collectionView.contentInset = originalInsets
+        } else if endFrame.height > beginFrame.height {
+            collectionView.contentInset = tap(originalInsets) {
+                $0.top = endFrame.height
+            }
+
+            collectionView.contentOffset = tap(collectionView.contentOffset) {
+                $0.y = $0.y - (endFrame.height - beginFrame.height)
+            }
+        }
+
+        collectionView.scrollIndicatorInsets = collectionView.contentInset
+    }
 }
 
-extension RocketChatViewController: UICollectionViewDataSource {
-    open func numberOfSections(in collectionView: UICollectionView) -> Int {
+extension RocketChatViewController {
+    open override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return internalData.count
     }
 
-    open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    open override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return internalData[section].elements.count
     }
 
-    open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    open override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let sectionController = internalData[indexPath.section].model
         let viewModel = sectionController.viewModels()[indexPath.row]
 
@@ -341,7 +388,7 @@ extension RocketChatViewController: UICollectionViewDataSource {
         return chatCell
     }
 
-    open func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    open override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         cell.contentView.transform = isInverted ? invertedTransform : cell.contentView.transform
     }
 }
