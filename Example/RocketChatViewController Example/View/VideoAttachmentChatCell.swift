@@ -14,8 +14,10 @@ class VideoAttachmentChatCell: UICollectionViewCell, ChatCell {
 
     @IBOutlet weak var videoPreview: UIImageView!
 
-    func bind(viewModel: AnyChatItem) {
-        guard let _ = viewModel.base as? VideoAttachmentChatItem else {
+    var viewModel: AnyChatItem?
+
+    func configure() {
+        guard let _ = viewModel?.base as? VideoAttachmentChatItem else {
             return
         }
 

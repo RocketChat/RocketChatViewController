@@ -150,7 +150,8 @@ public extension ChatItem where Self: Differentiable {
  */
 
 public protocol ChatCell {
-    func bind(viewModel: AnyChatItem)
+    var viewModel: AnyChatItem? { get set }
+    func configure()
 }
 
 /**
@@ -311,9 +312,10 @@ open class RocketChatViewController: UICollectionViewController {
                 collectionView.reload(using: changeset, updateRows: { indexPaths in
                     for indexPath in indexPaths {
                         if collectionView.indexPathsForVisibleItems.contains(indexPath),
-                            let cell = collectionView.cellForItem(at: indexPath) as? ChatCell {
+                            var cell = collectionView.cellForItem(at: indexPath) as? ChatCell {
                             let viewModel = strongSelf.internalData[indexPath.section].elements[indexPath.item]
-                            cell.bind(viewModel: viewModel)
+                            cell.viewModel = viewModel
+                            cell.configure()
                         }
                     }
                 }, interrupt: { $0.changeCount > 100 }) { newData in
