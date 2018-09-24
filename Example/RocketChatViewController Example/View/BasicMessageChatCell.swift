@@ -15,8 +15,10 @@ class BasicMessageChatCell: UICollectionViewCell, ChatCell {
     @IBOutlet weak var username: UILabel!
     @IBOutlet weak var message: UILabel!
 
-    func bind(viewModel: AnyChatItem) {
-        guard let viewModel = viewModel.base as? BasicMessageChatItem else {
+    var viewModel: AnyChatItem?
+
+    func configure() {
+        guard let viewModel = viewModel?.base as? BasicMessageChatItem else {
             return
         }
 

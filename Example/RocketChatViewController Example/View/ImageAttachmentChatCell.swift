@@ -14,8 +14,10 @@ class ImageAttachmentChatCell: UICollectionViewCell, ChatCell {
 
     @IBOutlet weak var image: UIImageView!
 
-    func bind(viewModel: AnyChatItem) {
-        guard let _ = viewModel.base as? ImageAttachmentChatItem else {
+    var viewModel: AnyChatItem?
+
+    func configure() {
+        guard let _ = viewModel?.base as? ImageAttachmentChatItem else {
             return
         }
 
