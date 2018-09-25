@@ -28,7 +28,7 @@ public extension ComposerViewExpandedDelegate {
                 ($0 as? HintsView)?.reloadData()
             }
 
-            composerView.updateHeight()
+            // composerView.updateHeight()
         }
 
         guard let range = Range(range, in: composerView.textView.text) else {

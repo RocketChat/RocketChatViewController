@@ -302,7 +302,8 @@ open class RocketChatViewController: UICollectionViewController {
         updateDataQueue.addOperation { [weak self] in
             guard
                 let strongSelf = self,
-                let collectionView = strongSelf.collectionView else {
+                let collectionView = strongSelf.collectionView
+            else {
                 return
             }
 

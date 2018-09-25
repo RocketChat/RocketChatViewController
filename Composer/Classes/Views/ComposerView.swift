@@ -315,11 +315,8 @@ public class ComposerView: UIView {
      Update composer height
      */
     public func updateHeight() {
-        //UIView.animate(withDuration: 0.2) {
-            self.invalidateIntrinsicContentSize()
-            self.superview?.setNeedsLayout()
-            // self.superview?.layoutIfNeeded()
-        //}
+        self.invalidateIntrinsicContentSize()
+        self.superview?.setNeedsLayout()
     }
 
     public override func layoutSubviews() {

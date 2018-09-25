@@ -84,18 +84,18 @@ public class UserHintCell: UITableViewCell {
 
             // avatarView
 
-            tap(avatarView.leadingAnchor.constraint(equalTo: leadingAnchor)) { $0.constant = Consts.avatarLeading },
+            avatarView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Consts.avatarLeading),
             avatarView.centerYAnchor.constraint(equalTo: centerYAnchor),
 
             // nameLabel
             
-            tap(nameLabel.leadingAnchor.constraint(equalTo: avatarView.leadingAnchor)) { $0.constant = Consts.nameLeading },
-            tap(nameLabel.bottomAnchor.constraint(equalTo: centerYAnchor)) { $0.constant = Consts.nameBottom },
+            nameLabel.leadingAnchor.constraint(equalTo: avatarView.trailingAnchor, constant: Consts.nameLeading),
+            nameLabel.bottomAnchor.constraint(equalTo: centerYAnchor, constant: Consts.nameBottom),
 
             // usernameLabel
 
-            tap(usernameLabel.leadingAnchor.constraint(equalTo: avatarView.leadingAnchor)) { $0.constant = Consts.nameLeading },
-            tap(usernameLabel.topAnchor.constraint(equalTo: centerYAnchor)) { $0.constant = Consts.usernameTop }
+            usernameLabel.leadingAnchor.constraint(equalTo: avatarView.trailingAnchor, constant: Consts.nameLeading),
+            usernameLabel.topAnchor.constraint(equalTo: centerYAnchor, constant: Consts.usernameTop)
         ])
     }
 }
@@ -115,10 +115,10 @@ private extension UserHintCell {
         static var avatarCornerRadius: CGFloat = 4
 
         static var nameLeading: CGFloat = 15
-        static var nameBottom: CGFloat = -4
+        static var nameBottom: CGFloat = 0
 
         static var usernameLeading: CGFloat = 15
-        static var usernameTop: CGFloat = 4
+        static var usernameTop: CGFloat = 0
         static var usernameColor: UIColor = #colorLiteral(red: 0.6196078431, green: 0.6352941176, blue: 0.6588235294, alpha: 1)
     }
 }
