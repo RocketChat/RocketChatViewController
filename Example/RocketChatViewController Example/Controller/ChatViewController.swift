@@ -12,6 +12,8 @@ import RocketChatViewController
 
 
 final class ChatViewController: RocketChatViewController {
+    var hintPrefixedWord: String = ""
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -99,16 +101,20 @@ extension ChatViewController: ComposerViewExpandedDelegate {
         }
     }
 
-    func composerViewIsReplying(_ composerView: ComposerView) -> Bool {
-        return false
+    func composerViewHintPrefixes(_ composerView: ComposerView) -> [Character] {
+        return ["/", "@", "#"]
+    }
+
+    func composerView(_ composerView: ComposerView, didChangeHintPrefixedWord word: String) {
+        hintPrefixedWord = word
     }
 
     func composerViewIsHinting(_ composerView: ComposerView) -> Bool {
-        return false
+        return !hintPrefixedWord.isEmpty
     }
 
     func numberOfHints(in hintsView: HintsView) -> Int {
-        return 3
+        return hintPrefixedWord.count
     }
 
     func hintsView(_ hintsView: HintsView, cellForHintAt index: Int) -> UITableViewCell {

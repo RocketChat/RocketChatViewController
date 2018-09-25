@@ -86,11 +86,7 @@ public class ComposerView: UIView {
     /**
      The object that acts as the delegate of the composer.
      */
-    public weak var delegate: ComposerViewDelegate? {
-        didSet {
-            reloadAddons()
-        }
-    }
+    public weak var delegate: ComposerViewDelegate?
 
     /**
      A fallback delegate for when delegate is nil.
@@ -209,6 +205,7 @@ public class ComposerView: UIView {
      */
     public func commonInit() {
         textView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
+        textView.delegate = self
 
         // preservesSuperviewLayoutMargins = true
 
@@ -318,7 +315,11 @@ public class ComposerView: UIView {
      Update composer height
      */
     public func updateHeight() {
-        invalidateIntrinsicContentSize()
+        //UIView.animate(withDuration: 0.2) {
+            self.invalidateIntrinsicContentSize()
+            self.superview?.setNeedsLayout()
+            // self.superview?.layoutIfNeeded()
+        //}
     }
 
     public override func layoutSubviews() {
@@ -388,5 +389,13 @@ public extension ComposerView {
         default:
             break
         }
+    }
+}
+
+// MARK: UITextView Delegate
+
+extension ComposerView: UITextViewDelegate {
+    @objc public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        return currentDelegate.composerView(self, shouldChangeTextIn: range, replacementText: text)
     }
 }

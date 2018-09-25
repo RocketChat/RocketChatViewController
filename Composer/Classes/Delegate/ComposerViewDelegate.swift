@@ -34,6 +34,11 @@ public protocol ComposerViewDelegate: class {
     func composerView(_ composerView: ComposerView, addonAt slot: ComposerAddonSlot, index: UInt) -> ComposerAddon?
 
     /**
+     Asks the delegate whether the specified text should be replaced in the composer view's text view.
+     */
+    func composerView(_ composerView: ComposerView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool
+
+    /**
      Tells the delegate the current addon view has been updated or changed.
      */
     func composerView(_ composerView: ComposerView, didUpdateAddonView view: UIView?, at slot: ComposerAddonSlot, index: UInt)
@@ -55,7 +60,7 @@ public extension ComposerViewDelegate {
     }
 
     func maximumHeight(for composerView: ComposerView) -> CGFloat {
-        return UIScreen.main.bounds.height/3.0
+        return UIScreen.main.bounds.height/6.0
     }
 
     func numberOfAddons(in composerView: ComposerView, at slot: ComposerAddonSlot) -> UInt {
@@ -64,6 +69,10 @@ public extension ComposerViewDelegate {
 
     func composerView(_ composerView: ComposerView, addonAt slot: ComposerAddonSlot, index: UInt) -> ComposerAddon? {
         return nil
+    }
+
+    func composerView(_ composerView: ComposerView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        return true
     }
 
     func composerView(_ composerView: ComposerView, didUpdateAddonView view: UIView?, at slot: ComposerAddonSlot, index: UInt) { }

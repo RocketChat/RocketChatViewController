@@ -44,6 +44,10 @@ public class HintsView: UITableView {
     }
 
     public override var intrinsicContentSize: CGSize {
+        if numberOfRows(inSection: 0) == 0 {
+            return CGSize(width: contentSize.width, height: 0)
+        }
+
         return CGSize(width: contentSize.width, height: min(contentSize.height, currentDelegate.maximumHeight(for: self)))
     }
 
