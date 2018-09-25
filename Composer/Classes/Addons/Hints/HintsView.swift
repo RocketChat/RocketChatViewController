@@ -71,8 +71,14 @@ public class HintsView: UITableView {
      */
     private func commonInit() {
         dataSource = self
+        delegate = self
         rowHeight = UITableViewAutomaticDimension
         estimatedRowHeight = 44
+
+        register(
+            UITableViewHeaderFooterView.self,
+            forHeaderFooterViewReuseIdentifier: "header"
+        )
 
         addSubviews()
         setupConstraints()
@@ -89,7 +95,7 @@ public class HintsView: UITableView {
      Sets up constraints between the UI elements in the composer.
      */
     private func setupConstraints() {
-        //translatesAutoresizingMaskIntoConstraints = false
+        translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
 
@@ -112,5 +118,17 @@ extension HintsView: UITableViewDataSource {
 
     public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return currentDelegate.title(for: self)
+    }
+}
+
+extension HintsView: UITableViewDelegate {
+    public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard let header = view as? UITableViewHeaderFooterView else {
+            return
+        }
+
+        header.backgroundView?.backgroundColor = .white
+        header.textLabel?.text = currentDelegate.title(for: self)
+        header.textLabel?.textColor = #colorLiteral(red: 0.6196078431, green: 0.6352941176, blue: 0.6588235294, alpha: 1)
     }
 }
