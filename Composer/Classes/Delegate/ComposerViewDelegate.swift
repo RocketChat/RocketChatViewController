@@ -60,7 +60,7 @@ public extension ComposerViewDelegate {
     }
 
     func maximumHeight(for composerView: ComposerView) -> CGFloat {
-        return UIScreen.main.bounds.height/6.0
+        return UIScreen.main.bounds.height
     }
 
     func numberOfAddons(in composerView: ComposerView, at slot: ComposerAddonSlot) -> UInt {

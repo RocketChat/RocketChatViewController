@@ -22,6 +22,8 @@ public class ReplyView: UIView {
 
         $0.text = "jaad.brinkley"
         $0.textColor = #colorLiteral(red: 0.1137254902, green: 0.4549019608, blue: 0.9607843137, alpha: 1)
+        $0.font = .preferredFont(forTextStyle: .title3)
+        $0.adjustsFontForContentSizeCategory = true
     }
 
     let timeLabel = tap(UILabel()) {
@@ -29,13 +31,16 @@ public class ReplyView: UIView {
 
         $0.text = "2:10 PM"
         $0.textColor = #colorLiteral(red: 0.6196078431, green: 0.6352941176, blue: 0.6588235294, alpha: 1)
-        $0.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+        $0.font = .preferredFont(forTextStyle: .footnote)
+        $0.adjustsFontForContentSizeCategory = true
     }
 
     let textLabel = tap(UILabel()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
         $0.text = "This is a multiline chat message from..."
+        $0.font = .preferredFont(forTextStyle: .body)
+        $0.adjustsFontForContentSizeCategory = true
     }
 
     let closeButton = tap(UIButton()) {
@@ -51,7 +56,11 @@ public class ReplyView: UIView {
     }
 
     public override var intrinsicContentSize: CGSize {
-        return CGSize(width: super.intrinsicContentSize.width, height: 80.0)
+        return CGSize(width: super.intrinsicContentSize.width,
+                      height: 10 +
+                        nameLabel.intrinsicContentSize.height +
+                        textLabel.intrinsicContentSize.height + 3 + 15 + 13
+        )
     }
 
     public init() {
