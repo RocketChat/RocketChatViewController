@@ -99,13 +99,4 @@ public extension ComposerViewExpandedDelegate {
             view.backgroundColor = .orange
         }
     }
-
-    func textChanged(in composerView: ComposerView) {
-        if let lastComponent = composerView.textView.text.components(separatedBy: " ").last,
-            let firstCharacter = lastComponent.first,
-            composerViewHintPrefixes(composerView).contains(firstCharacter) {
-
-            //composerView(composerView, didChangeHintPrefixedText: lastComponent)
-        }
-    }
 }
