@@ -117,6 +117,10 @@ extension ChatViewController: ComposerViewExpandedDelegate {
         return hintPrefixedWord.count
     }
 
+    func composerViewIsReplying(_ composerView: ComposerView) -> Bool {
+        return true
+    }
+
     func hintsView(_ hintsView: HintsView, cellForHintAt index: Int) -> UITableViewCell {
         let cell: UserHintCell
 

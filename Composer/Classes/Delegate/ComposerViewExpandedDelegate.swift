@@ -82,7 +82,7 @@ public extension ComposerViewExpandedDelegate {
         case .utility:
             return .hints
         case .component:
-            return nil
+            return .reply
         }
     }
 
@@ -95,8 +95,8 @@ public extension ComposerViewExpandedDelegate {
             view.hintsDelegate = self
         }
 
-        if let view = view as? ReplyView {
-            view.backgroundColor = .orange
+        if let _ = view as? ReplyView {
+            // view.backgroundColor = .orange
         }
     }
 }
