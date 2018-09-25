@@ -34,9 +34,9 @@ public protocol ComposerViewDelegate: class {
     func composerView(_ composerView: ComposerView, addonAt slot: ComposerAddonSlot, index: UInt) -> ComposerAddon?
 
     /**
-     Asks the delegate whether the specified text should be replaced in the composer view's text view.
+     Tells the delegate that the text selection changed in the specified composer view's text view.
      */
-    func composerView(_ composerView: ComposerView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool
+    func composerViewDidChangeSelection(_ composerView: ComposerView)
 
     /**
      Tells the delegate the current addon view has been updated or changed.
@@ -71,10 +71,7 @@ public extension ComposerViewDelegate {
         return nil
     }
 
-    func composerView(_ composerView: ComposerView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        return true
-    }
-
+    func composerViewDidChangeSelection(_ composerView: ComposerView) { }
     func composerView(_ composerView: ComposerView, didUpdateAddonView view: UIView?, at slot: ComposerAddonSlot, index: UInt) { }
     func composerView(_ composerView: ComposerView, didTapButtonAt slot: ComposerButtonSlot) { }
 }

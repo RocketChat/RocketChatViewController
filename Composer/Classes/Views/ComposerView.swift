@@ -392,7 +392,9 @@ public extension ComposerView {
 // MARK: UITextView Delegate
 
 extension ComposerView: UITextViewDelegate {
-    @objc public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        return currentDelegate.composerView(self, shouldChangeTextIn: range, replacementText: text)
+    @objc public func textViewDidChangeSelection(_ textView: UITextView) {
+        _ = currentDelegate.composerViewDidChangeSelection(self)
+
+        return
     }
 }

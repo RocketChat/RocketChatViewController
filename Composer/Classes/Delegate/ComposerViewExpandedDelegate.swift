@@ -20,64 +20,57 @@ public protocol ComposerViewExpandedDelegate: ComposerViewDelegate, HintsDelegat
 }
 
 public extension ComposerViewExpandedDelegate {
-    func composerView(_ composerView: ComposerView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    func composerViewDidChangeSelection(_ composerView: ComposerView) {
         func didChangeHintPrefixedWord(_ word: String) {
             self.composerView(composerView, didChangeHintPrefixedWord: word)
 
             composerView.utilityStackView.subviews.forEach {
                 ($0 as? HintsView)?.reloadData()
             }
-
-            // composerView.updateHeight()
         }
 
-        guard let range = Range(range, in: composerView.textView.text) else {
+        let text: String = composerView.textView.text
+
+        guard let range = Range(composerView.textView.selectedRange, in: text) else {
             didChangeHintPrefixedWord("")
-            return true
+            return
         }
 
-        guard !text.trimmingCharacters(in: [" "]).isEmpty || composerView.textView.text[range].count > 0 else {
-            didChangeHintPrefixedWord("")
-            return true
-        }
-        
-        let textView: ComposerTextView = composerView.textView
-        let textViewText: String = textView.text
-        let newText: String = textViewText.replacingCharacters(in: range, with: text)
-
-        let wordRanges = Array(newText.indices).filter {
-            newText[$0] != " " && ($0 == newText.startIndex || newText[newText.index(before: $0)] == " ")
+        let wordRanges = Array(text.indices).filter {
+            text[$0] != " " && ($0 == text.startIndex || text[text.index(before: $0)] == " ")
         }.map { index -> Range<String.Index> in
-            if let spaceIndex = newText[index...].firstIndex(of: " ") {
+            if let spaceIndex = text[index...].firstIndex(of: " ") {
                 return index..<spaceIndex
             }
 
-            return index..<newText.endIndex
+            return index..<text.endIndex
         }
 
         let prefixes = composerViewHintPrefixes(composerView)
 
         if let wordRange = wordRanges.first(where: {
-            if range.lowerBound == newText.startIndex, let char = newText[$0].first {
+            if range.lowerBound == text.startIndex, let char = text[$0].first {
+                if $0.lowerBound == text.startIndex {
+                    return prefixes.contains(char)
+                } else {
+                    return false
+                }
+            }
+
+            if range.lowerBound == $0.lowerBound, let char = text[$0].first {
                 return prefixes.contains(char)
             }
 
-            if range.lowerBound == $0.lowerBound, let char = newText[$0].first {
-                return prefixes.contains(char)
-            }
-
-            return $0.contains(newText.index(before: range.lowerBound))
+            return $0.contains(text.index(before: range.lowerBound))
         }) {
-            let word = String(newText[wordRange])
+            let word = String(text[wordRange])
             if let char = word.first, prefixes.contains(char) {
                 didChangeHintPrefixedWord(word)
-                return true
+                return
             }
         }
 
         didChangeHintPrefixedWord("")
-
-        return true
     }
 
     func numberOfAddons(in composerView: ComposerView, at slot: ComposerAddonSlot) -> UInt {
