@@ -154,6 +154,10 @@ public protocol ChatCell {
     func configure()
 }
 
+public protocol ChatDataUpdateDelegate: class {
+    func didUpdateChatData(newData: [AnyChatSection])
+}
+
 /**
     RocketChatViewController is basically a UIViewController that holds
     two key components: a list and a message composer.
@@ -218,6 +222,7 @@ open class RocketChatViewController: UICollectionViewController {
     open var data: [AnyChatSection] = []
     private var internalData: [ArraySection<AnyChatSection, AnyChatItem>] = []
 
+    open weak var dataUpdateDelegate: ChatDataUpdateDelegate?
     private let updateDataQueue: OperationQueue = {
         let operationQueue = OperationQueue()
         operationQueue.maxConcurrentOperationCount = 1
@@ -320,7 +325,10 @@ open class RocketChatViewController: UICollectionViewController {
                     }
                 }, interrupt: { $0.changeCount > 100 }) { newData in
                     strongSelf.internalData = newData
-                    strongSelf.data = newData.map { $0.model }
+
+                    let newSections = newData.map { $0.model }
+                    strongSelf.data = newSections
+                    strongSelf.dataUpdateDelegate?.didUpdateChatData(newData: newSections)
                 }
             }
         }
