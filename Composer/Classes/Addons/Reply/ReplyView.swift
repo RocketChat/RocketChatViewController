@@ -21,6 +21,8 @@ public struct ReplyViewModel {
 }
 
 public protocol ReplyViewDelegate {
+    func viewModel(for replyView: ReplyView) -> ReplyViewModel
+
     func replyViewDidHide(_ replyView: ReplyView)
     func replyViewDidShow(_ replyView: ReplyView)
 }
@@ -43,8 +45,9 @@ public class ReplyView: UIView {
         $0.textColor = #colorLiteral(red: 0.1137254902, green: 0.4549019608, blue: 0.9607843137, alpha: 1)
         $0.font = .preferredFont(forTextStyle: .title3)
         $0.adjustsFontForContentSizeCategory = true
+
         $0.numberOfLines = 1
-        $0.lineBreakMode = .byTruncatingHead
+        $0.lineBreakMode = .byTruncatingTail
     }
 
     public let timeLabel = tap(UILabel()) {
@@ -62,6 +65,9 @@ public class ReplyView: UIView {
         $0.text = "This is a multiline chat message from a person that sent a message"
         $0.font = .preferredFont(forTextStyle: .body)
         $0.adjustsFontForContentSizeCategory = true
+
+        $0.numberOfLines = 1
+        $0.lineBreakMode = .byTruncatingTail
     }
 
     public let closeButton = tap(UIButton()) {
@@ -104,6 +110,12 @@ public class ReplyView: UIView {
         self.commonInit()
     }
 
+
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        invalidateIntrinsicContentSize()
+    }
+
     public override init(frame: CGRect) {
         super.init(frame: frame)
         self.commonInit()
@@ -118,6 +130,10 @@ public class ReplyView: UIView {
      Shared initialization procedures.
      */
     private func commonInit() {
+        NotificationCenter.default.addObserver(forName: .UIContentSizeCategoryDidChange, object: nil, queue: nil, using: { [weak self] _ in
+            self?.setNeedsLayout()
+        })
+
         addSubviews()
         setupConstraints()
     }
@@ -152,6 +168,7 @@ public class ReplyView: UIView {
 
             timeLabel.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 10),
             timeLabel.bottomAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 0),
+            timeLabel.trailingAnchor.constraint(lessThanOrEqualTo: backgroundView.trailingAnchor, constant: -15),
 
             textLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor, constant: 0),
             textLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 3),
