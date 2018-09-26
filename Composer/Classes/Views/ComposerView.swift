@@ -315,8 +315,27 @@ public class ComposerView: UIView {
      Update composer height
      */
     public func updateHeight() {
+        let oldFrame = intrinsicContentSize
+
         self.invalidateIntrinsicContentSize()
-        self.superview?.setNeedsLayout()
+
+        guard
+            self.frame.height != oldFrame.height,
+            let superview = self.superview
+        else {
+            return
+        }
+
+        superview.frame = CGRect(
+            x: superview.frame.minX,
+            y: superview.frame.minY,
+            width: superview.frame.width,
+            height: superview.frame.height + self.frame.height - oldFrame.height
+        )
+
+        UIView.animate(withDuration: 0.2) {
+            superview.layoutIfNeeded()
+        }
     }
 
     public override func layoutSubviews() {
@@ -393,8 +412,7 @@ public extension ComposerView {
 
 extension ComposerView: UITextViewDelegate {
     @objc public func textViewDidChangeSelection(_ textView: UITextView) {
-        _ = currentDelegate.composerViewDidChangeSelection(self)
-
+        currentDelegate.composerViewDidChangeSelection(self)
         return
     }
 }

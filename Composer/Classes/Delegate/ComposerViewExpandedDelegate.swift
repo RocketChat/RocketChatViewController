@@ -25,7 +25,6 @@ private extension ComposerView {
 public protocol ComposerViewExpandedDelegate: ComposerViewDelegate, HintsViewDelegate, ReplyViewDelegate {
     func hintPrefixes(for composerView: ComposerView) -> [Character]
     func isHinting(in composerView: ComposerView) -> Bool
-    func replyViewModel(for composerView: ComposerView) -> ReplyViewModel?
 
     func composerView(_ composerView: ComposerView, didChangeHintPrefixedWord word: String)
 }
@@ -34,7 +33,6 @@ public extension ComposerViewExpandedDelegate {
     func composerViewDidChangeSelection(_ composerView: ComposerView) {
         func didChangeHintPrefixedWord(_ word: String) {
             self.composerView(composerView, didChangeHintPrefixedWord: word)
-
             composerView.hintsView?.reloadData()
         }
 
@@ -106,10 +104,9 @@ public extension ComposerViewExpandedDelegate {
         }
     }
 
-    // MARK: Reply
-
     func composerView(_ composerView: ComposerView, didUpdateAddonView view: UIView?, at slot: ComposerAddonSlot, index: UInt) {
         if let view = view as? HintsView {
+            view.registerCellTypes(UserHintCell.self, TextHintCell.self)
             view.hintsDelegate = self
         }
 

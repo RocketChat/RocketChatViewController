@@ -58,18 +58,31 @@ public class HintsView: UITableView {
 
     public init() {
         super.init(frame: .zero, style: .plain)
-        self.commonInit()
+        commonInit()
     }
 
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.commonInit()
+        commonInit()
+    }
+
+    public func registerCellTypes(_ cellType: UITableViewCell.Type...) {
+        cellType.forEach { register($0, forCellReuseIdentifier: "\($0)") }
+    }
+
+    public func dequeueReusableCell<T: UITableViewCell>(withType cellType: T.Type) -> T? {
+        return dequeueReusableCell(withIdentifier: "\(cellType)") as? T
     }
 
     /**
      Shared initialization procedures.
      */
     private func commonInit() {
+        NotificationCenter.default.addObserver(forName: .UIContentSizeCategoryDidChange, object: nil, queue: nil, using: { [weak self] _ in
+            self?.beginUpdates()
+            self?.endUpdates()
+        })
+
         dataSource = self
         delegate = self
         rowHeight = UITableViewAutomaticDimension
@@ -122,6 +135,10 @@ extension HintsView: UITableViewDataSource {
 }
 
 extension HintsView: UITableViewDelegate {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+
     public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else {
             return

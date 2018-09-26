@@ -12,8 +12,26 @@ import RocketChatViewController
 
 
 final class ChatViewController: RocketChatViewController {
-    var hintPrefixedWord: String = ""
     var isReplying: Bool = false
+
+    var hintPrefixedWord: String = "" {
+        didSet {
+            let withoutPrefix = String(hintPrefixedWord.dropFirst()).lowercased()
+
+            switch hintPrefixedWord.first {
+            case "/":
+                hints = withoutPrefix.isEmpty ? DummyData.commands : DummyData.commands.filter { $0.contains(withoutPrefix) }
+            case "@":
+                hints = withoutPrefix.isEmpty ? DummyData.users.map { $0.username } : DummyData.users.filter { $0.username.contains(withoutPrefix) }.map { $0.username }
+            case "#":
+                hints = withoutPrefix.isEmpty ? DummyData.rooms : DummyData.rooms.filter { $0.contains(withoutPrefix) }
+            default:
+                hints = []
+            }
+        }
+    }
+
+    var hints: [String] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,7 +111,6 @@ extension ChatViewController {
 
 // MARK: Composer Delegate
 extension ChatViewController: ComposerViewExpandedDelegate {
-
     // MARK: Hint
 
     func hintPrefixes(for composerView: ComposerView) -> [Character] {
@@ -105,21 +122,21 @@ extension ChatViewController: ComposerViewExpandedDelegate {
     }
 
     func isHinting(in composerView: ComposerView) -> Bool {
-        return !hintPrefixedWord.isEmpty
+        return !hints.isEmpty
     }
 
     func numberOfHints(in hintsView: HintsView) -> Int {
-        return hintPrefixedWord.count
+        return hints.count
     }
 
     // MARK: Reply
 
-    func replyViewModel(for composerView: ComposerView) -> ReplyViewModel? {
-        return isReplying ? ReplyViewModel(
+    func viewModel(for replyView: ReplyView) -> ReplyViewModel {
+        return ReplyViewModel(
             nameText: "jaad.brinklei",
             timeText: "2:10 PM",
             text: "This is a multiline chat message from..."
-        ) : nil
+        )
     }
 
     func replyViewDidHide(_ replyView: ReplyView) {
@@ -131,19 +148,18 @@ extension ChatViewController: ComposerViewExpandedDelegate {
     }
 
     func hintsView(_ hintsView: HintsView, cellForHintAt index: Int) -> UITableViewCell {
-        let cell: UserHintCell
+        let hint = hints[index]
 
-        if let userCell = hintsView.dequeueReusableCell(withIdentifier: "cell") as? UserHintCell {
-            cell = userCell
-        } else {
-            hintsView.register(UserHintCell.self, forCellReuseIdentifier: "cell")
-            cell = hintsView.dequeueReusableCell(withIdentifier: "cell") as? UserHintCell ?? UserHintCell()
+        if hintPrefixedWord.first == "@", let cell = hintsView.dequeueReusableCell(withType: UserHintCell.self) {
+            cell.avatarView.image = DummyData.avatarImage(for: hint)
+            cell.usernameLabel.text = hint
+            cell.nameLabel.text = DummyData.users.first { $0.username == hint }?.name
+            return cell
         }
 
-        cell.avatarView.backgroundColor = .black
-        cell.nameLabel.text = "Karem Flusser"
-        cell.usernameLabel.text = "@karem.flusser"
-
-        return cell
+        let cell = hintsView.dequeueReusableCell(withType: TextHintCell.self)
+        cell?.prefixLabel.text = String(hintPrefixedWord.first ?? " ")
+        cell?.valueLabel.text = String(hint)
+        return cell ?? UITableViewCell()
     }
 }

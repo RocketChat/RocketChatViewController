@@ -16,6 +16,7 @@ public class UserHintCell: UITableViewCell {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
         $0.layer.cornerRadius = Consts.avatarCornerRadius
+        $0.clipsToBounds = true
 
         NSLayoutConstraint.activate([
             $0.widthAnchor.constraint(equalToConstant: Consts.avatarWidth),
@@ -46,7 +47,12 @@ public class UserHintCell: UITableViewCell {
     }
 
     public override var intrinsicContentSize: CGSize {
-        return CGSize(width: super.intrinsicContentSize.width, height: Consts.intrinsicHeight)
+        let height = layoutMargins.top +
+                     layoutMargins.bottom +
+                     nameLabel.intrinsicContentSize.height +
+                     usernameLabel.intrinsicContentSize.height
+
+        return CGSize(width: super.intrinsicContentSize.width, height: height)
     }
 
     public override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -84,7 +90,7 @@ public class UserHintCell: UITableViewCell {
 
             // avatarView
 
-            avatarView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Consts.avatarLeading),
+            avatarView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: layoutMargins.left),
             avatarView.centerYAnchor.constraint(equalTo: centerYAnchor),
 
             // nameLabel
