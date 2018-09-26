@@ -13,6 +13,7 @@ import RocketChatViewController
 
 final class ChatViewController: RocketChatViewController {
     var hintPrefixedWord: String = ""
+    var isReplying: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,16 +93,10 @@ extension ChatViewController {
 
 // MARK: Composer Delegate
 extension ChatViewController: ComposerViewExpandedDelegate {
-    func composerView(_ composerView: ComposerView, didTapButtonAt slot: ComposerButtonSlot) {
-        switch slot {
-        case .right:
-            composerView.textView.text = ""
-        case .left:
-            break
-        }
-    }
 
-    func composerViewHintPrefixes(_ composerView: ComposerView) -> [Character] {
+    // MARK: Hint
+
+    func hintPrefixes(for composerView: ComposerView) -> [Character] {
         return ["/", "@", "#"]
     }
 
@@ -109,7 +104,7 @@ extension ChatViewController: ComposerViewExpandedDelegate {
         hintPrefixedWord = word
     }
 
-    func composerViewIsHinting(_ composerView: ComposerView) -> Bool {
+    func isHinting(in composerView: ComposerView) -> Bool {
         return !hintPrefixedWord.isEmpty
     }
 
@@ -117,8 +112,22 @@ extension ChatViewController: ComposerViewExpandedDelegate {
         return hintPrefixedWord.count
     }
 
-    func composerViewIsReplying(_ composerView: ComposerView) -> Bool {
-        return true
+    // MARK: Reply
+
+    func replyViewModel(for composerView: ComposerView) -> ReplyViewModel? {
+        return isReplying ? ReplyViewModel(
+            nameText: "jaad.brinklei",
+            timeText: "2:10 PM",
+            text: "This is a multiline chat message from..."
+        ) : nil
+    }
+
+    func replyViewDidHide(_ replyView: ReplyView) {
+        isReplying = false
+    }
+
+    func replyViewDidShow(_ replyView: ReplyView) {
+        isReplying = true
     }
 
     func hintsView(_ hintsView: HintsView, cellForHintAt index: Int) -> UITableViewCell {

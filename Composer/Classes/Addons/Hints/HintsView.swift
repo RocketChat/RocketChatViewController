@@ -8,14 +8,14 @@
 
 import UIKit
 
-public protocol HintsDelegate {
+public protocol HintsViewDelegate {
     func numberOfHints(in hintsView: HintsView) -> Int
     func maximumHeight(for hintsView: HintsView) -> CGFloat
     func hintsView(_ hintsView: HintsView, cellForHintAt index: Int) -> UITableViewCell
     func title(for hintsView: HintsView) -> String?
 }
 
-public extension HintsDelegate {
+public extension HintsViewDelegate {
     func title(for hintsView: HintsView) -> String? {
         return "Suggestions"
     }
@@ -25,7 +25,7 @@ public extension HintsDelegate {
     }
 }
 
-private final class HintsFallbackDelegate: HintsDelegate {
+private final class HintsViewFallbackDelegate: HintsViewDelegate {
     func numberOfHints(in hintsView: HintsView) -> Int {
         return 0
     }
@@ -36,10 +36,10 @@ private final class HintsFallbackDelegate: HintsDelegate {
 }
 
 public class HintsView: UITableView {
-    public var hintsDelegate: HintsDelegate?
-    private var fallbackDelegate: HintsDelegate = HintsFallbackDelegate()
+    public var hintsDelegate: HintsViewDelegate?
+    private var fallbackDelegate: HintsViewDelegate = HintsViewFallbackDelegate()
 
-    private var currentDelegate: HintsDelegate {
+    private var currentDelegate: HintsViewDelegate {
         return hintsDelegate ?? fallbackDelegate
     }
 

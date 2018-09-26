@@ -8,16 +8,35 @@
 
 import UIKit
 
+public struct ReplyViewModel {
+    public var nameText: String
+    public var timeText: String
+    public var text: String
+
+    public init(nameText: String, timeText: String, text: String) {
+        self.nameText = nameText
+        self.timeText = timeText
+        self.text = text
+    }
+}
+
+public protocol ReplyViewDelegate {
+    func replyViewDidHide(_ replyView: ReplyView)
+    func replyViewDidShow(_ replyView: ReplyView)
+}
+
 public class ReplyView: UIView {
 
-    let backgroundView = tap(UIView()) {
+    public var delegate: ReplyViewDelegate?
+
+    public let backgroundView = tap(UIView()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
         $0.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9568627451, blue: 0.9607843137, alpha: 1)
         $0.layer.cornerRadius = 4.0
     }
 
-    let nameLabel = tap(UILabel()) {
+    public let nameLabel = tap(UILabel()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
         $0.text = "jaad.brinkley"
@@ -26,7 +45,7 @@ public class ReplyView: UIView {
         $0.adjustsFontForContentSizeCategory = true
     }
 
-    let timeLabel = tap(UILabel()) {
+    public let timeLabel = tap(UILabel()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
         $0.text = "2:10 PM"
@@ -35,7 +54,7 @@ public class ReplyView: UIView {
         $0.adjustsFontForContentSizeCategory = true
     }
 
-    let textLabel = tap(UILabel()) {
+    public let textLabel = tap(UILabel()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
         $0.text = "This is a multiline chat message from..."
@@ -43,7 +62,7 @@ public class ReplyView: UIView {
         $0.adjustsFontForContentSizeCategory = true
     }
 
-    let closeButton = tap(UIButton()) {
+    public let closeButton = tap(UIButton()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -53,14 +72,29 @@ public class ReplyView: UIView {
 
         $0.setBackgroundImage(ComposerAsset.cancelReplyButton.raw, for: .normal)
         $0.tintColor = #colorLiteral(red: 0.6196078431, green: 0.6352941176, blue: 0.6588235294, alpha: 1)
+
+        $0.addTarget(self, action: #selector(didPressCloseButton(_:)), for: .touchUpInside)
     }
 
-    public override var intrinsicContentSize: CGSize {
-        return CGSize(width: super.intrinsicContentSize.width,
-                      height: 10 +
-                        nameLabel.intrinsicContentSize.height +
-                        textLabel.intrinsicContentSize.height + 3 + 15 + 13
-        )
+    override public var isHidden: Bool {
+        didSet {
+            if isHidden {
+                delegate?.replyViewDidHide(self)
+            } else {
+                delegate?.replyViewDidShow(self)
+            }
+
+            invalidateIntrinsicContentSize()
+        }
+    }
+
+    override public var intrinsicContentSize: CGSize {
+        let height = isHidden ? 0 : 10 +
+            nameLabel.intrinsicContentSize.height +
+            textLabel.intrinsicContentSize.height +
+            3 + 15 + 13
+
+        return CGSize(width: super.intrinsicContentSize.width, height: height)
     }
 
     public init() {
@@ -106,9 +140,9 @@ public class ReplyView: UIView {
         self.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            backgroundView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            backgroundView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: layoutMargins.left),
             backgroundView.trailingAnchor.constraint(equalTo: closeButton.leadingAnchor, constant: -10),
-            backgroundView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            backgroundView.topAnchor.constraint(equalTo: topAnchor, constant: layoutMargins.top),
             backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
 
             nameLabel.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: 15),
@@ -121,8 +155,18 @@ public class ReplyView: UIView {
             textLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 3),
             textLabel.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: 10),
 
-            closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -layoutMargins.right),
             closeButton.topAnchor.constraint(equalTo: topAnchor, constant: 15)
         ])
+    }
+}
+
+// Actions & Observers
+
+extension ReplyView {
+    @objc func didPressCloseButton(_ sender: Any) {
+        if sender as AnyObject === closeButton {
+            isHidden = true
+        }
     }
 }

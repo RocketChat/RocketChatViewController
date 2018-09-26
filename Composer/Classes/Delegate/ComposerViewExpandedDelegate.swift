@@ -8,13 +8,24 @@
 
 import UIKit
 
+private extension ComposerView {
+    var replyView: ReplyView? {
+        return componentStackView.subviews.first(where: { $0 as? ReplyView != nil }) as? ReplyView
+    }
+
+    var hintsView: HintsView? {
+        return utilityStackView.subviews.first(where: { $0 as? HintsView != nil }) as? HintsView
+    }
+}
+
 /**
  An expanded child of the ComposerViewDelegate protocol.
  This adds default implementatios for reply, autocompletion and more.
  */
-public protocol ComposerViewExpandedDelegate: ComposerViewDelegate, HintsDelegate {
-    func composerViewHintPrefixes(_ composerView: ComposerView) -> [Character]
-    func composerViewIsHinting(_ composerView: ComposerView) -> Bool
+public protocol ComposerViewExpandedDelegate: ComposerViewDelegate, HintsViewDelegate, ReplyViewDelegate {
+    func hintPrefixes(for composerView: ComposerView) -> [Character]
+    func isHinting(in composerView: ComposerView) -> Bool
+    func replyViewModel(for composerView: ComposerView) -> ReplyViewModel?
 
     func composerView(_ composerView: ComposerView, didChangeHintPrefixedWord word: String)
 }
@@ -24,9 +35,7 @@ public extension ComposerViewExpandedDelegate {
         func didChangeHintPrefixedWord(_ word: String) {
             self.composerView(composerView, didChangeHintPrefixedWord: word)
 
-            composerView.utilityStackView.subviews.forEach {
-                ($0 as? HintsView)?.reloadData()
-            }
+            composerView.hintsView?.reloadData()
         }
 
         let text: String = composerView.textView.text
@@ -46,7 +55,7 @@ public extension ComposerViewExpandedDelegate {
             return index..<text.endIndex
         }
 
-        let prefixes = composerViewHintPrefixes(composerView)
+        let prefixes = hintPrefixes(for: composerView)
 
         if let wordRange = wordRanges.first(where: {
             if range.lowerBound == text.startIndex, let char = text[$0].first {
@@ -73,6 +82,17 @@ public extension ComposerViewExpandedDelegate {
         didChangeHintPrefixedWord("")
     }
 
+    func composerView(_ composerView: ComposerView, didTapButtonAt slot: ComposerButtonSlot) {
+        switch slot {
+        case .left:
+            composerView.replyView?.isHidden = false
+        case .right:
+            composerView.textView.text = ""
+        }
+    }
+
+    // MARK: Addons
+
     func numberOfAddons(in composerView: ComposerView, at slot: ComposerAddonSlot) -> UInt {
         return 1
     }
@@ -86,17 +106,15 @@ public extension ComposerViewExpandedDelegate {
         }
     }
 
-    func composerViewIsReplying(_ composerView: ComposerView) -> Bool {
-        return false
-    }
+    // MARK: Reply
 
     func composerView(_ composerView: ComposerView, didUpdateAddonView view: UIView?, at slot: ComposerAddonSlot, index: UInt) {
         if let view = view as? HintsView {
             view.hintsDelegate = self
         }
 
-        if let _ = view as? ReplyView {
-            // view.backgroundColor = .orange
+        if let view = view as? ReplyView {
+            view.delegate = self
         }
     }
 }
