@@ -64,11 +64,21 @@ public struct AnyChatItem: ChatItem, Differentiable {
  */
 
 public struct AnyChatSection: ChatSection {
+    public weak var controllerContext: UIViewController? {
+        get {
+            return base.controllerContext
+        }
+
+        set(newControllerContext) {
+            base.controllerContext = newControllerContext
+        }
+    }
+
     public var object: AnyDifferentiable {
         return base.object
     }
 
-    public let base: ChatSection
+    public var base: ChatSection
 
     public init<D: ChatSection>(_ base: D) {
         self.base = base
@@ -113,6 +123,7 @@ fileprivate extension AnyChatSection {
 
 public protocol ChatSection {
     var object: AnyDifferentiable { get }
+    var controllerContext: UIViewController? { get set }
     func viewModels() -> [AnyChatItem]
     func cell(for viewModel: AnyChatItem, on collectionView: UICollectionView, at indexPath: IndexPath) -> ChatCell
 }

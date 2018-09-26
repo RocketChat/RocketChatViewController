@@ -12,6 +12,7 @@ import RocketChatViewController
 
 struct MessageChatSection: ChatSection {
     var object: AnyDifferentiable
+    weak var controllerContext: UIViewController?
 
     // MARK: Section Controller
 

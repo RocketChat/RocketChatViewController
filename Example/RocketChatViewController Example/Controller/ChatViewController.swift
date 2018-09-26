@@ -60,7 +60,7 @@ final class ChatViewController: RocketChatViewController {
             if var messageSectionModel = first.base.object.base as? MessageSectionModel {
                 messageSectionModel.message.text = "TEST TEST TEST"
                 data.remove(at: 0)
-                let chatSection = MessageChatSection(object: AnyDifferentiable(messageSectionModel))
+                let chatSection = MessageChatSection(object: AnyDifferentiable(messageSectionModel), controllerContext: nil)
                 data.insert(AnyChatSection(chatSection), at: 0)
                 updateData()
             }

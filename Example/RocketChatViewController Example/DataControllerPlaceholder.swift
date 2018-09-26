@@ -61,7 +61,8 @@ struct DataControllerPlaceholder {
                 MessageChatSection(
                     object: AnyDifferentiable(
                         object
-                    )
+                    ),
+                    controllerContext: nil
                 )
             )
 
