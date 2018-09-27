@@ -233,6 +233,7 @@ open class RocketChatViewController: UICollectionViewController {
         super.viewDidLoad()
         setupChatViews()
         registerObservers()
+        startAvoidingKeyboard()
     }
 
     deinit {
@@ -241,21 +242,6 @@ open class RocketChatViewController: UICollectionViewController {
 
     func registerObservers() {
         let notificationCenter = NotificationCenter.default
-
-        notificationCenter.addObserver(
-            self,
-            selector: #selector(adjustForKeyboard),
-            name: .UIKeyboardWillHide,
-            object: nil
-        )
-
-        notificationCenter.addObserver(
-            self,
-            selector: #selector(adjustForKeyboard),
-            name: .UIKeyboardWillChangeFrame,
-            object: nil
-        )
-
         notificationCenter.addObserver(
             self,
             selector: #selector(updateData),
@@ -324,49 +310,6 @@ open class RocketChatViewController: UICollectionViewController {
             }
         }
     }
-
-    private var originalInsets: UIEdgeInsets?
-    @objc func adjustForKeyboard(notification: Notification) {
-        if originalInsets == nil, let insets = collectionView?.contentInset {
-            originalInsets = insets
-        }
-
-        guard let originalInsets = originalInsets else {
-            return
-        }
-
-        guard let collectionView = collectionView else {
-            return
-        }
-
-        guard let userInfo = notification.userInfo else {
-            return
-        }
-
-        guard
-            let beginFrameRaw = (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue,
-            let endFrameRaw = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
-        else {
-            return
-        }
-
-        let endFrame = collectionView.convert(endFrameRaw, from: view.window)
-        let beginFrame = collectionView.convert(beginFrameRaw, from: view.window)
-
-        if notification.name == .UIKeyboardWillHide {
-            collectionView.contentInset = originalInsets
-        } else if endFrame.height > beginFrame.height {
-            collectionView.contentInset = tap(originalInsets) {
-                $0.top = endFrame.height
-            }
-
-            collectionView.contentOffset = tap(collectionView.contentOffset) {
-                $0.y = $0.y - (endFrame.height - beginFrame.height)
-            }
-        }
-
-        collectionView.scrollIndicatorInsets = collectionView.contentInset
-    }
 }
 
 extension RocketChatViewController {
@@ -395,3 +338,43 @@ extension RocketChatViewController {
 }
 
 extension RocketChatViewController: UICollectionViewDelegateFlowLayout {}
+
+
+extension RocketChatViewController {
+    func startAvoidingKeyboard() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(_onKeyboardFrameWillChangeNotificationReceived(_:)),
+                                               name: NSNotification.Name.UIKeyboardWillChangeFrame,
+                                               object: nil)
+    }
+
+    func stopAvoidingKeyboard() {
+        NotificationCenter.default.removeObserver(self,
+                                                  name: NSNotification.Name.UIKeyboardWillChangeFrame,
+                                                  object: nil)
+    }
+
+    @objc private func _onKeyboardFrameWillChangeNotificationReceived(_ notification: Notification) {
+        if #available(iOS 11.0, *) {
+
+            guard let userInfo = notification.userInfo,
+                let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+                    return
+            }
+
+            let keyboardFrameInView = view.convert(keyboardFrame, from: nil)
+            let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame.insetBy(dx: 0, dy: -additionalSafeAreaInsets.top)
+            let intersection = safeAreaFrame.intersection(keyboardFrameInView)
+
+            let animationDuration: TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+            let animationCurveRawNSN = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
+            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
+            let animationCurve = UIViewAnimationOptions(rawValue: animationCurveRaw)
+
+            UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
+                self.additionalSafeAreaInsets.top = intersection.height
+                self.view.layoutIfNeeded()
+            }, completion: nil)
+        }
+    }
+}

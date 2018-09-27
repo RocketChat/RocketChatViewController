@@ -342,8 +342,6 @@ public class ComposerView: UIView {
         rightButton.setBackgroundImage(currentDelegate.composerView(self, buttonAt: .right)?.image.raw, for: .normal)
 
         reloadAddons()
-
-        textView.becomeFirstResponder()
     }
 }
 
