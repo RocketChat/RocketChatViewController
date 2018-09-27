@@ -46,6 +46,10 @@ public class ComposerTextView: UITextView {
         }
     }
 
+    public override var intrinsicContentSize: CGSize {
+        return CGSize(width: super.intrinsicContentSize.width, height: contentSize.height)
+    }
+
     public override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
         commonInit()
@@ -61,6 +65,7 @@ public class ComposerTextView: UITextView {
         notificationCenter.addObserver(self, selector: #selector(textDidChange), name: .UITextViewTextDidChange, object: nil)
 
         placeholderLabel.addObserver(self, forKeyPath: "bounds", options: .new, context: nil)
+        self.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
 
         placeholderLabel.font = font
         placeholderLabel.textColor = placeholderColor
@@ -125,6 +130,14 @@ public extension ComposerTextView {
                 text = placeholderLabel.text
                 self.contentSize = CGSize(width: contentSize.width, height: sizeThatFits(CGSize(width: contentSize.width, height: .greatestFiniteMagnitude)).height)
                 text = ""
+            }
+        }
+
+        if object as AnyObject? === self && keyPath == "contentSize" {
+            UIView.animate(withDuration: 0.2) {
+                self.invalidateIntrinsicContentSize()
+                self.superview?.setNeedsLayout()
+                self.superview?.layoutIfNeeded()
             }
         }
     }

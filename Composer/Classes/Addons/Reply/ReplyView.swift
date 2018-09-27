@@ -91,8 +91,6 @@ public class ReplyView: UIView {
             } else {
                 delegate?.replyViewDidShow(self)
             }
-
-            invalidateIntrinsicContentSize()
         }
     }
 
@@ -130,6 +128,8 @@ public class ReplyView: UIView {
      Shared initialization procedures.
      */
     private func commonInit() {
+        clipsToBounds = true
+
         NotificationCenter.default.addObserver(forName: .UIContentSizeCategoryDidChange, object: nil, queue: nil, using: { [weak self] _ in
             self?.setNeedsLayout()
         })

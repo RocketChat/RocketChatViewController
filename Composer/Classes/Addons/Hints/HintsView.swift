@@ -43,6 +43,16 @@ public class HintsView: UITableView {
         return hintsDelegate ?? fallbackDelegate
     }
 
+    public override var contentSize: CGSize {
+        didSet {
+            UIView.animate(withDuration: 0.2) {
+                self.invalidateIntrinsicContentSize()
+                self.setNeedsLayout()
+                self.layoutIfNeeded()
+            }
+        }
+    }
+
     public override var intrinsicContentSize: CGSize {
         if numberOfRows(inSection: 0) == 0 {
             return CGSize(width: contentSize.width, height: 0)

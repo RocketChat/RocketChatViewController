@@ -83,7 +83,10 @@ public extension ComposerViewExpandedDelegate {
     func composerView(_ composerView: ComposerView, didTapButtonAt slot: ComposerButtonSlot) {
         switch slot {
         case .left:
-            composerView.replyView?.isHidden = false
+            UIView.animate(withDuration: 0.2) {
+                composerView.replyView?.isHidden = false
+                composerView.layoutIfNeeded()
+            }
         case .right:
             composerView.textView.text = ""
         }
