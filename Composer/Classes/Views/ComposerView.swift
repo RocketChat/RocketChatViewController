@@ -181,19 +181,6 @@ public class ComposerView: UIView {
     }
 
     public override var intrinsicContentSize: CGSize {
-    /*let composerHeight: CGFloat
-
-        if #available(iOS 11, *) {
-            composerHeight = textView.contentSize.height + 16 + safeAreaInsets.bottom + safeAreaInsets.top
-        } else {
-            composerHeight = textView.contentSize.height + 16
-        }
-
-        let addonsHeight = componentStackView.frame.height + utilityStackView.frame.height
-        let height = min(composerHeight, currentDelegate.maximumHeight(for: self)) + addonsHeight + topSeparatorView.frame.height*/
-
-        //size
-
         return CGSize(width: super.intrinsicContentSize.width, height: containerView.bounds.height)
     }
 
@@ -249,7 +236,7 @@ public class ComposerView: UIView {
         if #available(iOS 11, *) {
             NSLayoutConstraint.activate([
                 // containerView constraints
-                // containerView.topAnchor.constraint(equalTo: topAnchor),
+
                 containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
                 containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
                 containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
@@ -290,45 +277,7 @@ public class ComposerView: UIView {
                 leftButton.leadingAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.leadingAnchor, constant: layoutMargins.left),
                 leftButton.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor, constant: -layoutMargins.bottom*2)
             ])
-        } else {
-            NSLayoutConstraint.activate([
-
-                // utilityStackView constraints
-
-                utilityStackView.topAnchor.constraint(equalTo: topAnchor),
-                utilityStackView.widthAnchor.constraint(equalTo: widthAnchor),
-                utilityStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-
-                // topSeparatorView constraints
-
-                topSeparatorView.topAnchor.constraint(equalTo: utilityStackView.bottomAnchor),
-                topSeparatorView.widthAnchor.constraint(equalTo: widthAnchor),
-                topSeparatorView.centerXAnchor.constraint(equalTo: centerXAnchor),
-
-                // componentStackView constraints
-
-                componentStackView.topAnchor.constraint(equalTo: topSeparatorView.bottomAnchor),
-                componentStackView.widthAnchor.constraint(equalTo: widthAnchor),
-                componentStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-
-                // textView constraints
-
-                textView.leadingAnchor.constraint(equalTo: leftButton.trailingAnchor, constant: layoutMargins.left),
-                textView.trailingAnchor.constraint(equalTo: rightButton.leadingAnchor, constant: -layoutMargins.right),
-                textView.topAnchor.constraint(equalTo: componentStackView.bottomAnchor, constant: layoutMargins.top),
-                textView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -layoutMargins.bottom),
-
-                // rightButton constraints
-
-                rightButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -layoutMargins.right),
-                rightButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant:  -layoutMargins.bottom*2),
-
-                // leftButton constraints
-
-                leftButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: layoutMargins.left),
-                leftButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -layoutMargins.bottom*2)
-            ])
-        }
+        } 
     }
 
     public override func layoutSubviews() {

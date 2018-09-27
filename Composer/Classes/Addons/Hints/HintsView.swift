@@ -45,9 +45,10 @@ public class HintsView: UITableView {
 
     public override var contentSize: CGSize {
         didSet {
+            self.invalidateIntrinsicContentSize()
+            //self.setNeedsLayout()
+
             UIView.animate(withDuration: 0.2) {
-                self.invalidateIntrinsicContentSize()
-                self.setNeedsLayout()
                 self.layoutIfNeeded()
             }
         }
@@ -59,13 +60,6 @@ public class HintsView: UITableView {
         }
 
         return CGSize(width: contentSize.width, height: min(contentSize.height, currentDelegate.maximumHeight(for: self)))
-    }
-
-    public override func reloadData() {
-        super.reloadData()
-        invalidateIntrinsicContentSize()
-        superview?.setNeedsLayout()
-        superview?.layoutIfNeeded()
     }
 
     public init() {
