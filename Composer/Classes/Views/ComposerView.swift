@@ -107,6 +107,7 @@ public class ComposerView: UIView {
      */
     public let containerView = tap(UIView()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.backgroundColor = .white
     }
 
     /**
@@ -193,7 +194,7 @@ public class ComposerView: UIView {
 
         //size
 
-        return CGSize(width: super.intrinsicContentSize.width, height: 300.0)
+        return CGSize(width: super.intrinsicContentSize.width, height: containerView.bounds.height)
     }
 
     public convenience init() {
@@ -218,6 +219,8 @@ public class ComposerView: UIView {
 
         textView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         textView.delegate = self
+
+        containerView.addObserver(self, forKeyPath: "bounds", options: .new, context: nil)
 
         backgroundColor = .white
 
@@ -246,14 +249,14 @@ public class ComposerView: UIView {
         if #available(iOS 11, *) {
             NSLayoutConstraint.activate([
                 // containerView constraints
-                containerView.topAnchor.constraint(equalTo: topAnchor),
+                // containerView.topAnchor.constraint(equalTo: topAnchor),
                 containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
                 containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
                 containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
                 // utilityStackView constraints
 
-                //utilityStackView.topAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.topAnchor),
+                utilityStackView.topAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.topAnchor),
                 utilityStackView.widthAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.widthAnchor),
                 utilityStackView.centerXAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.centerXAnchor),
                 utilityStackView.bottomAnchor.constraint(equalTo: topSeparatorView.topAnchor),
@@ -328,59 +331,8 @@ public class ComposerView: UIView {
         }
     }
 
-    /**
-     Update composer height
-     */
-    public func updateHeight() {
-
-        // heightConstraint
-
-        /*let oldFrame = intrinsicContentSize
-        let oldUtilityFrame = utilityStackView.frame
-        let oldComponentFrame = componentStackView.frame
-
-        invalidateIntrinsicContentSize()
-        utilityStackView.invalidateIntrinsicContentSize()
-        componentStackView.invalidateIntrinsicContentSize()
-
-        guard
-            frame.height != oldFrame.height,
-            let superview = superview
-        else {
-            return
-        }*/
-
-
-        /*utilityStackView.frame = CGRect(
-            x: utilityStackView.frame.minX,
-            y: utilityStackView.frame.minY - (utilityStackView.frame.height - oldUtilityFrame.height),
-            width: utilityStackView.frame.width,
-            height: utilityStackView.frame.height + utilityStackView.frame.height - oldUtilityFrame.height
-        )
-
-        componentStackView.frame = CGRect(
-            x: componentStackView.frame.minX,
-            y: componentStackView.frame.minY - (componentStackView.frame.height - oldComponentFrame.height),
-            width: componentStackView.frame.width,
-            height: componentStackView.frame.height + componentStackView.frame.height - oldComponentFrame.height
-        )*/
-
-        /*UIView.animate(withDuration: 2) {
-            superview.frame = CGRect(
-                x: superview.frame.minX,
-                y: superview.frame.minY,
-                width: superview.frame.width,
-                height: superview.frame.height - (self.frame.height - oldFrame.height)
-            )
-
-            //superview.setNeedsLayout()
-            superview.layoutIfNeeded()
-        }*/
-    }
-
     public override func layoutSubviews() {
         super.layoutSubviews()
-        updateHeight()
     }
 
     public override func willMove(toSuperview newSuperview: UIView?) {
@@ -430,8 +382,17 @@ public extension ComposerView {
      Called when the content size of the text view changes and adjusts the composer height constraint.
      */
     public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if object as AnyObject? === containerView && keyPath == "bounds" {
+            self.invalidateIntrinsicContentSize()
+            self.superview?.setNeedsLayout()
+        }
+
         if object as AnyObject? === textView && keyPath == "contentSize" {
-            updateHeight()
+            UIView.animate(withDuration: 0.2) {
+                self.textView.invalidateIntrinsicContentSize()
+                self.setNeedsLayout()
+                self.layoutIfNeeded()
+            }
         }
     }
 

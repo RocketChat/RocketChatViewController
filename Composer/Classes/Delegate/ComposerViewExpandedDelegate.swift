@@ -33,7 +33,10 @@ public extension ComposerViewExpandedDelegate {
     func composerViewDidChangeSelection(_ composerView: ComposerView) {
         func didChangeHintPrefixedWord(_ word: String) {
             self.composerView(composerView, didChangeHintPrefixedWord: word)
-            composerView.hintsView?.reloadData()
+
+            UIView.animate(withDuration: 0.2) { [composerView] in
+                composerView.hintsView?.reloadData()
+            }
         }
 
         let text: String = composerView.textView.text

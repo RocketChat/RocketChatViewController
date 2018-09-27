@@ -132,13 +132,5 @@ public extension ComposerTextView {
                 text = ""
             }
         }
-
-        if object as AnyObject? === self && keyPath == "contentSize" {
-            UIView.animate(withDuration: 0.2) {
-                self.invalidateIntrinsicContentSize()
-                self.superview?.setNeedsLayout()
-                self.superview?.layoutIfNeeded()
-            }
-        }
     }
 }

@@ -64,6 +64,8 @@ public class HintsView: UITableView {
     public override func reloadData() {
         super.reloadData()
         invalidateIntrinsicContentSize()
+        superview?.setNeedsLayout()
+        superview?.layoutIfNeeded()
     }
 
     public init() {

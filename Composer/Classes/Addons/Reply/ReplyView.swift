@@ -185,7 +185,9 @@ public class ReplyView: UIView {
 extension ReplyView {
     @objc func didPressCloseButton(_ sender: Any) {
         if sender as AnyObject === closeButton {
-            isHidden = true
+            UIView.animate(withDuration: 0.2) {
+                self.isHidden = true
+            }
         }
     }
 }
