@@ -203,9 +203,7 @@ open class RocketChatViewController: UICollectionViewController {
 
     open override var inputAccessoryView: UIView? {
         composerView.layoutMargins = view.layoutMargins
-        if #available(iOS 11.0, *) {
-            composerView.directionalLayoutMargins = systemMinimumLayoutMargins
-        }
+        composerView.directionalLayoutMargins = systemMinimumLayoutMargins
         
         return composerView
     }
@@ -262,11 +260,7 @@ open class RocketChatViewController: UICollectionViewController {
 
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.keyboardDismissMode = .interactive
-        if #available(iOS 11.0, *) {
-            collectionView.contentInsetAdjustmentBehavior = .always
-        } else {
-            // Fallback on earlier versions
-        }
+        collectionView.contentInsetAdjustmentBehavior = .always
 
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -355,26 +349,23 @@ extension RocketChatViewController {
     }
 
     @objc private func _onKeyboardFrameWillChangeNotificationReceived(_ notification: Notification) {
-        if #available(iOS 11.0, *) {
-
-            guard let userInfo = notification.userInfo,
-                let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-                    return
-            }
-
-            let keyboardFrameInView = view.convert(keyboardFrame, from: nil)
-            let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame.insetBy(dx: 0, dy: -additionalSafeAreaInsets.top)
-            let intersection = safeAreaFrame.intersection(keyboardFrameInView)
-
-            let animationDuration: TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
-            let animationCurveRawNSN = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
-            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
-            let animationCurve = UIViewAnimationOptions(rawValue: animationCurveRaw)
-
-            UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
-                self.additionalSafeAreaInsets.top = intersection.height
-                self.view.layoutIfNeeded()
-            }, completion: nil)
+        guard let userInfo = notification.userInfo,
+            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+                return
         }
+
+        let keyboardFrameInView = view.convert(keyboardFrame, from: nil)
+        let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame.insetBy(dx: 0, dy: -additionalSafeAreaInsets.top)
+        let intersection = safeAreaFrame.intersection(keyboardFrameInView)
+
+        let animationDuration: TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+        let animationCurveRawNSN = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
+        let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
+        let animationCurve = UIViewAnimationOptions(rawValue: animationCurveRaw)
+
+        UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
+            self.additionalSafeAreaInsets.top = intersection.height
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
 }

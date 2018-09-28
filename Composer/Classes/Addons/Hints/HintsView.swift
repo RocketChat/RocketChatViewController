@@ -53,9 +53,9 @@ public class HintsView: UITableView {
         didSet {
             invalidateIntrinsicContentSize()
 
-            UIView.animate(withDuration: 0.2) {
+            /*UIView.animate(withDuration: 0.2) {
                 self.layoutIfNeeded()
-            }
+            }*/
         }
     }
 

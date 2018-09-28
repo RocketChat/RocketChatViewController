@@ -137,7 +137,12 @@ extension ChatViewController: ComposerViewExpandedDelegate {
         }
 
         hints = []
-        hintsView.reloadData()
+
+        UIView.animate(withDuration: 0.2) {
+            hintsView.reloadData()
+            hintsView.invalidateIntrinsicContentSize()
+            hintsView.layoutIfNeeded()
+        }
     }
 
     func hintsView(_ hintsView: HintsView, cellForHintAt index: Int) -> UITableViewCell {

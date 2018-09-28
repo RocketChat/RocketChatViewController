@@ -34,8 +34,14 @@ public extension ComposerViewExpandedDelegate {
         func didChangeHintPrefixedWord(_ word: String) {
             self.composerView(composerView, didChangeHintPrefixedWord: word)
 
-            UIView.animate(withDuration: 0.2) { [composerView] in
-                composerView.hintsView?.reloadData()
+            guard let hintsView = composerView.hintsView else {
+                return
+            }
+
+            UIView.animate(withDuration: 0.2) {
+                hintsView.reloadData()
+                hintsView.invalidateIntrinsicContentSize()
+                hintsView.layoutIfNeeded()
             }
         }
 
