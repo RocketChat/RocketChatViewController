@@ -34,6 +34,11 @@ public protocol ComposerViewDelegate: class {
     func composerView(_ composerView: ComposerView, addonAt slot: ComposerAddonSlot, index: UInt) -> ComposerAddon?
 
     /**
+     Tells the delegate that the text selection changed in the specified composer view's text view.
+     */
+    func composerViewDidChangeSelection(_ composerView: ComposerView)
+
+    /**
      Tells the delegate the current addon view has been updated or changed.
      */
     func composerView(_ composerView: ComposerView, didUpdateAddonView view: UIView?, at slot: ComposerAddonSlot, index: UInt)
@@ -55,7 +60,7 @@ public extension ComposerViewDelegate {
     }
 
     func maximumHeight(for composerView: ComposerView) -> CGFloat {
-        return UIScreen.main.bounds.height/3.0
+        return UIScreen.main.bounds.height
     }
 
     func numberOfAddons(in composerView: ComposerView, at slot: ComposerAddonSlot) -> UInt {
@@ -66,6 +71,7 @@ public extension ComposerViewDelegate {
         return nil
     }
 
+    func composerViewDidChangeSelection(_ composerView: ComposerView) { }
     func composerView(_ composerView: ComposerView, didUpdateAddonView view: UIView?, at slot: ComposerAddonSlot, index: UInt) { }
     func composerView(_ composerView: ComposerView, didTapButtonAt slot: ComposerButtonSlot) { }
 }

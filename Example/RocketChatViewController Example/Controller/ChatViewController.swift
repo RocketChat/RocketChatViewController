@@ -12,6 +12,27 @@ import RocketChatViewController
 
 
 final class ChatViewController: RocketChatViewController {
+    var isReplying: Bool = false
+
+    var hintPrefixedWord: String = "" {
+        didSet {
+            let withoutPrefix = String(hintPrefixedWord.dropFirst()).lowercased()
+
+            switch hintPrefixedWord.first {
+            case "/":
+                hints = withoutPrefix.isEmpty ? DummyData.commands : DummyData.commands.filter { $0.contains(withoutPrefix) }
+            case "@":
+                hints = withoutPrefix.isEmpty ? DummyData.users.map { $0.username } : DummyData.users.filter { $0.username.contains(withoutPrefix) }.map { $0.username }
+            case "#":
+                hints = withoutPrefix.isEmpty ? DummyData.rooms : DummyData.rooms.filter { $0.contains(withoutPrefix) }
+            default:
+                hints = []
+            }
+        }
+    }
+
+    var hints: [String] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -90,41 +111,75 @@ extension ChatViewController {
 
 // MARK: Composer Delegate
 extension ChatViewController: ComposerViewExpandedDelegate {
-    func composerView(_ composerView: ComposerView, didTapButtonAt slot: ComposerButtonSlot) {
-        switch slot {
-        case .right:
-            composerView.textView.text = ""
-        case .left:
-            break
-        }
+    // MARK: Hint
+
+    func hintPrefixes(for composerView: ComposerView) -> [Character] {
+        return ["/", "@", "#"]
     }
 
-    func composerViewIsReplying(_ composerView: ComposerView) -> Bool {
-        return false
+    func composerView(_ composerView: ComposerView, didChangeHintPrefixedWord word: String) {
+        hintPrefixedWord = word
     }
 
-    func composerViewIsHinting(_ composerView: ComposerView) -> Bool {
-        return false
+    func isHinting(in composerView: ComposerView) -> Bool {
+        return !hints.isEmpty
     }
 
     func numberOfHints(in hintsView: HintsView) -> Int {
-        return 3
+        return hints.count
+    }
+
+    func hintsView(_ hintsView: HintsView, didSelectHintAt index: Int) {
+        if let range = composerView.textView.rangeOfNearestWordToSelection {
+            let oldWord = composerView.textView.text[range]
+            let newWord = (oldWord.first?.description ?? "") + hints[index]
+            composerView.textView.text = composerView.textView.text.replacingCharacters(in: range, with: newWord)
+        }
+
+        hints = []
+
+        UIView.animate(withDuration: 0.2) {
+            hintsView.reloadData()
+            hintsView.invalidateIntrinsicContentSize()
+            hintsView.layoutIfNeeded()
+        }
     }
 
     func hintsView(_ hintsView: HintsView, cellForHintAt index: Int) -> UITableViewCell {
-        let cell: UserHintCell
+        let hint = hints[index]
 
-        if let userCell = hintsView.dequeueReusableCell(withIdentifier: "cell") as? UserHintCell {
-            cell = userCell
-        } else {
-            hintsView.register(UserHintCell.self, forCellReuseIdentifier: "cell")
-            cell = hintsView.dequeueReusableCell(withIdentifier: "cell") as? UserHintCell ?? UserHintCell()
+        if hintPrefixedWord.first == "@", let cell = hintsView.dequeueReusableCell(withType: UserHintCell.self) {
+            cell.avatarView.image = DummyData.avatarImage(for: hint)
+            cell.usernameLabel.text = hint
+            cell.nameLabel.text = DummyData.users.first { $0.username == hint }?.name
+            return cell
         }
 
-        cell.avatarView.backgroundColor = .black
-        cell.nameLabel.text = "Karem Flusser"
-        cell.usernameLabel.text = "@karem.flusser"
+        let cell = hintsView.dequeueReusableCell(withType: TextHintCell.self)
+        cell?.prefixLabel.text = String(hintPrefixedWord.first ?? " ")
+        cell?.valueLabel.text = String(hint)
+        return cell ?? UITableViewCell()
+    }
 
-        return cell
+    func maximumHeight(for hintsView: HintsView) -> CGFloat {
+        return view.bounds.height/2
+    }
+
+    // MARK: Reply
+
+    func viewModel(for replyView: ReplyView) -> ReplyViewModel {
+        return ReplyViewModel(
+            nameText: "jaad.brinklei",
+            timeText: "2:10 PM",
+            text: "This is a multiline chat message from..."
+        )
+    }
+
+    func replyViewDidHide(_ replyView: ReplyView) {
+        isReplying = false
+    }
+
+    func replyViewDidShow(_ replyView: ReplyView) {
+        isReplying = true
     }
 }
