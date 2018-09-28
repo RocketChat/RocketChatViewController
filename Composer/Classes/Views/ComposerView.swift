@@ -10,58 +10,6 @@ import UIKit
 import NotificationCenter
 
 /**
- An enum that represents a place in the composer view where a button is placed.
- */
-public enum ComposerButtonSlot {
-    case left
-    case right
-}
-
-/**
- An enum that represents the state of a button in the composer.
- */
-public enum ComposerButtonState {
-    case normal
-    case disabled
-    case hidden
-}
-
-/**
- A struct that represents a button in the composer.
- */
-public struct ComposerButton {
-    var state: ComposerButtonState
-    var image: ComposerAsset<UIImage>
-
-    func withState(_ state: ComposerButtonState) -> ComposerButton {
-        return tap(self) { $0.state = state }
-    }
-}
-
-public extension ComposerButton {
-    /**
-     Default add sign button.
-     */
-    public static var addButton: ComposerButton {
-        return ComposerButton(state: .normal, image: .addButton)
-    }
-
-    /**
-     Default microphone button.
-     */
-    public static var micButton: ComposerButton {
-        return ComposerButton(state: .normal, image: .micButton)
-    }
-
-    /**
-     Default send button.
-     */
-    public static var sendButton: ComposerButton {
-        return ComposerButton(state: .normal, image: .sendButton)
-    }
-}
-
-/**
  An enum that represents a place in the composer view where an addon is placed.
  */
 public enum ComposerAddonSlot {
@@ -113,13 +61,9 @@ public class ComposerView: UIView {
     /**
      The button that stays in the left side of the composer.
      */
-    public let leftButton = tap(UIButton()) {
+    public let leftButton = tap(ComposerButton()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            $0.widthAnchor.constraint(equalToConstant: 24),
-            $0.heightAnchor.constraint(equalToConstant: 24)
-        ])
+        $0.setBackgroundImage(ComposerAsset.addButton.raw, for: .normal)
 
         $0.addTarget(self, action: #selector(touchUpInside(button:)), for: .touchUpInside)
     }
@@ -127,13 +71,9 @@ public class ComposerView: UIView {
     /**
      The button that stays in the right side of the composer.
      */
-    public let rightButton = tap(UIButton()) {
+    public let rightButton = tap(ComposerButton()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            $0.widthAnchor.constraint(equalToConstant: 24),
-            $0.heightAnchor.constraint(equalToConstant: 24)
-        ])
+        $0.setBackgroundImage(ComposerAsset.sendButton.raw, for: .normal)
 
         $0.addTarget(self, action: #selector(touchUpInside(button:)), for: .touchUpInside)
     }
@@ -204,6 +144,8 @@ public class ComposerView: UIView {
     public func commonInit() {
         translatesAutoresizingMaskIntoConstraints = false
 
+        leftButton.addObserver(self, forKeyPath: "bounds", options: .new, context: nil)
+
         textView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         textView.delegate = self
 
@@ -229,55 +171,61 @@ public class ComposerView: UIView {
         containerView.addSubview(utilityStackView)
     }
 
+    // MARK: Constraints
+
+    lazy var textViewLeadingConstraint: NSLayoutConstraint = {
+        textView.leadingAnchor.constraint(equalTo: leftButton.trailingAnchor, constant: layoutMargins.left)
+    }()
+
     /**
      Sets up constraints between the UI elements in the composer.
      */
     private func setupConstraints() {
-        if #available(iOS 11, *) {
-            NSLayoutConstraint.activate([
-                // containerView constraints
+        let textViewLeading =
 
-                containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+        NSLayoutConstraint.activate([
+            // containerView constraints
 
-                // utilityStackView constraints
+            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
-                utilityStackView.topAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.topAnchor),
-                utilityStackView.widthAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.widthAnchor),
-                utilityStackView.centerXAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.centerXAnchor),
-                utilityStackView.bottomAnchor.constraint(equalTo: topSeparatorView.topAnchor),
+            // utilityStackView constraints
 
-                // topSeparatorView constraints
+            utilityStackView.topAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.topAnchor),
+            utilityStackView.widthAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.widthAnchor),
+            utilityStackView.centerXAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.centerXAnchor),
+            utilityStackView.bottomAnchor.constraint(equalTo: topSeparatorView.topAnchor),
 
-                topSeparatorView.widthAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.widthAnchor),
-                topSeparatorView.centerXAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.centerXAnchor),
-                topSeparatorView.bottomAnchor.constraint(equalTo: componentStackView.topAnchor),
+            // topSeparatorView constraints
 
-                // componentStackView constraints
+            topSeparatorView.widthAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.widthAnchor),
+            topSeparatorView.centerXAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.centerXAnchor),
+            topSeparatorView.bottomAnchor.constraint(equalTo: componentStackView.topAnchor),
 
-                componentStackView.topAnchor.constraint(equalTo: topSeparatorView.bottomAnchor),
-                componentStackView.widthAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.widthAnchor),
-                componentStackView.centerXAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.centerXAnchor),
-                componentStackView.bottomAnchor.constraint(equalTo: textView.topAnchor, constant: -10),
+            // componentStackView constraints
 
-                // textView constraints
+            componentStackView.topAnchor.constraint(equalTo: topSeparatorView.bottomAnchor),
+            componentStackView.widthAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.widthAnchor),
+            componentStackView.centerXAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.centerXAnchor),
+            componentStackView.bottomAnchor.constraint(equalTo: textView.topAnchor, constant: -10),
 
-                textView.leadingAnchor.constraint(equalTo: leftButton.trailingAnchor, constant: layoutMargins.left),
-                textView.trailingAnchor.constraint(equalTo: rightButton.leadingAnchor, constant: -layoutMargins.right),
-                textView.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor, constant: -layoutMargins.bottom),
+            // textView constraints
 
-                // rightButton constraints
+            textViewLeadingConstraint,
+            textView.trailingAnchor.constraint(equalTo: rightButton.leadingAnchor, constant: -layoutMargins.right),
+            textView.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor, constant: -layoutMargins.bottom),
 
-                rightButton.trailingAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.trailingAnchor, constant: -layoutMargins.right),
-                rightButton.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor, constant:  -layoutMargins.bottom*2),
+            // rightButton constraints
 
-                // leftButton constraints
+            rightButton.trailingAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.trailingAnchor, constant: -layoutMargins.right),
+            rightButton.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor, constant:  -layoutMargins.bottom*2),
 
-                leftButton.leadingAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.leadingAnchor, constant: layoutMargins.left),
-                leftButton.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor, constant: -layoutMargins.bottom*2)
-            ])
-        } 
+            // leftButton constraints
+
+            leftButton.leadingAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.leadingAnchor, constant: layoutMargins.left),
+            leftButton.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor, constant: -layoutMargins.bottom*2)
+        ])
     }
 
     public override func layoutSubviews() {
@@ -286,9 +234,6 @@ public class ComposerView: UIView {
 
     public override func willMove(toSuperview newSuperview: UIView?) {
         super.willMove(toSuperview: newSuperview)
-
-        leftButton.setBackgroundImage(currentDelegate.composerView(self, buttonAt: .left)?.image.raw, for: .normal)
-        rightButton.setBackgroundImage(currentDelegate.composerView(self, buttonAt: .right)?.image.raw, for: .normal)
 
         reloadAddons()
     }
@@ -329,6 +274,10 @@ public extension ComposerView {
      Called when the content size of the text view changes and adjusts the composer height constraint.
      */
     public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if object as AnyObject? === leftButton && keyPath == "bounds" {
+            textViewLeadingConstraint.constant = leftButton.isHidden ? 0 : layoutMargins.left
+        }
+
         if object as AnyObject? === containerView && keyPath == "bounds" {
             self.invalidateIntrinsicContentSize()
             self.superview?.setNeedsLayout()
@@ -343,15 +292,8 @@ public extension ComposerView {
     /**
      Called when a touch up inside happens in one of the buttons.
      */
-    @objc func touchUpInside(button: UIButton) {
-        switch button {
-        case leftButton:
-            currentDelegate.composerView(self, didTapButtonAt: .left)
-        case rightButton:
-            currentDelegate.composerView(self, didTapButtonAt: .right)
-        default:
-            break
-        }
+    @objc func touchUpInside(button: ComposerButton) {
+        currentDelegate.composerView(self, didTapButton: button)
     }
 }
 

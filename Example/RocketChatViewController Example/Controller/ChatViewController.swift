@@ -13,6 +13,19 @@ import RocketChatViewController
 
 final class ChatViewController: RocketChatViewController {
     var isReplying: Bool = false
+    var isEditingMessage: Bool = false {
+        didSet {
+            UIView.animate(withDuration: 0.2) {
+                if self.isEditingMessage {
+                    self.composerView.leftButton.hide()
+                } else {
+                    self.composerView.leftButton.show()
+                }
+                
+                self.composerView.layoutIfNeeded()
+            }
+        }
+    }
 
     var hintPrefixedWord: String = "" {
         didSet {
@@ -181,5 +194,15 @@ extension ChatViewController: ComposerViewExpandedDelegate {
 
     func replyViewDidShow(_ replyView: ReplyView) {
         isReplying = true
+    }
+
+    // MARK: Editing
+
+    func editingViewDidHide(_ editingView: EditingView) {
+        isEditingMessage = false
+    }
+
+    func editingViewDidShow(_ editingView: EditingView) {
+        isEditingMessage = true
     }
 }
