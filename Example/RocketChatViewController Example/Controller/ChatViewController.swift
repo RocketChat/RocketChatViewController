@@ -135,6 +135,9 @@ extension ChatViewController: ComposerViewExpandedDelegate {
             let newWord = (oldWord.first?.description ?? "") + hints[index]
             composerView.textView.text = composerView.textView.text.replacingCharacters(in: range, with: newWord)
         }
+
+        hints = []
+        hintsView.reloadData()
     }
 
     func hintsView(_ hintsView: HintsView, cellForHintAt index: Int) -> UITableViewCell {
