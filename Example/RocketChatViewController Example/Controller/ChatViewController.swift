@@ -161,6 +161,10 @@ extension ChatViewController: ComposerViewExpandedDelegate {
         return cell ?? UITableViewCell()
     }
 
+    func maximumHeight(for hintsView: HintsView) -> CGFloat {
+        return view.bounds.height/2
+    }
+
     // MARK: Reply
 
     func viewModel(for replyView: ReplyView) -> ReplyViewModel {
