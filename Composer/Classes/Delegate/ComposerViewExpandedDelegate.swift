@@ -73,7 +73,12 @@ public extension ComposerViewExpandedDelegate {
         }
 
         if button === composerView.rightButton {
-            composerView.textView.text = ""
+            UIView.animate(withDuration: 0.2) {
+                composerView.textView.text = ""
+                composerView.replyView?.isHidden = true
+                composerView.editingView?.isHidden = true
+                composerView.layoutIfNeeded()
+            }
         }
     }
 
