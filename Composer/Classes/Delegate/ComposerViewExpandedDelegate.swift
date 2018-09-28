@@ -39,45 +39,16 @@ public extension ComposerViewExpandedDelegate {
             }
         }
 
-        let text: String = composerView.textView.text
+        if let range = composerView.textView.rangeOfNearestWordToSelection {
+            let word = String(composerView.textView.text[range])
 
-        guard let range = Range(composerView.textView.selectedRange, in: text) else {
-            didChangeHintPrefixedWord("")
-            return
-        }
-
-        let wordRanges = Array(text.indices).filter {
-            text[$0] != " " && ($0 == text.startIndex || text[text.index(before: $0)] == " ")
-        }.map { index -> Range<String.Index> in
-            if let spaceIndex = text[index...].firstIndex(of: " ") {
-                return index..<spaceIndex
-            }
-
-            return index..<text.endIndex
-        }
-
-        let prefixes = hintPrefixes(for: composerView)
-
-        if let wordRange = wordRanges.first(where: {
-            if range.lowerBound == text.startIndex, let char = text[$0].first {
-                if $0.lowerBound == text.startIndex {
-                    return prefixes.contains(char)
-                } else {
-                    return false
-                }
-            }
-
-            if range.lowerBound == $0.lowerBound, let char = text[$0].first {
-                return prefixes.contains(char)
-            }
-
-            return $0.contains(text.index(before: range.lowerBound))
-        }) {
-            let word = String(text[wordRange])
-            if let char = word.first, prefixes.contains(char) {
+            if let char = word.first, hintPrefixes(for: composerView).contains(char) {
                 didChangeHintPrefixedWord(word)
-                return
+            } else {
+                didChangeHintPrefixedWord("")
             }
+
+            return
         }
 
         didChangeHintPrefixedWord("")

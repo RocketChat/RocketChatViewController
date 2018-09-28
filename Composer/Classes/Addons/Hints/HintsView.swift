@@ -13,6 +13,8 @@ public protocol HintsViewDelegate {
     func maximumHeight(for hintsView: HintsView) -> CGFloat
     func hintsView(_ hintsView: HintsView, cellForHintAt index: Int) -> UITableViewCell
     func title(for hintsView: HintsView) -> String?
+
+    func hintsView(_ hintsView: HintsView, didSelectHintAt index: Int)
 }
 
 public extension HintsViewDelegate {
@@ -33,6 +35,10 @@ private final class HintsViewFallbackDelegate: HintsViewDelegate {
     func hintsView(_ hintsView: HintsView, cellForHintAt index: Int) -> UITableViewCell {
         return UITableViewCell()
     }
+
+    func hintsView(_ hintsView: HintsView, didSelectHintAt index: Int) {
+
+    }
 }
 
 public class HintsView: UITableView {
@@ -45,8 +51,7 @@ public class HintsView: UITableView {
 
     public override var contentSize: CGSize {
         didSet {
-            self.invalidateIntrinsicContentSize()
-            //self.setNeedsLayout()
+            invalidateIntrinsicContentSize()
 
             UIView.animate(withDuration: 0.2) {
                 self.layoutIfNeeded()
@@ -143,6 +148,7 @@ extension HintsView: UITableViewDataSource {
 extension HintsView: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        currentDelegate.hintsView(self, didSelectHintAt: indexPath.row)
     }
 
     public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {

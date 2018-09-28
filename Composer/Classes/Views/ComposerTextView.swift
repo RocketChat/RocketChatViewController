@@ -134,3 +134,31 @@ public extension ComposerTextView {
         }
     }
 }
+
+// MARK: Helper Methods
+
+public extension ComposerTextView {
+    var rangeOfNearestWordToSelection: Range<String.Index>? {
+        guard let range = Range(selectedRange, in: text) else {
+            return nil
+        }
+
+        let wordRanges = Array(text.indices).filter {
+            text[$0] != " " && ($0 == text.startIndex || text[text.index(before: $0)] == " ")
+        }.map { index -> Range<String.Index> in
+                if let spaceIndex = text[index...].firstIndex(of: " ") {
+                    return index..<spaceIndex
+                }
+
+                return index..<text.endIndex
+        }
+
+        return wordRanges.first {
+            if range.lowerBound == text.startIndex {
+                return $0.lowerBound == text.startIndex
+            }
+
+            return range.lowerBound == $0.lowerBound || $0.contains(text.index(before: range.lowerBound))
+        }
+    }
+}

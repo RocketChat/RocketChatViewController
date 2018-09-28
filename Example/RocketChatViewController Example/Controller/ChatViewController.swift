@@ -129,22 +129,12 @@ extension ChatViewController: ComposerViewExpandedDelegate {
         return hints.count
     }
 
-    // MARK: Reply
-
-    func viewModel(for replyView: ReplyView) -> ReplyViewModel {
-        return ReplyViewModel(
-            nameText: "jaad.brinklei",
-            timeText: "2:10 PM",
-            text: "This is a multiline chat message from..."
-        )
-    }
-
-    func replyViewDidHide(_ replyView: ReplyView) {
-        isReplying = false
-    }
-
-    func replyViewDidShow(_ replyView: ReplyView) {
-        isReplying = true
+    func hintsView(_ hintsView: HintsView, didSelectHintAt index: Int) {
+        if let range = composerView.textView.rangeOfNearestWordToSelection {
+            let oldWord = composerView.textView.text[range]
+            let newWord = (oldWord.first?.description ?? "") + hints[index]
+            composerView.textView.text = composerView.textView.text.replacingCharacters(in: range, with: newWord)
+        }
     }
 
     func hintsView(_ hintsView: HintsView, cellForHintAt index: Int) -> UITableViewCell {
@@ -161,5 +151,23 @@ extension ChatViewController: ComposerViewExpandedDelegate {
         cell?.prefixLabel.text = String(hintPrefixedWord.first ?? " ")
         cell?.valueLabel.text = String(hint)
         return cell ?? UITableViewCell()
+    }
+
+    // MARK: Reply
+
+    func viewModel(for replyView: ReplyView) -> ReplyViewModel {
+        return ReplyViewModel(
+            nameText: "jaad.brinklei",
+            timeText: "2:10 PM",
+            text: "This is a multiline chat message from..."
+        )
+    }
+
+    func replyViewDidHide(_ replyView: ReplyView) {
+        isReplying = false
+    }
+
+    func replyViewDidShow(_ replyView: ReplyView) {
+        isReplying = true
     }
 }

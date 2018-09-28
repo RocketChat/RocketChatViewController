@@ -335,11 +335,8 @@ public extension ComposerView {
         }
 
         if object as AnyObject? === textView && keyPath == "contentSize" {
-            UIView.animate(withDuration: 0.2) {
-                self.textView.invalidateIntrinsicContentSize()
-                self.setNeedsLayout()
-                self.layoutIfNeeded()
-            }
+            textView.invalidateIntrinsicContentSize()
+            self.layoutIfNeeded()
         }
     }
 
