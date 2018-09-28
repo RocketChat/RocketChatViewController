@@ -9,12 +9,16 @@
 import UIKit
 
 private extension ComposerView {
+    var hintsView: HintsView? {
+        return utilityStackView.subviews.first(where: { $0 as? HintsView != nil }) as? HintsView
+    }
+
     var replyView: ReplyView? {
         return componentStackView.subviews.first(where: { $0 as? ReplyView != nil }) as? ReplyView
     }
 
-    var hintsView: HintsView? {
-        return utilityStackView.subviews.first(where: { $0 as? HintsView != nil }) as? HintsView
+    var editingView: EditingView? {
+        return componentStackView.subviews.first(where: { $0 as? EditingView != nil }) as? EditingView
     }
 }
 
@@ -22,7 +26,7 @@ private extension ComposerView {
  An expanded child of the ComposerViewDelegate protocol.
  This adds default implementatios for reply, autocompletion and more.
  */
-public protocol ComposerViewExpandedDelegate: ComposerViewDelegate, HintsViewDelegate, ReplyViewDelegate {
+public protocol ComposerViewExpandedDelegate: ComposerViewDelegate, HintsViewDelegate, ReplyViewDelegate, EditingViewDelegate {
     func hintPrefixes(for composerView: ComposerView) -> [Character]
     func isHinting(in composerView: ComposerView) -> Bool
 
@@ -60,14 +64,15 @@ public extension ComposerViewExpandedDelegate {
         didChangeHintPrefixedWord("")
     }
 
-    func composerView(_ composerView: ComposerView, didTapButtonAt slot: ComposerButtonSlot) {
-        switch slot {
-        case .left:
+    func composerView(_ composerView: ComposerView, didTapButton button: ComposerButton) {
+        if button === composerView.leftButton {
             UIView.animate(withDuration: 0.2) {
-                composerView.replyView?.isHidden = false
+                composerView.editingView?.isHidden = false
                 composerView.layoutIfNeeded()
             }
-        case .right:
+        }
+
+        if button === composerView.rightButton {
             composerView.textView.text = ""
         }
     }
@@ -75,7 +80,12 @@ public extension ComposerViewExpandedDelegate {
     // MARK: Addons
 
     func numberOfAddons(in composerView: ComposerView, at slot: ComposerAddonSlot) -> UInt {
-        return 1
+        switch slot {
+        case .utility:
+            return 1
+        case .component:
+            return 2
+        }
     }
 
     func composerView(_ composerView: ComposerView, addonAt slot: ComposerAddonSlot, index: UInt) -> ComposerAddon? {
@@ -83,7 +93,14 @@ public extension ComposerViewExpandedDelegate {
         case .utility:
             return .hints
         case .component:
-            return .reply
+            switch index {
+            case 0:
+                return .reply
+            case 1:
+                return .editing
+            default:
+                return nil
+            }
         }
     }
 
@@ -94,6 +111,10 @@ public extension ComposerViewExpandedDelegate {
         }
 
         if let view = view as? ReplyView {
+            view.delegate = self
+        }
+
+        if let view = view as? EditingView {
             view.delegate = self
         }
     }

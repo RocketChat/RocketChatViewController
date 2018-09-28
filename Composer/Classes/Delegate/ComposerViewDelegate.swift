@@ -14,11 +14,6 @@ import UIKit
  */
 public protocol ComposerViewDelegate: class {
     /**
-     Asks the delegate for the button to place in the slot.
-     */
-    func composerView(_ composerView: ComposerView, buttonAt slot: ComposerButtonSlot) -> ComposerButton?
-
-    /**
      Asks the delegate which height should be the maximum for the composer (not counting addons).
      */
     func maximumHeight(for composerView: ComposerView) -> CGFloat
@@ -46,19 +41,10 @@ public protocol ComposerViewDelegate: class {
     /**
      Tells the delegate the button in the slot has been tapped.
      */
-    func composerView(_ composerView: ComposerView, didTapButtonAt slot: ComposerButtonSlot)
+    func composerView(_ composerView: ComposerView, didTapButton button: ComposerButton)
 }
 
 public extension ComposerViewDelegate {
-    func composerView(_ composerView: ComposerView, buttonAt slot: ComposerButtonSlot) -> ComposerButton? {
-        switch slot {
-        case .left:
-            return .addButton
-        case .right:
-            return .sendButton
-        }
-    }
-
     func maximumHeight(for composerView: ComposerView) -> CGFloat {
         return UIScreen.main.bounds.height
     }
@@ -73,5 +59,5 @@ public extension ComposerViewDelegate {
 
     func composerViewDidChangeSelection(_ composerView: ComposerView) { }
     func composerView(_ composerView: ComposerView, didUpdateAddonView view: UIView?, at slot: ComposerAddonSlot, index: UInt) { }
-    func composerView(_ composerView: ComposerView, didTapButtonAt slot: ComposerButtonSlot) { }
+    func composerView(_ composerView: ComposerView, didTapButton button: ComposerButton) { }
 }

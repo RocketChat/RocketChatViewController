@@ -10,58 +10,6 @@ import UIKit
 import NotificationCenter
 
 /**
- An enum that represents a place in the composer view where a button is placed.
- */
-public enum ComposerButtonSlot {
-    case left
-    case right
-}
-
-/**
- An enum that represents the state of a button in the composer.
- */
-public enum ComposerButtonState {
-    case normal
-    case disabled
-    case hidden
-}
-
-/**
- A struct that represents a button in the composer.
- */
-public struct ComposerButton {
-    var state: ComposerButtonState
-    var image: ComposerAsset<UIImage>
-
-    func withState(_ state: ComposerButtonState) -> ComposerButton {
-        return tap(self) { $0.state = state }
-    }
-}
-
-public extension ComposerButton {
-    /**
-     Default add sign button.
-     */
-    public static var addButton: ComposerButton {
-        return ComposerButton(state: .normal, image: .addButton)
-    }
-
-    /**
-     Default microphone button.
-     */
-    public static var micButton: ComposerButton {
-        return ComposerButton(state: .normal, image: .micButton)
-    }
-
-    /**
-     Default send button.
-     */
-    public static var sendButton: ComposerButton {
-        return ComposerButton(state: .normal, image: .sendButton)
-    }
-}
-
-/**
  An enum that represents a place in the composer view where an addon is placed.
  */
 public enum ComposerAddonSlot {
@@ -113,13 +61,9 @@ public class ComposerView: UIView {
     /**
      The button that stays in the left side of the composer.
      */
-    public let leftButton = tap(UIButton()) {
+    public let leftButton = tap(ComposerButton()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            $0.widthAnchor.constraint(equalToConstant: 24),
-            $0.heightAnchor.constraint(equalToConstant: 24)
-        ])
+        $0.setBackgroundImage(ComposerAsset.addButton.raw, for: .normal)
 
         $0.addTarget(self, action: #selector(touchUpInside(button:)), for: .touchUpInside)
     }
@@ -127,13 +71,9 @@ public class ComposerView: UIView {
     /**
      The button that stays in the right side of the composer.
      */
-    public let rightButton = tap(UIButton()) {
+    public let rightButton = tap(ComposerButton()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            $0.widthAnchor.constraint(equalToConstant: 24),
-            $0.heightAnchor.constraint(equalToConstant: 24)
-        ])
+        $0.setBackgroundImage(ComposerAsset.sendButton.raw, for: .normal)
 
         $0.addTarget(self, action: #selector(touchUpInside(button:)), for: .touchUpInside)
     }
@@ -263,7 +203,7 @@ public class ComposerView: UIView {
 
                 // textView constraints
 
-                textView.leadingAnchor.constraint(equalTo: leftButton.trailingAnchor, constant: layoutMargins.left),
+                textView.leadingAnchor.constraint(equalTo: leftButton.trailingAnchor, constant: 0),
                 textView.trailingAnchor.constraint(equalTo: rightButton.leadingAnchor, constant: -layoutMargins.right),
                 textView.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor, constant: -layoutMargins.bottom),
 
@@ -286,9 +226,6 @@ public class ComposerView: UIView {
 
     public override func willMove(toSuperview newSuperview: UIView?) {
         super.willMove(toSuperview: newSuperview)
-
-        leftButton.setBackgroundImage(currentDelegate.composerView(self, buttonAt: .left)?.image.raw, for: .normal)
-        rightButton.setBackgroundImage(currentDelegate.composerView(self, buttonAt: .right)?.image.raw, for: .normal)
 
         reloadAddons()
     }
@@ -343,15 +280,8 @@ public extension ComposerView {
     /**
      Called when a touch up inside happens in one of the buttons.
      */
-    @objc func touchUpInside(button: UIButton) {
-        switch button {
-        case leftButton:
-            currentDelegate.composerView(self, didTapButtonAt: .left)
-        case rightButton:
-            currentDelegate.composerView(self, didTapButtonAt: .right)
-        default:
-            break
-        }
+    @objc func touchUpInside(button: ComposerButton) {
+        currentDelegate.composerView(self, didTapButton: button)
     }
 }
 
