@@ -161,7 +161,8 @@ extension ChatViewController: ComposerViewExpandedDelegate {
     func hintsView(_ hintsView: HintsView, cellForHintAt index: Int) -> UITableViewCell {
         let hint = hints[index]
 
-        if hintPrefixedWord.first == "@", let cell = hintsView.dequeueReusableCell(withType: UserHintCell<UIImageView>.self) {
+        if hintPrefixedWord.first == "@" {
+            let cell = hintsView.dequeueReusableCell(withType: UserHintCell<UIImageView>.self)
             cell.avatarView.image = DummyData.avatarImage(for: hint)
             cell.usernameLabel.text = hint
             cell.nameLabel.text = DummyData.users.first { $0.username == hint }?.name
@@ -169,9 +170,9 @@ extension ChatViewController: ComposerViewExpandedDelegate {
         }
 
         let cell = hintsView.dequeueReusableCell(withType: TextHintCell.self)
-        cell?.prefixLabel.text = String(hintPrefixedWord.first ?? " ")
-        cell?.valueLabel.text = String(hint)
-        return cell ?? UITableViewCell()
+        cell.prefixLabel.text = String(hintPrefixedWord.first ?? " ")
+        cell.valueLabel.text = String(hint)
+        return cell
     }
 
     func maximumHeight(for hintsView: HintsView) -> CGFloat {

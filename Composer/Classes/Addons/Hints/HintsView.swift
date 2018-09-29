@@ -81,7 +81,7 @@ public class HintsView: UITableView {
         cellType.forEach { register($0, forCellReuseIdentifier: "\($0)") }
     }
 
-    public func dequeueReusableCell<T: UITableViewCell>(withType cellType: T.Type) -> T? {
+    public func dequeueReusableCell<T: UITableViewCell>(withType cellType: T.Type) -> T {
         let dequeue = { self.dequeueReusableCell(withIdentifier: "\(cellType)") as? T }
 
         if let cell = dequeue() {
@@ -90,7 +90,11 @@ public class HintsView: UITableView {
             registerCellTypes(cellType)
         }
 
-        return dequeue()
+        if let cell = dequeue() {
+            return cell
+        }
+
+        fatalError("[HintsView] Could not dequeue cell of type: '\(cellType)'")
     }
 
     /**
