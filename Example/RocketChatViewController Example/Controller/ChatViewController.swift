@@ -21,7 +21,7 @@ final class ChatViewController: RocketChatViewController {
                 } else {
                     self.composerView.leftButton.show()
                 }
-                
+
                 self.composerView.layoutIfNeeded()
             }
         }
@@ -161,7 +161,7 @@ extension ChatViewController: ComposerViewExpandedDelegate {
     func hintsView(_ hintsView: HintsView, cellForHintAt index: Int) -> UITableViewCell {
         let hint = hints[index]
 
-        if hintPrefixedWord.first == "@", let cell = hintsView.dequeueReusableCell(withType: UserHintCell.self) {
+        if hintPrefixedWord.first == "@", let cell = hintsView.dequeueReusableCell(withType: UserHintCell<UIImageView>.self) {
             cell.avatarView.image = DummyData.avatarImage(for: hint)
             cell.usernameLabel.text = hint
             cell.nameLabel.text = DummyData.users.first { $0.username == hint }?.name
