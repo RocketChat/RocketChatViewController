@@ -181,8 +181,6 @@ public class ComposerView: UIView {
      Sets up constraints between the UI elements in the composer.
      */
     private func setupConstraints() {
-        let textViewLeading =
-
         NSLayoutConstraint.activate([
             // containerView constraints
 
