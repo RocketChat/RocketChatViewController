@@ -66,6 +66,8 @@ public class ComposerView: UIView {
         $0.setBackgroundImage(ComposerAsset.addButton.raw, for: .normal)
 
         $0.addTarget(self, action: #selector(touchUpInside(button:)), for: .touchUpInside)
+
+        $0.setContentHuggingPriority(.required, for: .horizontal)
     }
 
     /**
@@ -76,6 +78,8 @@ public class ComposerView: UIView {
         $0.setBackgroundImage(ComposerAsset.sendButton.raw, for: .normal)
 
         $0.addTarget(self, action: #selector(touchUpInside(button:)), for: .touchUpInside)
+
+        $0.setContentHuggingPriority(.required, for: .horizontal)
     }
 
     /**
