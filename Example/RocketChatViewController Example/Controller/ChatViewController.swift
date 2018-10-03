@@ -169,8 +169,8 @@ extension ChatViewController: ComposerViewExpandedDelegate {
             return cell
         }
 
-        let cell = hintsView.dequeueReusableCell(withType: TextHintCell.self)
-        cell.prefixLabel.text = String(hintPrefixedWord.first ?? " ")
+        let cell = hintsView.dequeueReusableCell(withType: TextHintCell<UILabel>.self)
+        cell.prefixView.text = String(hintPrefixedWord.first ?? " ")
         cell.valueLabel.text = String(hint)
         return cell
     }
