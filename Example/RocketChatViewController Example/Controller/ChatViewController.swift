@@ -181,14 +181,6 @@ extension ChatViewController: ComposerViewExpandedDelegate {
 
     // MARK: Reply
 
-    func viewModel(for replyView: ReplyView) -> ReplyViewModel {
-        return ReplyViewModel(
-            nameText: "jaad.brinklei",
-            timeText: "2:10 PM",
-            text: "This is a multiline chat message from..."
-        )
-    }
-
     func replyViewDidHide(_ replyView: ReplyView) {
         isReplying = false
     }
