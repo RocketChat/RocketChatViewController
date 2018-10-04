@@ -26,7 +26,7 @@ public class ComposerTextView: UITextView {
 
     private var placeholderLabelConstraints = [NSLayoutConstraint]()
 
-    weak var textViewDelegate: ComposerTextViewDelegate?
+    public weak var textViewDelegate: ComposerTextViewDelegate?
     let fallbackDelegate = FallbackComposerTextViewDelegate()
     var currentDelegate: ComposerTextViewDelegate {
         return textViewDelegate ?? fallbackDelegate
