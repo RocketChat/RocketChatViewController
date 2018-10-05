@@ -169,8 +169,8 @@ extension ChatViewController: ComposerViewExpandedDelegate {
             return cell
         }
 
-        let cell = hintsView.dequeueReusableCell(withType: TextHintCell.self)
-        cell.prefixLabel.text = String(hintPrefixedWord.first ?? " ")
+        let cell = hintsView.dequeueReusableCell(withType: TextHintCell<UILabel>.self)
+        cell.prefixView.text = String(hintPrefixedWord.first ?? " ")
         cell.valueLabel.text = String(hint)
         return cell
     }
@@ -180,14 +180,6 @@ extension ChatViewController: ComposerViewExpandedDelegate {
     }
 
     // MARK: Reply
-
-    func viewModel(for replyView: ReplyView) -> ReplyViewModel {
-        return ReplyViewModel(
-            nameText: "jaad.brinklei",
-            timeText: "2:10 PM",
-            text: "This is a multiline chat message from..."
-        )
-    }
 
     func replyViewDidHide(_ replyView: ReplyView) {
         isReplying = false
