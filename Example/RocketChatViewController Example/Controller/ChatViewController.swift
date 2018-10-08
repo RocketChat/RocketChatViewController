@@ -12,6 +12,9 @@ import RocketChatViewController
 
 
 final class ChatViewController: RocketChatViewController {
+
+    var data: [AnyChatSection] = []
+
     var isReplying: Bool = false
     var isEditingMessage: Bool = false {
         didSet {
@@ -80,13 +83,8 @@ final class ChatViewController: RocketChatViewController {
         )
 
         let data1 = DataControllerPlaceholder.generateDumbData(elements: 5)
+        data = data1
         updateData(with: data1)
-
-        let data2 = DataControllerPlaceholder.generateDumbData(elements: 1)
-        updateData(with: data2)
-
-        let data3 = DataControllerPlaceholder.generateDumbData(elements: 30)
-        updateData(with: data3)
     }
 
 }
