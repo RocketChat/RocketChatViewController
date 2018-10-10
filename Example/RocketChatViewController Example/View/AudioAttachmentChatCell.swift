@@ -10,6 +10,8 @@ import UIKit
 import RocketChatViewController
 
 class AudioAttachmentChatCell: UICollectionViewCell, ChatCell {
+    var adjustedHorizontalInsets: CGFloat = 0
+
     static let identifier = String(describing: AudioAttachmentChatCell.self)
 
     var viewModel: AnyChatItem?
