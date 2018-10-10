@@ -10,6 +10,8 @@ import UIKit
 import RocketChatViewController
 
 class VideoAttachmentChatCell: UICollectionViewCell, ChatCell {
+    var adjustedHorizontalInsets: CGFloat = 0
+
     static let identifier = String(describing: VideoAttachmentChatCell.self)
 
     @IBOutlet weak var videoPreview: UIImageView!
