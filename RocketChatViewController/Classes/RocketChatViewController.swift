@@ -263,6 +263,8 @@ open class RocketChatViewController: UICollectionViewController {
             name: .triggerDataUpdate,
             object: nil
         )
+
+        notificationCenter.addObserver(self, forKeyPath: "bounds", options: .new, context: nil)
     }
 
     func setupChatViews() {
@@ -379,5 +381,14 @@ extension RocketChatViewController {
             self.additionalSafeAreaInsets.top = intersection.height
             self.view.layoutIfNeeded()
         }, completion: nil)
+    }
+
+
+    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+
+        if object as AnyObject === self, keyPath == "bounds" {
+            composerView.containerViewLeadingConstraint.constant = UIScreen.main.bounds.width - view.bounds.width
+        }
     }
 }
