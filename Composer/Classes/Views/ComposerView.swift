@@ -155,10 +155,10 @@ public class ComposerView: UIView {
 
         containerView.addObserver(self, forKeyPath: "bounds", options: .new, context: nil)
 
-        backgroundColor = .white
-
         addSubviews()
         setupConstraints()
+
+        containerView.backgroundColor = .white
     }
 
     /**
@@ -242,6 +242,16 @@ public class ComposerView: UIView {
         super.willMove(toSuperview: newSuperview)
 
         reloadAddons()
+    }
+
+    override public func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        for view in self.subviews {
+            if view.isUserInteractionEnabled, view.point(inside: self.convert(point, to: view), with: event) {
+                return true
+            }
+        }
+
+        return false
     }
 }
 
