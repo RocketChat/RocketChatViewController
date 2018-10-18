@@ -12,6 +12,9 @@ import RocketChatViewController
 
 
 final class ChatViewController: RocketChatViewController {
+
+    var data: [AnyChatSection] = []
+
     var isReplying: Bool = false
     var isEditingMessage: Bool = false {
         didSet {
@@ -79,34 +82,18 @@ final class ChatViewController: RocketChatViewController {
             forCellWithReuseIdentifier: AudioAttachmentChatCell.identifier
         )
 
-        data = DataControllerPlaceholder.generateDumbData(elements: 5)
-        updateData()
-        data = DataControllerPlaceholder.generateDumbData(elements: 1)
-        updateData()
-        data = DataControllerPlaceholder.generateDumbData(elements: 30)
-        updateData()
+        let data1 = DataControllerPlaceholder.generateDumbData(elements: 5)
+        data = data1
+        updateData(with: data1)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        if let first = data.first {
-            if var messageSectionModel = first.base.object.base as? MessageSectionModel {
-                messageSectionModel.message.text = "TEST TEST TEST"
-                data.remove(at: 0)
-                let chatSection = MessageChatSection(object: AnyDifferentiable(messageSectionModel), controllerContext: nil)
-                data.insert(AnyChatSection(chatSection), at: 0)
-                updateData()
-            }
-        }
-
-    }
 }
 
 extension ChatViewController {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let sectionController = data[indexPath.section].base
         let viewModel = sectionController.viewModels()[indexPath.row]
+
         switch viewModel.base {
         case is BasicMessageChatItem:
             return CGSize(width: UIScreen.main.bounds.width, height: 60)

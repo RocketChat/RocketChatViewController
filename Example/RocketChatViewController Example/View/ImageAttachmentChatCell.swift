@@ -10,6 +10,7 @@ import UIKit
 import RocketChatViewController
 
 class ImageAttachmentChatCell: UICollectionViewCell, ChatCell {
+    var adjustedHorizontalInsets: CGFloat = 0
     static let identifier = String(describing: ImageAttachmentChatCell.self)
 
     @IBOutlet weak var image: UIImageView!
