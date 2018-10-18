@@ -235,6 +235,11 @@ open class RocketChatViewController: UICollectionViewController {
         super.viewDidLoad()
         setupChatViews()
         startAvoidingKeyboard()
+        registerObservers()
+    }
+
+    func registerObservers() {
+        view.addObserver(self, forKeyPath: "frame", options: .new, context: nil)
     }
 
     func setupChatViews() {
@@ -358,5 +363,12 @@ extension RocketChatViewController {
             self.additionalSafeAreaInsets.top = intersection.height
             self.view.layoutIfNeeded()
         }, completion: nil)
+    }
+
+
+    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if object as AnyObject === view, keyPath == "frame" {
+            composerView.containerViewLeadingConstraint.constant = UIScreen.main.bounds.width - view.bounds.width
+        }
     }
 }
