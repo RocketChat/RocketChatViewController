@@ -13,7 +13,7 @@ import RocketChatViewController
 
 final class ChatViewController: RocketChatViewController {
 
-    var data: [AnyChatSection] = []
+    var data: [ArraySection<AnyChatSection, AnyChatItem>] = []
 
     var isReplying: Bool = false
     var isEditingMessage: Bool = false {
@@ -83,15 +83,16 @@ final class ChatViewController: RocketChatViewController {
         )
 
         let data1 = DataControllerPlaceholder.generateDumbData(elements: 5)
-        data = data1
-        updateData(with: data1)
+        let transformed = data1.map({ ArraySection(model: $0, elements: $0.viewModels()) })
+        data = transformed
+        updateData(with: transformed)
     }
 
 }
 
 extension ChatViewController {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let sectionController = data[indexPath.section].base
+        let sectionController = data[indexPath.section].model.base
         let viewModel = sectionController.viewModels()[indexPath.row]
 
         switch viewModel.base {

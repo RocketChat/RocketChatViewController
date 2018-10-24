@@ -99,12 +99,6 @@ extension AnyChatSection: Differentiable {
     }
 }
 
-fileprivate extension AnyChatSection {
-    var toArraySection: ArraySection<AnyChatSection, AnyChatItem> {
-        return ArraySection(model: self, elements: viewModels())
-    }
-}
-
 /**
     The responsible for implementing the data source of a single section
     which represents an object splitted into differentiable view models
@@ -272,7 +266,7 @@ open class RocketChatViewController: UICollectionViewController {
         }
     }
 
-    open func updateData(with target: [AnyChatSection]) {
+    open func updateData(with target: [ArraySection<AnyChatSection, AnyChatItem>]) {
         updateDataQueue.addOperation { [weak self] in
             guard
                 let strongSelf = self,
@@ -282,7 +276,7 @@ open class RocketChatViewController: UICollectionViewController {
             }
 
             DispatchQueue.main.async {
-                let changeset = StagedChangeset(source: strongSelf.internalData, target: target.map({ $0.toArraySection }))
+                let changeset = StagedChangeset(source: strongSelf.internalData, target: target)
                 collectionView.reload(using: changeset, interrupt: { $0.changeCount > 100 }) { newData in
                     strongSelf.internalData = newData
 
