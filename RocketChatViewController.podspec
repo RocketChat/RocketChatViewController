@@ -33,7 +33,7 @@ TODO: Add long description of the pod here.
   s.subspec 'ViewController' do |f|
       f.ios.deployment_target = '11.0'
       f.source_files = 'RocketChatViewController/Classes/**/*'
-      f.dependency 'DifferenceKit', '~> 0.5.3'
+      f.dependency 'DifferenceKit', '~> 0.7.2'
   end
 
   # Composer
