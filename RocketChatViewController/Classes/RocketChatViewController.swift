@@ -202,7 +202,6 @@ open class RocketChatViewController: UICollectionViewController {
     open override var inputAccessoryView: UIView? {
         composerView.layoutMargins = view.layoutMargins
         composerView.directionalLayoutMargins = systemMinimumLayoutMargins
-
         return composerView
     }
 
@@ -391,7 +390,6 @@ extension RocketChatViewController {
             self.keyboardHeight = intersection.height
 
             // Update contentOffset with new keyboard size
-
             var contentOffset = collectionView.contentOffset
             contentOffset.y -= intersection.height
             collectionView.contentOffset = contentOffset
