@@ -372,7 +372,8 @@ extension RocketChatViewController {
     @objc private func _onKeyboardFrameWillChangeNotificationReceived(_ notification: Notification) {
         guard
             let userInfo = notification.userInfo,
-            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
+            let collectionView = collectionView
         else {
             return
         }
@@ -388,6 +389,13 @@ extension RocketChatViewController {
 
         UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
             self.keyboardHeight = intersection.height
+
+            // Update contentOffset with new keyboard size
+
+            var contentOffset = collectionView.contentOffset
+            contentOffset.y -= intersection.height
+            collectionView.contentOffset = contentOffset
+
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
