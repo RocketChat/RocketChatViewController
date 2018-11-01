@@ -223,6 +223,9 @@ open class RocketChatViewController: UICollectionViewController {
 
     open var isInverted = true
     open var isSelfSizing = false
+
+    fileprivate var keyboardHeight: CGFloat = 0.0
+
     private let invertedTransform = CGAffineTransform(scaleX: 1, y: -1)
 
     override open func viewDidLoad() {
@@ -296,6 +299,10 @@ extension RocketChatViewController {
         return top
     }
 
+    fileprivate var bottomHeight: CGFloat {
+        return self.keyboardHeight > 0.0 ? self.keyboardHeight : self.composerView.frame.height
+    }
+
     fileprivate func adjustContentSizeIfNeeded() {
         guard let collectionView = collectionView else { return }
 
@@ -303,9 +310,9 @@ extension RocketChatViewController {
 
         if isInverted {
             contentInset.bottom = topHeight
-            contentInset.top = contentInset.bottom > 0.0 ? 0.0 : contentInset.top
+            contentInset.top = contentInset.bottom > 0.0 ? bottomHeight : contentInset.top
         } else {
-            contentInset.bottom = 0.0
+            contentInset.bottom = bottomHeight
         }
 
         collectionView.contentInset = contentInset
@@ -378,7 +385,7 @@ extension RocketChatViewController {
         let animationCurve = UIViewAnimationOptions(rawValue: animationCurveRaw)
 
         UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
-            self.additionalSafeAreaInsets.top = intersection.height
+            self.keyboardHeight = intersection.height
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
