@@ -294,13 +294,15 @@ open class RocketChatViewController: UICollectionViewController {
 extension RocketChatViewController {
 
     fileprivate var topHeight: CGFloat {
-        var top = self.navigationController?.navigationBar.frame.height ?? 0.0
+        var top = navigationController?.navigationBar.frame.height ?? 0.0
         top += UIApplication.shared.statusBarFrame.height
         return top
     }
 
     fileprivate var bottomHeight: CGFloat {
-        return self.keyboardHeight > 0.0 ? self.keyboardHeight : self.composerView.frame.height
+        var composer = keyboardHeight > 0.0 ? keyboardHeight : composerView.frame.height
+        composer += view.safeAreaInsets.bottom
+        return composer
     }
 
     fileprivate func adjustContentSizeIfNeeded() {
