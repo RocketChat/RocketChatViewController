@@ -82,7 +82,7 @@ final class ChatViewController: RocketChatViewController {
             forCellWithReuseIdentifier: AudioAttachmentChatCell.identifier
         )
 
-        let data1 = DataControllerPlaceholder.generateDumbData(elements: 5)
+        let data1 = DataControllerPlaceholder.generateDumbData(elements: 10)
         let transformed = data1.map({ ArraySection(model: $0, elements: $0.viewModels()) })
         data = transformed
         updateData(with: transformed)

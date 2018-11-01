@@ -202,7 +202,7 @@ open class RocketChatViewController: UICollectionViewController {
     open override var inputAccessoryView: UIView? {
         composerView.layoutMargins = view.layoutMargins
         composerView.directionalLayoutMargins = systemMinimumLayoutMargins
-        
+
         return composerView
     }
 
@@ -232,6 +232,11 @@ open class RocketChatViewController: UICollectionViewController {
         registerObservers()
     }
 
+    open override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        adjustContentSizeIfNeeded()
+    }
+
     func registerObservers() {
         view.addObserver(self, forKeyPath: "frame", options: .new, context: nil)
     }
@@ -248,17 +253,8 @@ open class RocketChatViewController: UICollectionViewController {
 
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.keyboardDismissMode = .interactive
-        collectionView.contentInsetAdjustmentBehavior = .always
+        collectionView.contentInsetAdjustmentBehavior = isInverted ? .never : .always
 
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-
-        collectionView.dataSource = self
-        collectionView.delegate = self
         collectionView.scrollsToTop = false
 
         if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout, isSelfSizing {
@@ -288,6 +284,34 @@ open class RocketChatViewController: UICollectionViewController {
             }
         }
     }
+}
+
+// MARK: Content Adjustment
+
+extension RocketChatViewController {
+
+    fileprivate var topHeight: CGFloat {
+        var top = self.navigationController?.navigationBar.frame.height ?? 0.0
+        top += UIApplication.shared.statusBarFrame.height
+        return top
+    }
+
+    fileprivate func adjustContentSizeIfNeeded() {
+        guard let collectionView = collectionView else { return }
+
+        var contentInset = collectionView.contentInset
+
+        if isInverted {
+            contentInset.bottom = topHeight
+            contentInset.top = contentInset.bottom > 0.0 ? 0.0 : contentInset.top
+        } else {
+            contentInset.bottom = 0.0
+        }
+
+        collectionView.contentInset = contentInset
+        collectionView.scrollIndicatorInsets = contentInset
+    }
+
 }
 
 extension RocketChatViewController {
@@ -358,7 +382,6 @@ extension RocketChatViewController {
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
-
 
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if object as AnyObject === view, keyPath == "frame" {
