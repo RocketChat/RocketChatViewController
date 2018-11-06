@@ -8,11 +8,11 @@
 
 import UIKit
 
-public class TextHintCell<PrefixView: UIView>: UITableViewCell {
+open class TextHintCell<PrefixView: UIView>: UITableViewCell {
     /*
      The hint's prefix view
      */
-    public let prefixView: PrefixView = tap(PrefixView()) {
+    open let prefixView: PrefixView = tap(PrefixView()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
         $0.layer.cornerRadius = Consts.prefixCornerRadius
@@ -25,20 +25,20 @@ public class TextHintCell<PrefixView: UIView>: UITableViewCell {
         NSLayoutConstraint.activate([
             $0.widthAnchor.constraint(equalToConstant: Consts.prefixWidth),
             $0.heightAnchor.constraint(equalToConstant: Consts.prefixHeight)
-        ])
+            ])
     }
 
     /*
      The hint's value label
      */
-    public let valueLabel: UILabel = tap(UILabel()) {
+    open let valueLabel: UILabel = tap(UILabel()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
         $0.font = .preferredFont(forTextStyle: .body)
         $0.adjustsFontForContentSizeCategory = true
     }
 
-    public override var intrinsicContentSize: CGSize {
+    open override var intrinsicContentSize: CGSize {
         let height = layoutMargins.top + layoutMargins.bottom + valueLabel.intrinsicContentSize.height
         return CGSize(width: super.intrinsicContentSize.width, height: height)
     }
@@ -83,7 +83,7 @@ public class TextHintCell<PrefixView: UIView>: UITableViewCell {
 
             valueLabel.leadingAnchor.constraint(equalTo: prefixView.trailingAnchor, constant: Consts.valueLeading),
             valueLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
-        ])
+            ])
     }
 }
 
