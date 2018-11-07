@@ -215,7 +215,7 @@ open class RocketChatViewController: UICollectionViewController {
     private let updateDataQueue: OperationQueue = {
         let operationQueue = OperationQueue()
         operationQueue.maxConcurrentOperationCount = 1
-        operationQueue.qualityOfService = .userInitiated
+        operationQueue.qualityOfService = .userInteractive
 
         return operationQueue
     }()
@@ -266,17 +266,16 @@ open class RocketChatViewController: UICollectionViewController {
 
     open func updateData(with target: [ArraySection<AnyChatSection, AnyChatItem>]) {
         updateDataQueue.addOperation { [weak self] in
-            guard
-                let strongSelf = self,
-                let collectionView = strongSelf.collectionView
-            else {
-                return
-            }
-
-            let changeset = StagedChangeset(source: strongSelf.internalData, target: target)
-
             DispatchQueue.main.async {
+                guard
+                    let strongSelf = self,
+                    let collectionView = strongSelf.collectionView
+                else {
+                    return
+                }
+
                 UIView.performWithoutAnimation {
+                    let changeset = StagedChangeset(source: strongSelf.internalData, target: target)
                     collectionView.reload(using: changeset, interrupt: { $0.changeCount > 100 }) { newData in
                         strongSelf.internalData = newData
 
