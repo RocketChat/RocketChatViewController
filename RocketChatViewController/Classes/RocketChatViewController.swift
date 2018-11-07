@@ -148,7 +148,7 @@ public protocol ChatCell {
 }
 
 public protocol ChatDataUpdateDelegate: class {
-    func didUpdateChatData(newData: [AnyChatSection])
+    func didUpdateChatData(newData: [AnyChatSection], updatedSections: [AnyHashable])
 }
 
 /**
@@ -277,11 +277,22 @@ open class RocketChatViewController: UICollectionViewController {
 
             DispatchQueue.main.async {
                 UIView.performWithoutAnimation {
-                    collectionView.reload(using: changeset, interrupt: { $0.changeCount > 100 }) { newData in
+                    collectionView.reload(using: changeset, interrupt: { $0.changeCount > 100 }) { newData, changes in
                         strongSelf.internalData = newData
 
                         let newSections = newData.map { $0.model }
-                        strongSelf.dataUpdateDelegate?.didUpdateChatData(newData: newSections)
+                        var updatedSections = [AnyHashable]()
+                        for (idx, section) in newSections.enumerated() {
+                            guard let changes = changes else {
+                                break
+                            }
+
+                            if changes.sectionUpdated.contains(idx) {
+                                updatedSections.append(section.differenceIdentifier)
+                            }
+                        }
+
+                        strongSelf.dataUpdateDelegate?.didUpdateChatData(newData: newSections, updatedSections: updatedSections)
 
                         assert(newSections.count == newData.count)
                     }
