@@ -23,7 +23,7 @@ TODO: Add long description of the pod here.
 
   s.homepage         = 'https://github.com/RocketChat/RocketChatViewController'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'Rocket Chat' => 'ofilipealvarenga@gmail.com' }
+  s.author           = { 'Rocket Chat' => 'ios@rocket.chat' }
   s.source           = { :git => 'https://github.com/RocketChat/RocketChatViewController', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/RocketChat'
 
