@@ -10,7 +10,7 @@ import UIKit
 import RocketChatViewController
 
 class VideoAttachmentChatCell: UICollectionViewCell, ChatCell {
-    var adjustedHorizontalInsets: CGFloat = 0
+    var messageWidth: CGFloat = 0
 
     static let identifier = String(describing: VideoAttachmentChatCell.self)
 
