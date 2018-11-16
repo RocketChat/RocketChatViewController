@@ -178,7 +178,7 @@ public class ComposerView: UIView {
     // MARK: Constraints
 
     lazy var textViewLeadingConstraint: NSLayoutConstraint = {
-        textView.leadingAnchor.constraint(equalTo: leftButton.trailingAnchor, constant: layoutMargins.left)
+        textView.leadingAnchor.constraint(equalTo: leftButton.trailingAnchor, constant: 0)
     }()
 
     lazy var containerViewLeadingConstraint: NSLayoutConstraint = {
@@ -219,7 +219,7 @@ public class ComposerView: UIView {
             // textView constraints
 
             textViewLeadingConstraint,
-            textView.trailingAnchor.constraint(equalTo: rightButton.leadingAnchor, constant: -layoutMargins.right),
+            textView.trailingAnchor.constraint(equalTo: rightButton.leadingAnchor, constant: 0),
             textView.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor, constant: -layoutMargins.bottom),
 
             // rightButton constraints
