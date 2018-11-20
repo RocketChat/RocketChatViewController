@@ -30,7 +30,7 @@ public enum ComposerAddonSlot {
 private class ComposerViewFallbackDelegate: ComposerViewDelegate { }
 
 // MARK: Initializers
-public class ComposerView: UIView {
+public class ComposerView: UIView, ComposerLocalizable {
     /**
      The object that acts as the delegate of the composer.
      */
@@ -89,7 +89,7 @@ public class ComposerView: UIView {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
         $0.text = ""
-        $0.placeholderLabel.text = "Type a message"
+        $0.placeholderLabel.text = localized(.textViewPlaceholder)
         $0.placeholderLabel.font = .preferredFont(forTextStyle: .body)
         $0.placeholderLabel.adjustsFontForContentSizeCategory = true
 

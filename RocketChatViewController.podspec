@@ -40,7 +40,7 @@ TODO: Add long description of the pod here.
   s.subspec 'Composer' do |f|
       f.ios.deployment_target = '11.0'
       f.source_files = 'Composer/Classes/**/*'
-      f.resources = ['Composer/Assets/Assets.xcassets']
+      f.resources = ['Composer/Assets/*']
   end
 
 end
