@@ -26,7 +26,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   DifferenceKit: 5179eaf0e76a1b9fbaeb93f4c1a82510be63ca65
-  RocketChatViewController: bfc2d420e648d104bddb0bd84a370b520ce32d7c
+  RocketChatViewController: d306b1cacfe7c4299ed12b02cdc47a45a97ebc7a
 
 PODFILE CHECKSUM: fc9b10bfa756b313b683bfc2d293b3b39d85db59
 
