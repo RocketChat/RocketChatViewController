@@ -144,7 +144,7 @@ public extension ChatItem where Self: Differentiable {
 public protocol ChatCell {
     var messageWidth: CGFloat { get set }
     var viewModel: AnyChatItem? { get set }
-    func configure(completeRendering: Bool)
+    func configure()
 }
 
 public protocol ChatDataUpdateDelegate: class {
