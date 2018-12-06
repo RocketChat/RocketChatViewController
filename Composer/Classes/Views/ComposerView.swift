@@ -110,7 +110,7 @@ public class ComposerView: UIView, ComposerLocalizable {
      */
     public let topSeparatorView = tap(UIView()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.backgroundColor = #colorLiteral(red: 0.8941176471, green: 0.9058823529, blue: 0.9176470588, alpha: 1)
+        $0.backgroundColor = #colorLiteral(red: 0.8823529412, green: 0.8980392157, blue: 0.9098039216, alpha: 1)
 
         NSLayoutConstraint.activate([
             $0.heightAnchor.constraint(equalToConstant: 0.5)
