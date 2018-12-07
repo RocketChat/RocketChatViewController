@@ -101,6 +101,10 @@ public class ReplyView: UIView {
         return CGSize(width: super.intrinsicContentSize.width, height: height)
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     public init() {
         super.init(frame: .zero)
         self.commonInit()
