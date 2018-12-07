@@ -52,7 +52,7 @@ struct MessageChatSection: ChatSection {
     func cell(for viewModel: AnyChatItem, on collectionView: UICollectionView, at indexPath: IndexPath) -> ChatCell {
         var cell = collectionView.dequeueChatCell(withReuseIdentifier: viewModel.relatedReuseIdentifier, for: indexPath)
         cell.viewModel = viewModel
-        cell.configure()
+        cell.configure(completeRendering: true)
         return cell
     }
 }

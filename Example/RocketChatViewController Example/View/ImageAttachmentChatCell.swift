@@ -17,7 +17,7 @@ class ImageAttachmentChatCell: UICollectionViewCell, ChatCell {
 
     var viewModel: AnyChatItem?
 
-    func configure() {
+    func configure(completeRendering: Bool) {
         guard let _ = viewModel?.base as? ImageAttachmentChatItem else {
             return
         }
