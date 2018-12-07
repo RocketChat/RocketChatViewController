@@ -19,7 +19,7 @@ class BasicMessageChatCell: UICollectionViewCell, ChatCell {
 
     var viewModel: AnyChatItem?
 
-    func configure() {
+    func configure(completeRendering: Bool) {
         guard let viewModel = viewModel?.base as? BasicMessageChatItem else {
             return
         }
