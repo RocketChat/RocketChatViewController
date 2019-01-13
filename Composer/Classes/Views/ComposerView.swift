@@ -245,9 +245,9 @@ public class ComposerView: UIView, ComposerLocalizable {
             // overlayView constraints
 
             overlayView.topAnchor.constraint(equalTo: topSeparatorView.bottomAnchor),
-            overlayView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            overlayView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            overlayView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
+            overlayView.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor),
+            overlayView.leadingAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.leadingAnchor),
+            overlayView.trailingAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
 
