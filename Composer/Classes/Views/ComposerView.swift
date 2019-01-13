@@ -63,9 +63,10 @@ public class ComposerView: UIView, ComposerLocalizable {
      */
     public let leftButton = tap(ComposerButton()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.setBackgroundImage(ComposerAsset.addButton.raw, for: .normal)
+        $0.setBackgroundImage(ComposerAssets.addButtonImage, for: .normal)
 
-        $0.addTarget(self, action: #selector(touchUpInside(button:)), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(touchUpInsideButton), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(touchDownInButton), for: .touchDown)
 
         $0.setContentHuggingPriority(.required, for: .horizontal)
     }
@@ -75,9 +76,10 @@ public class ComposerView: UIView, ComposerLocalizable {
      */
     public let rightButton = tap(ComposerButton()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.setBackgroundImage(ComposerAsset.sendButton.raw, for: .normal)
+        $0.setBackgroundImage(ComposerAssets.sendButtonImage, for: .normal)
 
-        $0.addTarget(self, action: #selector(touchUpInside(button:)), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(touchUpInsideButton), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(touchDownInButton), for: .touchDown)
 
         $0.setContentHuggingPriority(.required, for: .horizontal)
     }
@@ -124,6 +126,14 @@ public class ComposerView: UIView, ComposerLocalizable {
         $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
+    /**
+     The view that overlays the composer when showOverlay is called.
+     */
+    public let overlayView = tap(OverlayView()) {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.isHidden = true
+    }
+
     public override var intrinsicContentSize: CGSize {
         return CGSize(width: super.intrinsicContentSize.width, height: containerView.bounds.height)
     }
@@ -134,12 +144,12 @@ public class ComposerView: UIView, ComposerLocalizable {
 
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        self.commonInit()
+        commonInit()
     }
 
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.commonInit()
+        commonInit()
     }
 
     /**
@@ -157,8 +167,7 @@ public class ComposerView: UIView, ComposerLocalizable {
 
         addSubviews()
         setupConstraints()
-
-        containerView.backgroundColor = .white
+        addGestureRecognizers()
     }
 
     /**
@@ -173,6 +182,7 @@ public class ComposerView: UIView, ComposerLocalizable {
         containerView.addSubview(componentStackView)
         containerView.addSubview(topSeparatorView)
         containerView.addSubview(utilityStackView)
+        containerView.addSubview(overlayView)
     }
 
     // MARK: Constraints
@@ -230,8 +240,23 @@ public class ComposerView: UIView, ComposerLocalizable {
             // leftButton constraints
 
             leftButton.leadingAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.leadingAnchor, constant: layoutMargins.left*2),
-            leftButton.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor, constant: -layoutMargins.bottom*2)
+            leftButton.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor, constant: -layoutMargins.bottom*2),
+
+            // overlayView constraints
+
+            overlayView.topAnchor.constraint(equalTo: topSeparatorView.bottomAnchor),
+            overlayView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            overlayView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            overlayView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
         ])
+    }
+
+    /**
+     Adds the gesture recognizers
+     */
+    private func addGestureRecognizers() {
+        //let panRecognizer = UIGestureRecognizer(target: self, action: #selector(panRecognized))
+        //rightButton.addGestureRecognizer(panRecognizer)
     }
 
     public override func layoutSubviews() {
@@ -242,6 +267,7 @@ public class ComposerView: UIView, ComposerLocalizable {
         super.willMove(toSuperview: newSuperview)
 
         reloadAddons()
+        configureButtons()
     }
 
     override public func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
@@ -253,12 +279,45 @@ public class ComposerView: UIView, ComposerLocalizable {
 
         return false
     }
+
+    
+}
+
+// MARK: Overlay
+
+public extension ComposerView {
+    func showOverlay(userData: Any? = nil) {
+        overlayView.isHidden = false
+
+        leftButton.isUserInteractionEnabled = false
+        rightButton.isUserInteractionEnabled = false
+        textView.isUserInteractionEnabled = false
+
+        currentDelegate.composerView(self, willConfigureOverlayView: overlayView, with: userData)
+    }
+
+    func hideOverlay() {
+        overlayView.isHidden = true
+
+        leftButton.isUserInteractionEnabled = true
+        rightButton.isUserInteractionEnabled = true
+        textView.isUserInteractionEnabled = true
+    }
+}
+
+// MARK: Buttons
+
+public extension ComposerView {
+    public func configureButtons() {
+        currentDelegate.composerView(self, willConfigureButton: leftButton)
+        currentDelegate.composerView(self, willConfigureButton: rightButton)
+    }
 }
 
 // MARK: Addons
 
 public extension ComposerView {
-    func reloadAddons() {
+    public func reloadAddons() {
         [
             (componentStackView, ComposerAddonSlot.component),
             (utilityStackView, ComposerAddonSlot.utility)
@@ -283,7 +342,7 @@ public extension ComposerView {
     }
 }
 
-// MARK: Observers & Actions
+// MARK: Observers, Gestures & Actions
 
 public extension ComposerView {
     /**
@@ -306,24 +365,35 @@ public extension ComposerView {
     }
 
     /**
-     Called when a touch up inside happens in one of the buttons.
+     Called when a touchUpInside event happens in one of the buttons.
      */
-    @objc func touchUpInside(button: ComposerButton) {
-        currentDelegate.composerView(self, didTapButton: button)
+    @objc private func touchUpInsideButton(_ button: ComposerButton, _ event: UIControl.Event) {
+        currentDelegate.composerView(self, event: .touchUpInside, happenedInButton: button)
+    }
+
+    /**
+     Called when a touchDown event happens in one of the buttons.
+     */
+    @objc private func touchDownInButton(_ button: ComposerButton, _ event: UIControl.Event) {
+        currentDelegate.composerView(self, event: .touchDown, happenedInButton: button)
+    }
+
+    /**
+
+     */
+    @objc private func panRecognized(_ recognizer: UIPanGestureRecognizer) {
+        print(recognizer)
     }
 }
 
 // MARK: UITextView Delegate
 extension ComposerView: UITextViewDelegate {
-    @objc public func textViewDidChangeSelection(_ textView: UITextView) {
+    @objc func textViewDidChangeSelection(_ textView: UITextView) {
         currentDelegate.composerViewDidChangeSelection(self)
         return
     }
 
-    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        // it would be good if we could support "soft return"
-        // (shift+enter) to allow the user to type newlines
-        // but as of iOS 12, it's not possible yet :(
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             return currentDelegate.composerViewShouldReturn(self)
         }

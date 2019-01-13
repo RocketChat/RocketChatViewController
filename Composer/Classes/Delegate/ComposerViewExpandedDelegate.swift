@@ -26,11 +26,21 @@ private extension ComposerView {
  An expanded child of the ComposerViewDelegate protocol.
  This adds default implementatios for reply, autocompletion and more.
  */
-public protocol ComposerViewExpandedDelegate: ComposerViewDelegate, HintsViewDelegate, ReplyViewDelegate, EditingViewDelegate {
+public protocol ComposerViewExpandedDelegate: ComposerViewDelegate,
+                                              HintsViewDelegate,
+                                              ReplyViewDelegate,
+                                              EditingViewDelegate,
+                                              RecordAudioViewDelegate,
+                                              PreviewAudioViewDelegate {
+
     func hintPrefixes(for composerView: ComposerView) -> [Character]
     func isHinting(in composerView: ComposerView) -> Bool
 
     func composerView(_ composerView: ComposerView, didChangeHintPrefixedWord word: String)
+    func composerView(_ composerView: ComposerView, didPressSendButton button: UIButton)
+    func composerView(_ composerView: ComposerView, didPressUploadButton button: UIButton)
+    func composerView(_ composerView: ComposerView, didPressRecordAudioButton button: UIButton)
+    func composerView(_ composerView: ComposerView, didFinishRecordingAudio url: URL)
 }
 
 public extension ComposerViewExpandedDelegate {
@@ -57,27 +67,34 @@ public extension ComposerViewExpandedDelegate {
             } else {
                 didChangeHintPrefixedWord("")
             }
-
-            return
+        } else {
+            didChangeHintPrefixedWord("")
         }
 
-        didChangeHintPrefixedWord("")
+        composerView.configureButtons()
     }
 
-    func composerView(_ composerView: ComposerView, didTapButton button: ComposerButton) {
-        if button === composerView.leftButton {
-            UIView.animate(withDuration: 0.2) {
-                composerView.editingView?.isHidden = false
-                composerView.layoutIfNeeded()
-            }
-        }
+    // MARK: Buttons
 
-        if button === composerView.rightButton {
-            UIView.animate(withDuration: 0.2) {
-                composerView.textView.text = ""
-                composerView.replyView?.isHidden = true
-                composerView.editingView?.isHidden = true
-                composerView.layoutIfNeeded()
+    func composerView(_ composerView: ComposerView, willConfigureButton button: ComposerButton) {
+        if button == composerView.rightButton {
+            let image = composerView.textView.text.isEmpty ? ComposerAssets.micButtonImage : ComposerAssets.sendButtonImage
+            button.setBackgroundImage(image, for: .normal)
+        }
+    }
+
+    func composerView(_ composerView: ComposerView, event: UIControl.Event, happenedInButton button: ComposerButton) {
+        if event == .touchUpInside {
+            if button === composerView.rightButton && composerView.textView.text.isEmpty {
+                self.composerView(composerView, didPressRecordAudioButton: button)
+            }
+
+            if button === composerView.rightButton && !composerView.textView.text.isEmpty {
+                self.composerView(composerView, didPressSendButton: button)
+            }
+
+            if button === composerView.leftButton {
+                self.composerView(composerView, didPressUploadButton: button)
             }
         }
     }
@@ -109,6 +126,59 @@ public extension ComposerViewExpandedDelegate {
         }
     }
 
+    func composerView(_ composerView: ComposerView, willConfigureOverlayView view: UIView, with userData: Any?) {
+        let audioUrl = (view.subviews.first as? RecordAudioView)?.audioRecorder.url
+
+        view.subviews.forEach {
+            $0.removeFromSuperview()
+        }
+
+        if userData as? String == "RecordAudioView" {
+            let recordAudioView: RecordAudioView
+            if let recordAudioView_ = view.subviews.first as? RecordAudioView {
+                recordAudioView = recordAudioView_
+            } else {
+                recordAudioView = RecordAudioView()
+                recordAudioView.translatesAutoresizingMaskIntoConstraints = false
+                recordAudioView.composerView = composerView
+                recordAudioView.delegate = self
+
+                view.addSubview(recordAudioView)
+                view.addConstraints([
+                    recordAudioView.heightAnchor.constraint(equalTo: view.heightAnchor),
+                    recordAudioView.widthAnchor.constraint(equalTo: view.widthAnchor),
+                    recordAudioView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                    recordAudioView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+                ])
+            }
+
+            return
+        }
+
+        if userData as? String == "PreviewAudioView" {
+            let previewAudioView: PreviewAudioView
+            if let previewAudioView_ = view.subviews.first as? PreviewAudioView {
+                previewAudioView = previewAudioView_
+            } else {
+                previewAudioView = PreviewAudioView()
+                previewAudioView.translatesAutoresizingMaskIntoConstraints = false
+                previewAudioView.composerView = composerView
+                previewAudioView.delegate = self
+                previewAudioView.url = audioUrl
+
+                view.addSubview(previewAudioView)
+                view.addConstraints([
+                    previewAudioView.heightAnchor.constraint(equalTo: view.heightAnchor),
+                    previewAudioView.widthAnchor.constraint(equalTo: view.widthAnchor),
+                    previewAudioView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                    previewAudioView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+                ])
+            }
+
+            return
+        }
+    }
+
     func composerView(_ composerView: ComposerView, didUpdateAddonView view: UIView?, at slot: ComposerAddonSlot, index: UInt) {
         if let view = view as? HintsView {
             view.hintsDelegate = self
@@ -121,5 +191,27 @@ public extension ComposerViewExpandedDelegate {
         if let view = view as? EditingView {
             view.delegate = self
         }
+    }
+
+    func composerView(_ composerView: ComposerView, didPressRecordAudioButton button: UIButton) {
+        composerView.showOverlay(userData: "RecordAudioView")
+    }
+
+    func recordAudioView(_ view: RecordAudioView, didRecordAudio url: URL) {
+        view.composerView?.showOverlay(userData: "PreviewAudioView")
+    }
+
+    func previewAudioView(_ view: PreviewAudioView, didConfirmAudio url: URL) {
+        guard let composerView = view.composerView else {
+            return
+        }
+
+        self.composerView(composerView, didFinishRecordingAudio: url)
+        view.composerView?.hideOverlay()
+    }
+
+    func previewAudioView(_ view: PreviewAudioView, didDiscardAudio url: URL) {
+        try? FileManager.default.removeItem(at: url)
+        view.composerView?.hideOverlay()
     }
 }
