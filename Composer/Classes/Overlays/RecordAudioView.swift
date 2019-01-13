@@ -13,7 +13,7 @@ public protocol RecordAudioViewDelegate: class {
     func recordAudioViewDidCancel(_ view: RecordAudioView)
 }
 
-public class RecordAudioView: UIView, ComposerLocalizable {
+public class RecordAudioView: UIView {
     public weak var composerView: ComposerView?
     public weak var delegate: RecordAudioViewDelegate?
     public let audioRecorder = AudioRecorder()
@@ -238,7 +238,7 @@ extension RecordAudioView {
 
 // MARK: SwipeIndicatorView
 
-public class SwipeIndicatorView: UIView {
+public class SwipeIndicatorView: UIView, ComposerLocalizable {
     public let imageView = tap(UIImageView()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.image = ComposerAssets.grayArrowLeftButtonImage
@@ -252,7 +252,7 @@ public class SwipeIndicatorView: UIView {
     public let label = tap(UILabel()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
-        $0.text = "Swipe to cancel"
+        $0.text = localized(.swipeIndicatorViewTitle)
         $0.font = .preferredFont(forTextStyle: .body)
         $0.textColor = #colorLiteral(red: 0.6196078431, green: 0.6352941176, blue: 0.6588235294, alpha: 1)
         $0.adjustsFontForContentSizeCategory = true
