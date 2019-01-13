@@ -97,5 +97,11 @@ public class AudioRecorder: NSObject {
         recorder?.stop()
         setSession(active: false)
     }
+
+    func cancel() {
+        recorder?.stop()
+        recorder?.deleteRecording()
+        setSession(active: false)
+    }
 }
 

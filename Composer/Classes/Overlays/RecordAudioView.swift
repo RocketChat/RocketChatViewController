@@ -10,6 +10,7 @@ import AVFoundation
 
 public protocol RecordAudioViewDelegate: class {
     func recordAudioView(_ view: RecordAudioView, didRecordAudio url: URL)
+    func recordAudioViewDidCancel(_ view: RecordAudioView)
 }
 
 public class RecordAudioView: UIView, ComposerLocalizable {
@@ -72,6 +73,22 @@ public class RecordAudioView: UIView, ComposerLocalizable {
         invalidateIntrinsicContentSize()
     }
 
+    public override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+
+        let translationX = swipeIndicatorView.intrinsicContentSize.width + 43 + micButton.intrinsicContentSize.width
+
+        swipeIndicatorView.transform = CGAffineTransform(translationX: translationX, y: 0)
+        micButton.transform = CGAffineTransform(translationX: translationX, y: 0)
+        timeLabel.alpha = 0
+
+        UIView.animate(withDuration: 0.25, animations: {
+            self.swipeIndicatorView.transform = CGAffineTransform(translationX: 0, y: 0)
+            self.micButton.transform = CGAffineTransform(translationX: 0, y: 0)
+            self.timeLabel.alpha = 1
+        })
+    }
+
     public override init(frame: CGRect) {
         super.init(frame: frame)
         self.commonInit()
@@ -105,6 +122,7 @@ public class RecordAudioView: UIView, ComposerLocalizable {
 
         addSubviews()
         setupConstraints()
+        addGestureRecognizers()
     }
 
     /**
@@ -134,20 +152,13 @@ public class RecordAudioView: UIView, ComposerLocalizable {
         ])
     }
 
-    public override func didMoveToSuperview() {
-        super.didMoveToSuperview()
-
-        let translationX = swipeIndicatorView.intrinsicContentSize.width + 43 + micButton.intrinsicContentSize.width
-
-        swipeIndicatorView.transform = CGAffineTransform(translationX: translationX, y: 0)
-        micButton.transform = CGAffineTransform(translationX: translationX, y: 0)
-        timeLabel.alpha = 0
-
-        UIView.animate(withDuration: 0.25, animations: {
-            self.swipeIndicatorView.transform = CGAffineTransform(translationX: 0, y: 0)
-            self.micButton.transform = CGAffineTransform(translationX: 0, y: 0)
-            self.timeLabel.alpha = 1
-        })
+    /**
+     Adds the required gesture recognizers.
+     */
+    private func addGestureRecognizers() {
+        let swipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeRecognized))
+        swipeRecognizer.direction = .left
+        swipeIndicatorView.addGestureRecognizer(swipeRecognizer)
     }
 
     /**
@@ -165,6 +176,18 @@ public class RecordAudioView: UIView, ComposerLocalizable {
     func stopRecording() {
         if audioRecorder.isRecording {
             audioRecorder.stop()
+        }
+    }
+
+    /**
+     Dismisses the view
+     */
+    func dismiss() {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.transform = CGAffineTransform(translationX: -self.frame.width, y: 0)
+        }) { _ in
+            self.audioRecorder.cancel()
+            self.delegate?.recordAudioViewDidCancel(self)
         }
     }
 }
@@ -206,6 +229,10 @@ extension RecordAudioView {
         } else {
             stopRecording()
         }
+    }
+
+    @objc func swipeRecognized() {
+        dismiss()
     }
 }
 

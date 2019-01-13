@@ -139,7 +139,7 @@ public class PreviewAudioView: UIView, ComposerLocalizable {
     }
 
     /**
-     Sets up constraints between the UI elements in the composer.
+     Sets up constraints between the UI elements.
      */
     private func setupConstraints() {
         translatesAutoresizingMaskIntoConstraints = false

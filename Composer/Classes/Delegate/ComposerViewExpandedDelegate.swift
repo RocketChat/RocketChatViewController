@@ -201,6 +201,10 @@ public extension ComposerViewExpandedDelegate {
         view.composerView?.showOverlay(userData: "PreviewAudioView")
     }
 
+    func recordAudioViewDidCancel(_ view: RecordAudioView) {
+        view.composerView?.hideOverlay()
+    }
+
     func previewAudioView(_ view: PreviewAudioView, didConfirmAudio url: URL) {
         guard let composerView = view.composerView else {
             return
