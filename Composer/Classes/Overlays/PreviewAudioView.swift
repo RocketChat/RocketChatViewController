@@ -55,9 +55,7 @@ public class PreviewAudioView: UIView, ComposerLocalizable {
         $0.addTarget(self, action: #selector(touchUpInsideSendButton), for: .touchUpInside)
     }
 
-    public var player: AVAudioPlayer?
     public var timer: Timer?
-    public var url: URL?
 
     public init() {
         super.init(frame: .zero)
@@ -203,7 +201,7 @@ extension PreviewAudioView {
     }
 
     @objc func touchUpInsideDiscardButton() {
-        guard let url = url else {
+        guard let url = audioView.audioUrl else {
             return
         }
 
@@ -211,7 +209,7 @@ extension PreviewAudioView {
     }
 
     @objc func touchUpInsideSendButton() {
-        guard let url = url else {
+        guard let url = audioView.audioUrl else {
             return
         }
 
@@ -230,6 +228,8 @@ public class AudioView: UIView {
             $0.widthAnchor.constraint(equalToConstant: Consts.playButtonWidth),
             $0.heightAnchor.constraint(equalToConstant: Consts.playButtonHeight)
         ])
+
+        $0.addTarget(self, action: #selector(didPressPlayButton), for: .touchUpInside)
     }
 
     public let progressSlider = tap(UISlider()) {
@@ -237,6 +237,8 @@ public class AudioView: UIView {
 
         $0.value = 0
         $0.setThumbImage(ComposerAssets.sliderThumbImage, for: .normal)
+
+        $0.addTarget(self, action: #selector(didStartSlidingSlider(_:)), for: .valueChanged)
     }
 
     public let timeLabel = tap(UILabel()) {
@@ -249,6 +251,34 @@ public class AudioView: UIView {
 
         $0.numberOfLines = 1
         $0.lineBreakMode = .byTruncatingTail
+    }
+
+    var updateTimer: Timer?
+    var audioUrl: URL? {
+        didSet {
+            playing = false
+            try? setupPlayer()
+            setupTimer()
+        }
+    }
+
+    public var player: AVAudioPlayer? {
+        didSet {
+            player?.delegate = self
+        }
+    }
+
+    public var playing = false {
+        didSet {
+            if playing {
+                player?.play()
+            } else {
+                player?.pause()
+            }
+            let pause = ComposerAssets.playButtonImage.withRenderingMode(.alwaysTemplate)
+            let play = ComposerAssets.playButtonImage
+            playButton.setImage(playing ? pause : play, for: .normal)
+        }
     }
 
     public override init(frame: CGRect) {
@@ -305,6 +335,29 @@ public class AudioView: UIView {
         ])
     }
 
+    func setupPlayer() throws {
+        if let url = audioUrl {
+            let data = try Data(contentsOf: url)
+            player = try AVAudioPlayer(data: data)
+        }
+    }
+
+    func setupTimer() {
+        updateTimer?.invalidate()
+        updateTimer = Timer.scheduledTimer(withTimeInterval: 1.0/60.0, repeats: true) { [weak self] _ in
+            guard let self = self, let player = self.player else { return }
+
+            self.progressSlider.maximumValue = Float(player.duration)
+
+            if self.playing {
+                self.progressSlider.value = Float(player.currentTime)
+            }
+
+            let displayTime = self.playing ? Int(player.currentTime) : Int(player.duration)
+            self.timeLabel.text = String(format: "%01d:%02d", (displayTime/60) % 60, displayTime % 60)
+        }
+    }
+
     struct Consts {
         static let layerCornerRadius: CGFloat = 4
 
@@ -317,5 +370,31 @@ public class AudioView: UIView {
 
         static let timeLabelTrailing: CGFloat = -15
         static let timeLabelFontSize: CGFloat = 14
+    }
+}
+
+// MARK: AVAudioPlayerDelegate
+
+extension AudioView: AVAudioPlayerDelegate {
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        playing = false
+        progressSlider.value = 0.0
+    }
+}
+
+// MARK: Events
+
+extension AudioView {
+    @objc func didStartSlidingSlider(_ sender: UISlider) {
+        playing = false
+    }
+
+    @objc func didFinishSlidingSlider(_ sender: UISlider) {
+        self.player?.currentTime = Double(sender.value)
+        playing = true
+    }
+
+    @objc func didPressPlayButton(_ sender: UIButton) {
+        playing = !playing
     }
 }

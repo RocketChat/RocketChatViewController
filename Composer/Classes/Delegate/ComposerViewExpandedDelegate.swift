@@ -164,7 +164,7 @@ public extension ComposerViewExpandedDelegate {
                 previewAudioView.translatesAutoresizingMaskIntoConstraints = false
                 previewAudioView.composerView = composerView
                 previewAudioView.delegate = self
-                previewAudioView.url = audioUrl
+                previewAudioView.audioView.audioUrl = audioUrl
 
                 view.addSubview(previewAudioView)
                 view.addConstraints([
