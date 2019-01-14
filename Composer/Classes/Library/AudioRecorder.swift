@@ -10,7 +10,11 @@ import AVFoundation
 public class AudioRecorder: NSObject {
     private var recorder: AVAudioRecorder?
 
-    public weak var delegate: AVAudioRecorderDelegate?
+    public weak var delegate: AVAudioRecorderDelegate? {
+        didSet {
+            recorder?.delegate = delegate
+        }
+    }
     
     public var isRecording: Bool {
         return recorder?.isRecording ?? false

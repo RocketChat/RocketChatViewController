@@ -186,6 +186,7 @@ public class RecordAudioView: UIView {
         UIView.animate(withDuration: 0.25, animations: {
             self.transform = CGAffineTransform(translationX: -self.frame.width, y: 0)
         }) { _ in
+            self.audioRecorder.delegate = nil
             self.audioRecorder.cancel()
             self.delegate?.recordAudioViewDidCancel(self)
         }
