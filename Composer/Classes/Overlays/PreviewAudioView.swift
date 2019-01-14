@@ -275,7 +275,7 @@ public class AudioView: UIView {
             } else {
                 player?.pause()
             }
-            let pause = ComposerAssets.playButtonImage.withRenderingMode(.alwaysTemplate)
+            let pause = ComposerAssets.pauseButtonImage
             let play = ComposerAssets.playButtonImage
             playButton.setImage(playing ? pause : play, for: .normal)
         }

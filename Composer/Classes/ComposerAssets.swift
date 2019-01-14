@@ -19,6 +19,7 @@ public struct ComposerAssets {
     public static let grayArrowLeftButtonImage = imageNamed("Gray Arrow Left")
 
     public static let playButtonImage = imageNamed("Play Button")
+    public static let pauseButtonImage = imageNamed("Pause Button")
     public static let sliderThumbImage = imageNamed("Slider Thumb")
     public static let discardButtonImage = imageNamed("Discard Button")
 
