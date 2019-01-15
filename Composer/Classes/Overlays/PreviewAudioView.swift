@@ -238,7 +238,8 @@ public class AudioView: UIView {
         $0.value = 0
         $0.setThumbImage(ComposerAssets.sliderThumbImage, for: .normal)
 
-        $0.addTarget(self, action: #selector(didStartSlidingSlider(_:)), for: .valueChanged)
+        $0.addTarget(self, action: #selector(didStartSlidingSlider(_:)), for: .touchDown)
+        $0.addTarget(self, action: #selector(didFinishSlidingSlider(_:)), for: .touchUpInside)
     }
 
     public let timeLabel = tap(UILabel()) {
@@ -390,7 +391,7 @@ extension AudioView {
     }
 
     @objc func didFinishSlidingSlider(_ sender: UISlider) {
-        self.player?.currentTime = Double(sender.value)
+        player?.currentTime = Double(sender.value)
         playing = true
     }
 
