@@ -294,6 +294,7 @@ public extension ComposerView {
         textView.isUserInteractionEnabled = false
 
         currentDelegate.composerView(self, willConfigureOverlayView: overlayView, with: userData)
+        currentDelegate.composerView(self, didConfigureOverlayView: overlayView)
     }
 
     func hideOverlay() {

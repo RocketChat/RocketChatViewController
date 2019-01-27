@@ -78,7 +78,8 @@ public extension ComposerViewExpandedDelegate {
 
     func composerView(_ composerView: ComposerView, willConfigureButton button: ComposerButton) {
         if button == composerView.rightButton {
-            let image = composerView.textView.text.isEmpty ? ComposerAssets.micButtonImage : ComposerAssets.sendButtonImage
+            let image = composerView.textView.text.isEmpty
+                ? ComposerAssets.micButtonImage : ComposerAssets.sendButtonImage
             button.setBackgroundImage(image, for: .normal)
         }
     }
@@ -126,7 +127,7 @@ public extension ComposerViewExpandedDelegate {
         }
     }
 
-    func composerView(_ composerView: ComposerView, willConfigureOverlayView view: UIView, with userData: Any?) {
+    func composerView(_ composerView: ComposerView, willConfigureOverlayView view: OverlayView, with userData: Any?) {
         let audioUrl = (view.subviews.first as? RecordAudioView)?.audioRecorder.url
 
         view.subviews.forEach {
@@ -177,6 +178,10 @@ public extension ComposerViewExpandedDelegate {
 
             return
         }
+    }
+
+    func composerView(_ composerView: ComposerView, didConfigureOverlayView view: OverlayView) {
+
     }
 
     func composerView(_ composerView: ComposerView, didUpdateAddonView view: UIView?, at slot: ComposerAddonSlot, index: UInt) {
