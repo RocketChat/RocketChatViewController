@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RocketChatViewController'
-  s.version          = '0.1.0'
+  s.version          = '1.0.0'
   s.summary          = 'RocketChatViewController is a light weight library that allows you to implement a chat on iOS.'
 
 # This description is used to generate tags and improve search results.
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+Rocket.Chat.ViewController chat component.
                        DESC
 
   s.homepage         = 'https://github.com/RocketChat/RocketChatViewController'
@@ -33,7 +33,7 @@ TODO: Add long description of the pod here.
   s.subspec 'ViewController' do |f|
       f.ios.deployment_target = '11.0'
       f.source_files = 'RocketChatViewController/Classes/**/*'
-      f.dependency 'DifferenceKit', '~> 0.7.2'
+      f.dependency 'DifferenceKit', '~> 0.8'
   end
 
   # Composer
