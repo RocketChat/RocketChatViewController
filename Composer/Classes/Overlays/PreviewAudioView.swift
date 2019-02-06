@@ -237,6 +237,8 @@ public class AudioView: UIView {
 
         $0.value = 0
         $0.setThumbImage(ComposerAssets.sliderThumbImage, for: .normal)
+        $0.minimumTrackTintColor = #colorLiteral(red: 0.3294117647, green: 0.3450980392, blue: 0.368627451, alpha: 1)
+        $0.maximumTrackTintColor = #colorLiteral(red: 0.3294117647, green: 0.3450980392, blue: 0.368627451, alpha: 1)
 
         $0.addTarget(self, action: #selector(didStartSlidingSlider(_:)), for: .touchDown)
         $0.addTarget(self, action: #selector(didFinishSlidingSlider(_:)), for: .touchUpInside)
