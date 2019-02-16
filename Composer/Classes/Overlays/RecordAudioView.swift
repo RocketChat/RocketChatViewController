@@ -166,7 +166,12 @@ public class RecordAudioView: UIView {
      */
     func startRecording() {
         if !audioRecorder.isRecording {
-            audioRecorder.record()
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+
+            // need to delay the call to prevent the vibration from being recorded
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                self?.audioRecorder.record()
+            }
         }
     }
 
