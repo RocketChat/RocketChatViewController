@@ -20,6 +20,10 @@ private extension ComposerView {
     var editingView: EditingView? {
         return componentStackView.subviews.first(where: { $0 as? EditingView != nil }) as? EditingView
     }
+
+    var recordAudioView: RecordAudioView? {
+        return overlayView.subviews.first(where: { $0 as? RecordAudioView != nil }) as? RecordAudioView
+    }
 }
 
 /**
@@ -40,6 +44,7 @@ public protocol ComposerViewExpandedDelegate: ComposerViewDelegate,
     func composerView(_ composerView: ComposerView, didPressSendButton button: UIButton)
     func composerView(_ composerView: ComposerView, didPressUploadButton button: UIButton)
     func composerView(_ composerView: ComposerView, didPressRecordAudioButton button: UIButton)
+    func composerView(_ composerView: ComposerView, didReleaseRecordAudioButton button: UIButton)
     func composerView(_ composerView: ComposerView, didFinishRecordingAudio url: URL)
 }
 
@@ -85,17 +90,31 @@ public extension ComposerViewExpandedDelegate {
     }
 
     func composerView(_ composerView: ComposerView, event: UIControl.Event, happenedInButton button: ComposerButton) {
-        if event == .touchUpInside {
-            if button === composerView.rightButton && composerView.textView.text.isEmpty {
+        var rightButtonIsRecordAudio = composerView.textView.text.isEmpty
+
+        if event == .touchDown {
+            if button === composerView.rightButton {
                 self.composerView(composerView, didPressRecordAudioButton: button)
             }
+        }
 
-            if button === composerView.rightButton && !composerView.textView.text.isEmpty {
+        if event == .touchUpInside {
+            if button === composerView.rightButton && rightButtonIsRecordAudio {
+                self.composerView(composerView, didReleaseRecordAudioButton: button)
+            }
+
+            if button === composerView.rightButton && !rightButtonIsRecordAudio {
                 self.composerView(composerView, didPressSendButton: button)
             }
 
             if button === composerView.leftButton {
                 self.composerView(composerView, didPressUploadButton: button)
+            }
+        }
+
+        if event == .touchUpOutside {
+            if button === composerView.rightButton && rightButtonIsRecordAudio {
+                self.composerView(composerView, didReleaseRecordAudioButton: button)
             }
         }
     }
@@ -200,6 +219,11 @@ public extension ComposerViewExpandedDelegate {
 
     func composerView(_ composerView: ComposerView, didPressRecordAudioButton button: UIButton) {
         composerView.showOverlay(userData: "RecordAudioView")
+        composerView.recordAudioView?.startRecording()
+    }
+
+    func composerView(_ composerView: ComposerView, didReleaseRecordAudioButton button: UIButton) {
+        composerView.recordAudioView?.stopRecording()
     }
 
     func recordAudioView(_ view: RecordAudioView, didRecordAudio url: URL) {

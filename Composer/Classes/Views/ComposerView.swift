@@ -66,7 +66,9 @@ public class ComposerView: UIView, ComposerLocalizable {
         $0.setBackgroundImage(ComposerAssets.addButtonImage, for: .normal)
 
         $0.addTarget(self, action: #selector(touchUpInsideButton), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(touchUpOutsideButton), for: .touchUpOutside)
         $0.addTarget(self, action: #selector(touchDownInButton), for: .touchDown)
+        $0.addTarget(self, action: #selector(touchDragInsideButton), for: .touchDragInside)
 
         $0.setContentHuggingPriority(.required, for: .horizontal)
     }
@@ -79,7 +81,9 @@ public class ComposerView: UIView, ComposerLocalizable {
         $0.setBackgroundImage(ComposerAssets.sendButtonImage, for: .normal)
 
         $0.addTarget(self, action: #selector(touchUpInsideButton), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(touchUpOutsideButton), for: .touchUpOutside)
         $0.addTarget(self, action: #selector(touchDownInButton), for: .touchDown)
+        $0.addTarget(self, action: #selector(touchDragInsideButton), for: .touchDragInside)
 
         $0.setContentHuggingPriority(.required, for: .horizontal)
     }
@@ -373,10 +377,24 @@ public extension ComposerView {
     }
 
     /**
+     Called when a touchUpOutside event happens in one of the buttons.
+     */
+    @objc private func touchUpOutsideButton(_ button: ComposerButton, _ event: UIControl.Event) {
+        currentDelegate.composerView(self, event: .touchUpOutside, happenedInButton: button)
+    }
+
+    /**
      Called when a touchDown event happens in one of the buttons.
      */
     @objc private func touchDownInButton(_ button: ComposerButton, _ event: UIControl.Event) {
         currentDelegate.composerView(self, event: .touchDown, happenedInButton: button)
+    }
+
+    /**
+     Called when a touchDragInside event happens in one of the buttons.
+     */
+    @objc private func touchDragInsideButton(_ button: ComposerButton, _ event: UIControl.Event) {
+        currentDelegate.composerView(self, event: .touchDragInside, happenedInButton: button)
     }
 
     /**
