@@ -55,8 +55,6 @@ public class PreviewAudioView: UIView, ComposerLocalizable {
         $0.addTarget(self, action: #selector(touchUpInsideSendButton), for: .touchUpInside)
     }
 
-    public var timer: Timer?
-
     public init() {
         super.init(frame: .zero)
         commonInit()
@@ -110,14 +108,6 @@ public class PreviewAudioView: UIView, ComposerLocalizable {
         backgroundColor = .white
         clipsToBounds = true
 
-        timer = .scheduledTimer(
-            timeInterval: 0.5,
-            target: self,
-            selector: #selector(timerTick),
-            userInfo: nil,
-            repeats: true
-        )
-
         NotificationCenter.default.addObserver(forName: .UIContentSizeCategoryDidChange, object: nil, queue: nil, using: { [weak self] _ in
             self?.setNeedsLayout()
         })
@@ -159,20 +149,6 @@ public class PreviewAudioView: UIView, ComposerLocalizable {
         ])
     }
 
-    /**
-     Starts playing
-     */
-    func startPlaying() {
-
-    }
-
-    /**
-     Stops playing
-     */
-    func stopPlaying() {
-
-    }
-
     struct Consts {
         static let audioViewLeading: CGFloat = 10
         static let audioViewTop: CGFloat = 6
@@ -196,10 +172,6 @@ public class PreviewAudioView: UIView, ComposerLocalizable {
 // MARK: Events
 
 extension PreviewAudioView {
-    @objc func timerTick() {
-        // time += 0.5
-    }
-
     @objc func touchUpInsideDiscardButton() {
         guard let url = audioView.audioUrl else {
             return
@@ -242,6 +214,7 @@ public class AudioView: UIView {
 
         $0.addTarget(self, action: #selector(didStartSlidingSlider(_:)), for: .touchDown)
         $0.addTarget(self, action: #selector(didFinishSlidingSlider(_:)), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(didChangeValueOfSlider(_:)), for: .valueChanged)
     }
 
     public let timeLabel = tap(UILabel()) {
@@ -278,6 +251,7 @@ public class AudioView: UIView {
             } else {
                 player?.pause()
             }
+
             let pause = ComposerAssets.pauseButtonImage
             let play = ComposerAssets.playButtonImage
             playButton.setImage(playing ? pause : play, for: .normal)
@@ -354,6 +328,10 @@ public class AudioView: UIView {
 
             if self.playing {
                 self.progressSlider.value = Float(player.currentTime)
+
+                if !player.isPlaying {
+                    self.playing = false
+                }
             }
 
             let displayTime = self.playing ? Int(player.currentTime) : Int(player.duration)
@@ -395,6 +373,12 @@ extension AudioView {
     @objc func didFinishSlidingSlider(_ sender: UISlider) {
         player?.currentTime = Double(sender.value)
         playing = true
+    }
+
+    @objc func didChangeValueOfSlider(_ sender: UISlider) {
+        if player?.currentTime ?? 0.0 > Double(sender.value) {
+            playing = false
+        }
     }
 
     @objc func didPressPlayButton(_ sender: UIButton) {
