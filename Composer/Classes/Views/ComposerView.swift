@@ -138,6 +138,11 @@ public class ComposerView: UIView, ComposerLocalizable {
         $0.isHidden = true
     }
 
+    /**
+     A Boolean value that indicates whether text can change in the textView
+     */
+    public var isTextInputEnabled = true
+
     public override var intrinsicContentSize: CGSize {
         return CGSize(width: super.intrinsicContentSize.width, height: containerView.bounds.height)
     }
@@ -295,7 +300,7 @@ public extension ComposerView {
 
         leftButton.isUserInteractionEnabled = false
         rightButton.isUserInteractionEnabled = false
-        textView.isUserInteractionEnabled = false
+        isTextInputEnabled = false
 
         currentDelegate.composerView(self, willConfigureOverlayView: overlayView, with: userData)
         currentDelegate.composerView(self, didConfigureOverlayView: overlayView)
@@ -306,7 +311,7 @@ public extension ComposerView {
 
         leftButton.isUserInteractionEnabled = true
         rightButton.isUserInteractionEnabled = true
-        textView.isUserInteractionEnabled = true
+        isTextInputEnabled = true
     }
 }
 
@@ -412,7 +417,11 @@ extension ComposerView: UITextViewDelegate {
         return
     }
 
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        guard isTextInputEnabled else {
+            return false
+        }
+
         if text == "\n" {
             return currentDelegate.composerViewShouldReturn(self)
         }
