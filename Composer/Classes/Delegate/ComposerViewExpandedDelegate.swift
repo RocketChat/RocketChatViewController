@@ -120,8 +120,9 @@ public extension ComposerViewExpandedDelegate {
 
         if [.touchDragInside, .touchDragOutside].contains(eventType), let touch = event.allTouches?.first {
             if button === composerView.rightButton {
-                let delta = touch.location(in: button).x
-                self.composerView(composerView, didDragRecordAudioButton: button, delta: delta)
+                let first = touch.precisePreviousLocation(in: button).x
+                let second = touch.location(in: button).x
+                self.composerView(composerView, didDragRecordAudioButton: button, delta: second - first)
             }
         }
     }
@@ -234,7 +235,11 @@ public extension ComposerViewExpandedDelegate {
     }
 
     func composerView(_ composerView: ComposerView, didDragRecordAudioButton button: UIButton, delta: CGFloat) {
-        composerView.recordAudioView?.transform = CGAffineTransform(translationX: delta, y: 0)
+        guard let view = composerView.recordAudioView else {
+            return
+        }
+
+        view.transform = view.transform.translatedBy(x: delta, y: 0)
     }
 
     func recordAudioView(_ view: RecordAudioView, didRecordAudio url: URL) {
