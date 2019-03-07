@@ -231,7 +231,17 @@ public extension ComposerViewExpandedDelegate {
     }
 
     func composerView(_ composerView: ComposerView, didReleaseRecordAudioButton button: UIButton) {
-        composerView.recordAudioView?.stopRecording()
+        guard let view = composerView.recordAudioView else {
+            return
+        }
+
+        let dismiss = view.frame.width + view.transform.tx < view.frame.width*0.75
+
+        if dismiss {
+            view.dismiss()
+        } else {
+            view.stopRecording()
+        }
     }
 
     func composerView(_ composerView: ComposerView, didDragRecordAudioButton button: UIButton, delta: CGFloat) {
