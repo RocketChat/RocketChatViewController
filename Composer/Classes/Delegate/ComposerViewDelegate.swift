@@ -54,9 +54,9 @@ public protocol ComposerViewDelegate: class {
     func composerView(_ composerView: ComposerView, didUpdateAddonView view: UIView?, at slot: ComposerAddonSlot, index: UInt)
 
     /**
-     Tells the delegate the button in the slot has been tapped.
+     Tells the delegate some event happened in the button.
      */
-    func composerView(_ composerView: ComposerView, event: UIControl.Event, happenedInButton button: ComposerButton)
+    func composerView(_ composerView: ComposerView, event: UIEvent, eventType: UIControl.Event, happenedInButton button: ComposerButton)
 }
 
 public extension ComposerViewDelegate {
@@ -77,5 +77,5 @@ public extension ComposerViewDelegate {
     func composerView(_ composerView: ComposerView, didConfigureOverlayView view: OverlayView) { }
     func composerViewDidChangeSelection(_ composerView: ComposerView) { }
     func composerView(_ composerView: ComposerView, didUpdateAddonView view: UIView?, at slot: ComposerAddonSlot, index: UInt) { }
-    func composerView(_ composerView: ComposerView, event: UIControl.Event, happenedInButton button: ComposerButton) { }
+    func composerView(_ composerView: ComposerView, event: UIEvent, eventType: UIControl.Event, happenedInButton button: ComposerButton) { }
 }
