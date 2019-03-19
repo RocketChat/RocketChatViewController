@@ -33,7 +33,7 @@ Rocket.Chat.ViewController chat component.
   s.subspec 'ViewController' do |f|
       f.ios.deployment_target = '11.0'
       f.source_files = 'RocketChatViewController/Classes/**/*'
-      f.dependency 'DifferenceKit', '~> 0.8'
+      f.dependency 'DifferenceKit', '~> 1.0'
   end
 
   # Composer
