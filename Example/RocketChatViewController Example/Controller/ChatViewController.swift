@@ -112,6 +112,11 @@ extension ChatViewController {
 
 // MARK: Composer Delegate
 extension ChatViewController: ComposerViewExpandedDelegate {
+
+    func composerView(_ composerView: ComposerView, didFinishRecordingAudio url: URL) {
+
+    }
+
     func composerView(_ composerView: ComposerView, didPressSendButton button: UIButton) {
 
     }
