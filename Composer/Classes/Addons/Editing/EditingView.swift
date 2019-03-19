@@ -12,13 +12,13 @@ public protocol EditingViewDelegate: class {
     func editingViewDidShow(_ editingView: EditingView)
 }
 
-public class EditingView: UIView {
+public class EditingView: UIView, ComposerLocalizable {
     public weak var delegate: EditingViewDelegate?
 
     public let titleLabel = tap(UILabel()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
 
-        $0.text = "Editing Message"
+        $0.text = localized(.editingViewTitle)
         $0.font = .preferredFont(forTextStyle: .headline)
         $0.adjustsFontForContentSizeCategory = true
 
@@ -34,7 +34,7 @@ public class EditingView: UIView {
             $0.heightAnchor.constraint(equalToConstant: 20)
         ])
 
-        $0.setBackgroundImage(ComposerAsset.cancelReplyButton.raw, for: .normal)
+        $0.setBackgroundImage(ComposerAssets.cancelReplyButtonImage, for: .normal)
         $0.tintColor = #colorLiteral(red: 0.6196078431, green: 0.6352941176, blue: 0.6588235294, alpha: 1)
 
         $0.addTarget(self, action: #selector(didPressCloseButton(_:)), for: .touchUpInside)

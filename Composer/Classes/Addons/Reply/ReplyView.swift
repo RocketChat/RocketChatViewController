@@ -20,14 +20,14 @@ public struct ReplyViewModel {
     }
 }
 
-public protocol ReplyViewDelegate {
+public protocol ReplyViewDelegate: class {
     func replyViewDidHide(_ replyView: ReplyView)
     func replyViewDidShow(_ replyView: ReplyView)
 }
 
 public class ReplyView: UIView {
 
-    public var delegate: ReplyViewDelegate?
+    public weak var delegate: ReplyViewDelegate?
 
     public let backgroundView = tap(UIView()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -76,7 +76,7 @@ public class ReplyView: UIView {
             $0.heightAnchor.constraint(equalToConstant: 20)
         ])
 
-        $0.setBackgroundImage(ComposerAsset.cancelReplyButton.raw, for: .normal)
+        $0.setBackgroundImage(ComposerAssets.cancelReplyButtonImage, for: .normal)
         $0.tintColor = #colorLiteral(red: 0.6196078431, green: 0.6352941176, blue: 0.6588235294, alpha: 1)
 
         $0.addTarget(self, action: #selector(didPressCloseButton(_:)), for: .touchUpInside)
@@ -99,6 +99,10 @@ public class ReplyView: UIView {
             3 + 15 + 13
 
         return CGSize(width: super.intrinsicContentSize.width, height: height)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     public init() {

@@ -10,14 +10,14 @@ import UIKit
 import RocketChatViewController
 
 class ImageAttachmentChatCell: UICollectionViewCell, ChatCell {
-    var adjustedHorizontalInsets: CGFloat = 0
+    var messageWidth: CGFloat = 0
     static let identifier = String(describing: ImageAttachmentChatCell.self)
 
     @IBOutlet weak var image: UIImageView!
 
     var viewModel: AnyChatItem?
 
-    func configure() {
+    func configure(completeRendering: Bool) {
         guard let _ = viewModel?.base as? ImageAttachmentChatItem else {
             return
         }
