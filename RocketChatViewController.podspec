@@ -40,7 +40,7 @@ Rocket.Chat.ViewController chat component.
   s.subspec 'Composer' do |f|
       f.ios.deployment_target = '11.0'
       f.source_files = 'Composer/Classes/**/*'
-      f.resources = ['Composer/Assets/*']
+      f.resources = ['Composer/Assets/*', 'Composer/Sounds/*']
   end
 
 end

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 private extension ComposerView {
     var hintsView: HintsView? {
@@ -91,7 +92,8 @@ public extension ComposerViewExpandedDelegate {
     }
 
     func composerView(_ composerView: ComposerView, event: UIEvent, eventType: UIControl.Event, happenedInButton button: ComposerButton) {
-        var rightButtonIsRecordAudio = composerView.textView.text.isEmpty
+        let rightButtonIsRecordAudio = composerView.textView.text.isEmpty
+
         if eventType == .touchDown {
             if button === composerView.rightButton && rightButtonIsRecordAudio {
                 self.composerView(composerView, didPressRecordAudioButton: button)
@@ -228,6 +230,15 @@ public extension ComposerViewExpandedDelegate {
     func composerView(_ composerView: ComposerView, didPressRecordAudioButton button: UIButton) {
         composerView.showOverlay(userData: "RecordAudioView")
         composerView.recordAudioView?.startRecording()
+
+        guard let url = Bundle.main.url(forResource: "start_recording", withExtension: "mp3") else { return }
+
+        do {
+            let player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+            player.play()
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
 
     func composerView(_ composerView: ComposerView, didReleaseRecordAudioButton button: UIButton) {

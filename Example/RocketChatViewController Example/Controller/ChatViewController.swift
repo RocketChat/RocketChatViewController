@@ -10,7 +10,6 @@ import UIKit
 import DifferenceKit
 import RocketChatViewController
 
-
 final class ChatViewController: RocketChatViewController {
 
     var data: [ArraySection<AnyChatSection, AnyChatItem>] = []
@@ -122,11 +121,6 @@ extension ChatViewController: ComposerViewExpandedDelegate {
     }
 
     func composerView(_ composerView: ComposerView, didPressUploadButton button: UIButton) {
-
-    }
-
-
-    func composerView(_ composerView: ComposerView, didPressRecordAudioButton button: UIButton) {
 
     }
 
