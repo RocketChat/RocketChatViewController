@@ -230,15 +230,6 @@ public extension ComposerViewExpandedDelegate {
     func composerView(_ composerView: ComposerView, didPressRecordAudioButton button: UIButton) {
         composerView.showOverlay(userData: "RecordAudioView")
         composerView.recordAudioView?.startRecording()
-
-        guard let url = Bundle.main.url(forResource: "start_recording", withExtension: "mp3") else { return }
-
-        do {
-            let player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
-            player.play()
-        } catch let error {
-            print(error.localizedDescription)
-        }
     }
 
     func composerView(_ composerView: ComposerView, didReleaseRecordAudioButton button: UIButton) {
