@@ -218,7 +218,7 @@ public class RecordAudioView: UIView {
             soundFeedbacksPlayer = try AVAudioPlayer(contentsOf: sound, fileTypeHint: AVFileType.m4a.rawValue)
             soundFeedbacksPlayer?.play()
         } catch let error {
-            print(error.localizedDescription)
+            // Ignore the error
         }
     }
 }

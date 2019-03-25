@@ -30,7 +30,7 @@ public struct ComposerAssets {
         return image ?? UIImage()
     }
 
-    // MARK: Songs
+    // MARK: Sounds
 
     public static var startAudioRecordSound: URL? {
         return bundle.url(forResource: "start_audio_record", withExtension: "m4a")
