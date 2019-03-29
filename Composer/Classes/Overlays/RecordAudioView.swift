@@ -19,8 +19,7 @@ public class RecordAudioView: UIView {
 
     public var soundFeedbacksPlayer: AVAudioPlayer?
 
-    internal let impactFeedbackLight = UIImpactFeedbackGenerator(style: .light)
-    internal let impactFeedbackMedium = UIImpactFeedbackGenerator(style: .medium)
+    internal let feedbackNotification = UINotificationFeedbackGenerator()
 
     public let audioRecorder = AudioRecorder()
 
@@ -172,13 +171,13 @@ public class RecordAudioView: UIView {
      */
     func startRecording() {
         if !audioRecorder.isRecording {
-            impactFeedbackMedium.impactOccurred()
+            feedbackNotification.notificationOccurred(.warning)
 
             if let startAudioRecordURL = ComposerAssets.startAudioRecordSound {
                 play(sound: startAudioRecordURL)
             }
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.audioRecorder.record()
             }
         }
@@ -192,7 +191,7 @@ public class RecordAudioView: UIView {
             audioRecorder.stop()
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                self.impactFeedbackLight.impactOccurred()
+                self.feedbackNotification.notificationOccurred(.success)
             }
         }
     }
@@ -213,7 +212,7 @@ public class RecordAudioView: UIView {
             self.delegate?.recordAudioViewDidCancel(self)
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                self.impactFeedbackLight.impactOccurred()
+                self.feedbackNotification.notificationOccurred(.success)
             }
         }
     }
