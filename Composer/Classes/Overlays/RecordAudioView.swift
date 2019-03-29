@@ -87,11 +87,11 @@ public class RecordAudioView: UIView {
         micButton.transform = CGAffineTransform(translationX: translationX, y: 0)
         timeLabel.alpha = 0
 
-        UIView.animate(withDuration: 0.25, animations: {
+        UIView.animate(withDuration: 0.25, delay: 0, options: .allowUserInteraction, animations: {
             self.swipeIndicatorView.transform = CGAffineTransform(translationX: 0, y: 0)
             self.micButton.transform = CGAffineTransform(translationX: 0, y: 0)
             self.timeLabel.alpha = 1
-        })
+        }, completion: nil)
     }
 
     public override init(frame: CGRect) {
@@ -177,7 +177,7 @@ public class RecordAudioView: UIView {
                 play(sound: startAudioRecordURL)
             }
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
                 self.audioRecorder.record()
             }
         }
@@ -189,10 +189,7 @@ public class RecordAudioView: UIView {
     func stopRecording() {
         if audioRecorder.isRecording {
             audioRecorder.stop()
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                self.feedbackNotification.notificationOccurred(.success)
-            }
+            self.feedbackNotification.notificationOccurred(.success)
         }
     }
 
@@ -204,16 +201,14 @@ public class RecordAudioView: UIView {
             play(sound: cancelAudioRecordURL)
         }
 
+        self.feedbackNotification.notificationOccurred(.success)
+
         UIView.animate(withDuration: 0.25, animations: {
             self.transform = CGAffineTransform(translationX: -self.frame.width, y: 0)
         }) { _ in
             self.audioRecorder.delegate = nil
             self.audioRecorder.cancel()
             self.delegate?.recordAudioViewDidCancel(self)
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                self.feedbackNotification.notificationOccurred(.success)
-            }
         }
     }
 
