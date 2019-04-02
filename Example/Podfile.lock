@@ -1,19 +1,18 @@
 PODS:
-  - DifferenceKit (1.0.0):
-    - DifferenceKit/Core (= 1.0.0)
-    - DifferenceKit/UIKitExtension (= 1.0.0)
-  - DifferenceKit/Core (1.0.0)
-  - DifferenceKit/UIKitExtension (1.0.0):
+  - DifferenceKit (1.1.1):
+    - DifferenceKit/Core (= 1.1.1)
+    - DifferenceKit/UIKitExtension (= 1.1.1)
+  - DifferenceKit/Core (1.1.1)
+  - DifferenceKit/UIKitExtension (1.1.1):
     - DifferenceKit/Core
-  - RocketChatViewController (1.0.0):
-    - RocketChatViewController/Composer (= 1.0.0)
-    - RocketChatViewController/ViewController (= 1.0.0)
-  - RocketChatViewController/Composer (1.0.0)
-  - RocketChatViewController/ViewController (1.0.0):
-    - DifferenceKit (~> 1.0)
+  - RocketChatViewController (1.0.1):
+    - RocketChatViewController/Composer (= 1.0.1)
+    - RocketChatViewController/ViewController (= 1.0.1)
+  - RocketChatViewController/Composer (1.0.1)
+  - RocketChatViewController/ViewController (1.0.1):
+    - DifferenceKit (~> 1.1)
 
 DEPENDENCIES:
-  - DifferenceKit/Core (~> 1.0)
   - RocketChatViewController (from `../`)
 
 SPEC REPOS:
@@ -25,9 +24,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  DifferenceKit: d501e37b866e98a8aaee0f61ceb02ad98e52b9c1
-  RocketChatViewController: 4c4ba1544ee69362864f752959b1e907683bafd6
+  DifferenceKit: cf1b84e2207ea45c3640381cb229cf46c1647466
+  RocketChatViewController: c6577c52bce989a964d73ef3908c9f8e050ecdac
 
-PODFILE CHECKSUM: acbb19cd1942399c066534f7ed9899b8bb91bcbb
+PODFILE CHECKSUM: eb43d8cd34af6ceb38604c3a89056ceced3816c6
 
 COCOAPODS: 1.5.3

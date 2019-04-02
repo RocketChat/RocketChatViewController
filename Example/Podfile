@@ -3,6 +3,5 @@ platform :ios, '11.0'
 target 'RocketChatViewController Example' do
   use_frameworks!
 
-  pod 'DifferenceKit/Core', '~> 1.0'
   pod 'RocketChatViewController', :path => "../"
 end
