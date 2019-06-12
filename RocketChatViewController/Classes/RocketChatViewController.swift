@@ -10,7 +10,7 @@ import UIKit
 import DifferenceKit
 
 public extension UICollectionView {
-    func dequeueChatCell(withReuseIdentifier reuseIdetifier: String, for indexPath: IndexPath) -> ChatCell {
+    public func dequeueChatCell(withReuseIdentifier reuseIdetifier: String, for indexPath: IndexPath) -> ChatCell {
         guard let cell = dequeueReusableCell(withReuseIdentifier: reuseIdetifier, for: indexPath) as? ChatCell else {
             fatalError("Trying to dequeue a reusable UICollectionViewCell that doesn't conforms to BindableCell protocol")
         }
@@ -132,7 +132,7 @@ public extension ChatItem where Self: Differentiable {
     // In order to use a ChatCellViewModel along with a SectionController
     // we must use it as a type-erased ChatCellViewModel, which in this case also means
     // that it must conform to the Differentiable protocol.
-    var wrapped: AnyChatItem {
+    public var wrapped: AnyChatItem {
         return AnyChatItem(self)
     }
 }
@@ -288,7 +288,7 @@ open class RocketChatViewController: UICollectionViewController {
         collectionView.scrollsToTop = false
 
         if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout, isSelfSizing {
-            flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+            flowLayout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
         }
     }
 
@@ -410,7 +410,11 @@ extension RocketChatViewController {
     }
 }
 
-extension RocketChatViewController: UICollectionViewDelegateFlowLayout {}
+extension RocketChatViewController: UICollectionViewDelegateFlowLayout {
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return .zero
+    }
+}
 
 
 extension RocketChatViewController {
@@ -418,7 +422,7 @@ extension RocketChatViewController {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(_onKeyboardFrameWillChangeNotificationReceived(_:)),
-            name: UIResponder.keyboardWillChangeFrameNotification,
+            name: NSNotification.Name.UIKeyboardWillChangeFrame,
             object: nil
         )
     }
@@ -426,7 +430,7 @@ extension RocketChatViewController {
     func stopObservingKeyboard() {
         NotificationCenter.default.removeObserver(
             self,
-            name: UIResponder.keyboardWillChangeFrameNotification,
+            name: NSNotification.Name.UIKeyboardWillChangeFrame,
             object: nil
         )
     }
@@ -438,7 +442,7 @@ extension RocketChatViewController {
         
         guard
             let userInfo = notification.userInfo,
-            let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
+            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
             let collectionView = collectionView
         else {
             return
@@ -448,10 +452,10 @@ extension RocketChatViewController {
         let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame.insetBy(dx: 0, dy: -additionalSafeAreaInsets.top)
         let intersection = safeAreaFrame.intersection(keyboardFrameInView)
 
-        let animationDuration: TimeInterval = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
-        let animationCurveRawNSN = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber
-        let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIView.AnimationOptions.curveEaseInOut.rawValue
-        let animationCurve = UIView.AnimationOptions(rawValue: animationCurveRaw)
+        let animationDuration: TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+        let animationCurveRawNSN = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
+        let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
+        let animationCurve = UIViewAnimationOptions(rawValue: animationCurveRaw)
         
         guard intersection.height != self.keyboardHeight else {
             return
