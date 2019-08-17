@@ -64,6 +64,7 @@ public class ComposerView: UIView, ComposerLocalizable {
     public let leftButton = tap(ComposerButton()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.setBackgroundImage(ComposerAssets.addButtonImage, for: .normal)
+        $0.accessibilityLabel = localized(.addButtonLabel)
 
         $0.addTarget(self, action: #selector(touchUpInsideButton), for: .touchUpInside)
         $0.addTarget(self, action: #selector(touchUpOutsideButton), for: .touchUpOutside)
@@ -95,14 +96,15 @@ public class ComposerView: UIView, ComposerLocalizable {
      */
     public let textView = tap(ComposerTextView()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
-
         $0.text = ""
+        $0.font = .preferredFont(forTextStyle: .body)
+        $0.adjustsFontForContentSizeCategory = true
+        $0.accessibilityLabel = localized(.textViewPlaceholder)
+
         $0.placeholderLabel.text = localized(.textViewPlaceholder)
         $0.placeholderLabel.font = .preferredFont(forTextStyle: .body)
         $0.placeholderLabel.adjustsFontForContentSizeCategory = true
-
-        $0.font = .preferredFont(forTextStyle: .body)
-        $0.adjustsFontForContentSizeCategory = true
+        $0.placeholderLabel.isAccessibilityElement = false
     }
 
     /**
@@ -311,7 +313,7 @@ public extension ComposerView {
 // MARK: Buttons
 
 public extension ComposerView {
-    func configureButtons() {
+    public func configureButtons() {
         currentDelegate.composerView(self, willConfigureButton: leftButton)
         currentDelegate.composerView(self, willConfigureButton: rightButton)
     }
@@ -320,7 +322,7 @@ public extension ComposerView {
 // MARK: Addons
 
 public extension ComposerView {
-    func reloadAddons() {
+    public func reloadAddons() {
         [
             (componentStackView, ComposerAddonSlot.component),
             (utilityStackView, ComposerAddonSlot.utility)
@@ -351,7 +353,7 @@ public extension ComposerView {
     /**
      Called when the content size of the text view changes and adjusts the composer height constraint.
      */
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if object as AnyObject? === leftButton && keyPath == "bounds" {
             textViewLeadingConstraint.constant = leftButton.isHidden ? 0 : layoutMargins.left
         }
@@ -405,7 +407,7 @@ public extension ComposerView {
 
 // MARK: UITextView Delegate
 extension ComposerView: UITextViewDelegate {
-    public func textViewDidChangeSelection(_ textView: UITextView) {
+    @objc func textViewDidChangeSelection(_ textView: UITextView) {
         currentDelegate.composerViewDidChangeSelection(self)
         return
     }

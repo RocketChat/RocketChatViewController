@@ -27,18 +27,18 @@ Rocket.Chat.ViewController chat component.
   s.source           = { :git => 'https://github.com/RocketChat/RocketChatViewController', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/RocketChat'
 
-  s.ios.deployment_target = '11.0'
+  s.ios.deployment_target = '10.0'
 
   # ViewController
   s.subspec 'ViewController' do |f|
-      f.ios.deployment_target = '11.0'
+      f.ios.deployment_target = '10.0'
       f.source_files = 'RocketChatViewController/Classes/**/*'
       f.dependency 'DifferenceKit', '~> 1.1'
   end
 
   # Composer
   s.subspec 'Composer' do |f|
-      f.ios.deployment_target = '11.0'
+      f.ios.deployment_target = '10.0'
       f.source_files = 'Composer/Classes/**/*'
       f.resources = ['Composer/Assets/*', 'Composer/Sounds/*']
   end

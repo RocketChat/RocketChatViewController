@@ -17,15 +17,15 @@ public struct ComposerAddon {
 }
 
 public extension ComposerAddon {
-    static var reply: ComposerAddon {
+    public static var reply: ComposerAddon {
         return ComposerAddon(viewType: ReplyView.self)
     }
 
-    static var hints: ComposerAddon {
+    public static var hints: ComposerAddon {
         return ComposerAddon(viewType: HintsView.self)
     }
 
-    static var editing: ComposerAddon {
+    public static var editing: ComposerAddon {
         return ComposerAddon(viewType: EditingView.self)
     }
 }
