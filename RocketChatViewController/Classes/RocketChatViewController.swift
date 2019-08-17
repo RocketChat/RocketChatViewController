@@ -205,7 +205,9 @@ open class RocketChatViewController: UICollectionViewController {
         }
         
         composerView.layoutMargins = view.layoutMargins
-        composerView.directionalLayoutMargins = systemMinimumLayoutMargins
+        if #available(iOS 11.0, *) {
+            composerView.directionalLayoutMargins = systemMinimumLayoutMargins
+        }
         return composerView
     }
 
@@ -283,12 +285,17 @@ open class RocketChatViewController: UICollectionViewController {
 
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.keyboardDismissMode = .interactive
-        collectionView.contentInsetAdjustmentBehavior = isInverted ? .never : .always
-
+        if #available(iOS 11.0, *) {
+            collectionView.contentInsetAdjustmentBehavior = isInverted ? .never : .always
+        }  
         collectionView.scrollsToTop = false
 
         if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout, isSelfSizing {
-            flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+            if #available(iOS 10.0, *) {
+                flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+            } else {
+                flowLayout.estimatedItemSize = CGSize(width: 100, height: 100)
+            }
         }
     }
 
@@ -358,7 +365,11 @@ extension RocketChatViewController {
 
     @objc open var bottomHeight: CGFloat {
         var composer = keyboardHeight > 0.0 ? keyboardHeight : composerView.frame.height
-        composer += view.safeAreaInsets.bottom
+        if #available(iOS 11.0, *) {
+            composer += view.safeAreaInsets.bottom
+        } else {
+            composer+=bottomLayoutGuide.length
+        }
         return composer
     }
 
@@ -415,12 +426,12 @@ extension RocketChatViewController: UICollectionViewDelegateFlowLayout {}
 
 extension RocketChatViewController {
     func startObservingKeyboard() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(_onKeyboardFrameWillChangeNotificationReceived(_:)),
-            name: UIResponder.keyboardWillChangeFrameNotification,
-            object: nil
-        )
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(_onKeyboardFrameWillChangeNotificationReceived(_:)),
+                name: UIResponder.keyboardWillChangeFrameNotification,
+                object: nil
+            )
     }
 
     func stopObservingKeyboard() {
@@ -432,6 +443,7 @@ extension RocketChatViewController {
     }
 
     @objc private func _onKeyboardFrameWillChangeNotificationReceived(_ notification: Notification) {
+         if #available(iOS 11.0, *) {
         guard presentedViewController?.isBeingDismissed != false else {
             return
         }
@@ -445,14 +457,19 @@ extension RocketChatViewController {
         }
 
         let keyboardFrameInView = view.convert(keyboardFrame, from: nil)
-        let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame.insetBy(dx: 0, dy: -additionalSafeAreaInsets.top)
-        let intersection = safeAreaFrame.intersection(keyboardFrameInView)
-
+        
+      
+        
         let animationDuration: TimeInterval = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
         let animationCurveRawNSN = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber
         let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIView.AnimationOptions.curveEaseInOut.rawValue
         let animationCurve = UIView.AnimationOptions(rawValue: animationCurveRaw)
         
+       
+                let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame.insetBy(dx: 0, dy: -additionalSafeAreaInsets.top)
+                
+                let intersection = safeAreaFrame.intersection(keyboardFrameInView)
+          
         guard intersection.height != self.keyboardHeight else {
             return
         }
@@ -471,6 +488,7 @@ extension RocketChatViewController {
                 self.view.layoutIfNeeded()
             }
         })
+        }
     }
 
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -482,4 +500,7 @@ extension RocketChatViewController {
             composerView.containerViewLeadingConstraint.constant = window.bounds.width - view.bounds.width
         }
     }
+    
+    
+
 }
