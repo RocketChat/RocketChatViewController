@@ -41,7 +41,7 @@ public class AudioRecorder: NSObject {
         let session = AVAudioSession.sharedInstance()
 
         do {
-            try session.setCategory(AVAudioSession.Category(rawValue: AVAudioSession.Category.playAndRecord.rawValue))
+            try session.setCategory(AVAudioSession.Category(string: AVAudioSessionCategoryPlayAndRecord) as String)
             setUpRecorder()
         } catch let error {
             print("Set category error: \(error.localizedDescription).")
@@ -80,7 +80,7 @@ public class AudioRecorder: NSObject {
     private func setSession(active: Bool) {
         let session = AVAudioSession.sharedInstance()
         do {
-            try session.setActive(active, options: [.notifyOthersOnDeactivation])
+            try session.setActive(active, with: [.notifyOthersOnDeactivation])
         } catch let error {
             print("Set active error: \(error.localizedDescription).")
         }

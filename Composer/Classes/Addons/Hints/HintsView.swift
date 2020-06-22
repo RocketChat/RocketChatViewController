@@ -101,14 +101,14 @@ public class HintsView: UITableView {
      Shared initialization procedures.
      */
     private func commonInit() {
-        NotificationCenter.default.addObserver(forName: UIContentSizeCategory.didChangeNotification, object: nil, queue: nil, using: { [weak self] _ in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil, using: { [weak self] _ in
             self?.beginUpdates()
             self?.endUpdates()
         })
 
         dataSource = self
         delegate = self
-        rowHeight = UITableView.automaticDimension
+        rowHeight = UITableViewAutomaticDimension
         estimatedRowHeight = 44
         separatorInset = UIEdgeInsets(
             top: 0,
