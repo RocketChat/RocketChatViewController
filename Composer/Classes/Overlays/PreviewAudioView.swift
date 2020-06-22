@@ -108,7 +108,7 @@ public class PreviewAudioView: UIView, ComposerLocalizable {
         backgroundColor = .white
         clipsToBounds = true
 
-        NotificationCenter.default.addObserver(forName: UIContentSizeCategory.didChangeNotification, object: nil, queue: nil, using: { [weak self] _ in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil, using: { [weak self] _ in
             self?.setNeedsLayout()
         })
 
@@ -284,7 +284,7 @@ public class AudioView: UIView {
         layer.cornerRadius = Consts.layerCornerRadius
         clipsToBounds = true
 
-        NotificationCenter.default.addObserver(forName: UIContentSizeCategory.didChangeNotification, object: nil, queue: nil, using: { [weak self] _ in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil, using: { [weak self] _ in
             self?.setNeedsLayout()
         })
 
